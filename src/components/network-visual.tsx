@@ -12,6 +12,8 @@ import {
   Zap
 } from "lucide-react";
 
+import { WentureEmblem } from "@/components/wenture-emblem";
+
 interface NodeItem {
   id: string;
   label: string;
@@ -146,12 +148,11 @@ export function NetworkVisual() {
             {/* Outer pulsating ring */}
             <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-wenture-blue/30 via-sky-400/20 to-wenture-navy/30 blur-md animate-pulse" />
             
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-wenture-dark text-white flex flex-col items-center justify-center p-3 shadow-glow border-2 border-wenture-blue/40 transition-transform duration-300 group-hover:scale-105">
-              <Zap className="w-6 h-6 sm:w-7 sm:h-7 text-wenture-blue mb-0.5 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-bold tracking-wider text-wenture-cyanLight uppercase">
-                WENTUREX
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white text-wenture-dark flex flex-col items-center justify-center p-2.5 shadow-glow border-2 border-wenture-blue/40 transition-transform duration-300 group-hover:scale-105">
+              <WentureEmblem size={44} />
+              <span className="text-[9px] sm:text-[10px] font-extrabold tracking-wider text-wenture-dark uppercase mt-0.5">
+                WENTURE
               </span>
-              <span className="text-[8px] text-slate-400 font-medium">HUB</span>
             </div>
           </div>
           <span className="mt-2 text-[10px] sm:text-xs font-semibold text-wenture-navy/80 bg-white/90 px-2.5 py-0.5 rounded-full border border-slate-200 shadow-sm backdrop-blur-sm">

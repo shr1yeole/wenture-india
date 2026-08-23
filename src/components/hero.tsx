@@ -1,5 +1,6 @@
 import React from "react";
 import { Mail, MessageCircle, ArrowRight, Sparkles, ShieldCheck, Compass } from "lucide-react";
+import { WentureEmblem } from "@/components/wenture-emblem";
 import { NetworkVisual } from "@/components/network-visual";
 
 export function Hero() {
@@ -16,14 +17,15 @@ export function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-          {/* Eyebrow Pill Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-slate-200/90 shadow-sm backdrop-blur-md transition-all hover:border-wenture-blue/40">
-            <span className="flex h-2 w-2 relative">
+          {/* Eyebrow Pill Badge with Official Emblem */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/95 border border-slate-200/90 shadow-sm backdrop-blur-md transition-all hover:border-wenture-blue/40">
+            <WentureEmblem size={28} />
+            <span className="text-xs sm:text-sm font-extrabold tracking-widest uppercase text-wenture-navy">
+              WENTURE INDIA INTERNATIONAL
+            </span>
+            <span className="flex h-2 w-2 relative ml-0.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-wenture-blue opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-wenture-blue" />
-            </span>
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-wenture-navy">
-              WENTUREX INDIA INTERNATIONAL
             </span>
           </div>
 

@@ -1,132 +1,92 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { WentureEmblem } from "@/components/wenture-emblem";
 
 interface BrandLogoProps {
   className?: string;
   showSubtitle?: boolean;
-  size?: "sm" | "md" | "lg";
+  showTagline?: boolean;
+  size?: "sm" | "md" | "lg" | "xl";
   dark?: boolean;
 }
 
 export function BrandLogo({
   className,
   showSubtitle = true,
+  showTagline = false,
   size = "md",
   dark = false,
 }: BrandLogoProps) {
-  const iconSize = {
-    sm: "w-8 h-8",
-    md: "w-10 h-10",
-    lg: "w-12 h-12",
+  const emblemSize = {
+    sm: 36,
+    md: 44,
+    lg: 54,
+    xl: 68,
   }[size];
 
   const titleSize = {
     sm: "text-lg",
-    md: "text-xl",
+    md: "text-xl sm:text-2xl",
     lg: "text-2xl sm:text-3xl",
+    xl: "text-3xl sm:text-4xl",
   }[size];
 
   const subSize = {
-    sm: "text-[9px] tracking-[0.25em]",
-    md: "text-[10px] tracking-[0.28em]",
-    lg: "text-xs tracking-[0.3em]",
+    sm: "text-[9px] tracking-[0.2em]",
+    md: "text-[10px] tracking-[0.22em]",
+    lg: "text-xs tracking-[0.25em]",
+    xl: "text-sm tracking-[0.28em]",
+  }[size];
+
+  const taglineSize = {
+    sm: "text-[8px] tracking-[0.16em]",
+    md: "text-[9px] tracking-[0.18em]",
+    lg: "text-[10px] tracking-[0.2em]",
+    xl: "text-xs tracking-[0.22em]",
   }[size];
 
   return (
     <div className={cn("inline-flex items-center gap-3 select-none group", className)}>
-      {/* Dynamic Emblem */}
-      <div className={cn("relative flex items-center justify-center shrink-0", iconSize)}>
-        <svg
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full transform transition-transform duration-300 group-hover:scale-105"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="wxGrad1" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#00A6E8" />
-              <stop offset="50%" stopColor="#0284C7" />
-              <stop offset="100%" stopColor="#0A192A" />
-            </linearGradient>
-            <linearGradient id="wxGrad2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#38BDF8" />
-              <stop offset="100%" stopColor="#00A6E8" />
-            </linearGradient>
-            <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-
-          {/* Background Rounded Diamond / Shield with soft border */}
-          <rect
-            x="4"
-            y="4"
-            width="40"
-            height="40"
-            rx="12"
-            fill={dark ? "#0A192A" : "#FFFFFF"}
-            stroke={dark ? "#1E293B" : "#E2E8F0"}
-            strokeWidth="1.5"
-            className="shadow-sm"
-          />
-
-          {/* Connected Network Nodes & Dynamic 'W' Wing Shape */}
-          {/* Left Wing / Pillar */}
-          <path
-            d="M13 16L19 32L24 22"
-            stroke="url(#wxGrad2)"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Right Wing / Pillar with Growth Ascent */}
-          <path
-            d="M24 22L29 32L35 15"
-            stroke="url(#wxGrad2)"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          
-          {/* Central Apex Node / Star */}
-          <circle cx="24" cy="22" r="2.5" fill="#00A6E8" filter="url(#glowFilter)" />
-          <circle cx="13" cy="16" r="2" fill="#38BDF8" />
-          <circle cx="35" cy="15" r="2.5" fill="#00A6E8" />
-          <circle cx="19" cy="32" r="2" fill="#0A192A" />
-          <circle cx="29" cy="32" r="2" fill="#0A192A" />
-
-          {/* Subtle Growth Arrowhead at Right Peak */}
-          <path
-            d="M31 15H35V19"
-            stroke="#00A6E8"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      {/* Official Wenture India Emblem */}
+      <div className="relative flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
+        <WentureEmblem size={emblemSize} />
       </div>
 
       {/* Typography */}
-      <div className="flex flex-col justify-center">
-        <span
-          className={cn(
-            "font-extrabold tracking-tight leading-none transition-colors",
-            titleSize,
-            dark ? "text-white" : "text-wenture-dark"
-          )}
-        >
-          WENTUREX
-        </span>
+      <div className="flex flex-col justify-center text-left">
+        <div className="flex items-baseline">
+          <span
+            className={cn(
+              "font-extrabold tracking-tight leading-none font-heading transition-colors",
+              titleSize,
+              dark ? "text-white" : "text-[#0A192A]"
+            )}
+          >
+            Wenture<span className="text-[#00A6E8]">India</span>
+          </span>
+        </div>
+
         {showSubtitle && (
           <span
             className={cn(
-              "font-semibold uppercase mt-1 leading-none text-slate-500",
-              subSize
+              "font-bold uppercase mt-1 leading-none",
+              subSize,
+              dark ? "text-slate-400" : "text-slate-500"
             )}
           >
             India International
+          </span>
+        )}
+
+        {showTagline && (
+          <span
+            className={cn(
+              "font-extrabold uppercase mt-1.5 leading-tight tracking-wider",
+              taglineSize,
+              dark ? "text-slate-400" : "text-slate-700"
+            )}
+          >
+            CONNECT. BUILD. SCALE. GROW TOGETHER.
           </span>
         )}
       </div>

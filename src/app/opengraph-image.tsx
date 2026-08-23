@@ -27,37 +27,35 @@ export default async function Image() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        {/* Brand Badge */}
+        {/* Brand Badge with Tricolor Accent */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            padding: "10px 24px",
+            gap: "14px",
+            padding: "12px 28px",
             borderRadius: "9999px",
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            border: "1px solid rgba(0, 166, 232, 0.4)",
-            marginBottom: "30px",
+            backgroundColor: "rgba(255, 255, 255, 0.08)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            marginBottom: "28px",
           }}
         >
-          <div
-            style={{
-              width: "12px",
-              height: "12px",
-              borderRadius: "9999px",
-              backgroundColor: "#00A6E8",
-            }}
-          />
+          {/* Ashoka Chakra & Tricolor dot representation */}
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <div style={{ width: "10px", height: "10px", borderRadius: "9999px", backgroundColor: "#FF8026" }} />
+            <div style={{ width: "10px", height: "10px", borderRadius: "9999px", backgroundColor: "#FFFFFF" }} />
+            <div style={{ width: "10px", height: "10px", borderRadius: "9999px", backgroundColor: "#16A34A" }} />
+          </div>
           <span
             style={{
-              color: "#DFF6FD",
+              color: "#FFFFFF",
               fontSize: "18px",
-              fontWeight: "700",
+              fontWeight: "800",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
             }}
           >
-            WENTUREX INDIA INTERNATIONAL
+            WENTURE INDIA INTERNATIONAL
           </span>
         </div>
 
