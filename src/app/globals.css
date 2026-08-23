@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-dark: #0A192A;
+  --primary-blue: #00A6E8;
+  --light-cyan: #DFF6FD;
+  --bg-color: #F7FAFC;
+  --text-muted: #64748B;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: #F7FAFC;
+  color: #0A192A;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom Glassmorphism & Surface Utilities */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.75);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.glass-card-dark {
+  background: rgba(10, 25, 42, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle Network Grid Pattern */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(10, 25, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 25, 42, 0.03) 1px, transparent 1px);
+}
+
+.bg-dots-pattern {
+  background-image: radial-gradient(rgba(0, 166, 232, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Radiant Mesh Glow Accents */
+.radiant-glow-hero {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  max-width: 1000px;
+  height: 500px;
+  background: radial-gradient(ellipse at center, rgba(0, 166, 232, 0.12) 0%, rgba(223, 246, 253, 0.4) 45%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.radiant-glow-card {
+  background: radial-gradient(600px circle at var(--mouse-x, 100px) var(--mouse-y, 100px), rgba(0, 166, 232, 0.08), transparent 40%);
+}
+
+/* Shimmer Animation Effect for Progress Bar */
+@keyframes shimmerWave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-shimmer-wave {
+  animation: shimmerWave 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Slow Glowing Node Pulse */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 166, 232, 0.4), inset 0 0 10px rgba(0, 166, 232, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 166, 232, 0.8), inset 0 0 15px rgba(0, 166, 232, 0.5);
+  }
+}
+
+.node-pulse {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Animated Dashed Lines */
+@keyframes dashMove {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.dash-animated {
+  stroke-dasharray: 6 6;
+  animation: dashMove 3s linear infinite;
+}
+
+/* Focus Ring Customization */
+*:focus-visible {
+  outline: 2px solid #00A6E8;
+  outline-offset: 2px;
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
