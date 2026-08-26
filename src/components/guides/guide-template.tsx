@@ -77,7 +77,7 @@ export function GuideTemplate({ guide }: GuideTemplateProps) {
                   Ready to explore active opportunities?
                 </h4>
                 <p className="font-body-md text-xs text-on-surface-variant">
-                  Evaluate vetted live investments in our catalog.
+                  Explore active business and investment opportunities in our catalog.
                 </p>
               </div>
 

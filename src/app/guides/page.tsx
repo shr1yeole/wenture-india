@@ -4,34 +4,34 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { GuideCard } from "@/components/cards/guide-card";
-import { GUIDES } from "@/lib/constants/guides";
+import { GUIDES, GUIDES_HEADING } from "@/lib/constants/guides";
 
 export const metadata: Metadata = {
-  title: "Investment & Business Guides | Wenturex India International",
+  title: "Business & Investment Guides | Learn. Explore. Grow. | Wenturex",
   description:
-    "Institutional frameworks, term sheet breakdowns, venture capital strategies, angel investing playbooks, and franchise evaluation guides.",
+    "Understand business opportunities, investment concepts, venture capital, angel funding, partnerships, and franchise growth models.",
 };
 
 export default function GuidesHubPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-surface selection:bg-primary-container selection:text-white">
+    <div className="flex flex-col min-h-screen bg-[#F6FAFF] selection:bg-[#00A6E8] selection:text-white">
       <Navbar />
 
       <main className="flex-grow py-12 md:py-20">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-14">
-            <span className="font-label-caps text-xs text-primary uppercase tracking-wider font-semibold">
-              Knowledge Base & Advisory
+            <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
+              Educational Hub
             </span>
-            <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface mt-1 mb-4 tracking-tight">
-              Business & Investment Guides
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-3">
+              {GUIDES_HEADING.title}
             </h1>
-            <p className="font-body-lg text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-              Curated masterclasses and strategic blueprints for founders, corporate leaders, and institutional capital allocators.
+            <p className="text-sm sm:text-base text-[#5F7180] max-w-2xl mx-auto leading-relaxed">
+              {GUIDES_HEADING.subtitle}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {GUIDES.map((guide) => (
               <GuideCard key={guide.slug} guide={guide} />
             ))}

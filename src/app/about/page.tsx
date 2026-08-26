@@ -55,19 +55,19 @@ export default function AboutPage() {
               <BentoCard
                 icon="hub"
                 title="Connect"
-                description="Creating direct, verified conduits between visionary entrepreneurs and institutional capital providers, venture funds, and angel syndicates."
+                description="Creating direct, professional connections between visionary entrepreneurs, active investors, and business leaders across sectors."
               />
 
               <BentoCard
                 icon="construction"
                 title="Build"
-                description="Providing standardized deal documentation, structured evaluation frameworks, and due diligence resources to build resilient enterprises."
+                description="Providing clear opportunity presentation frameworks and educational resources to help businesses showcase their vision effectively."
               />
 
               <BentoCard
                 icon="trending_up"
                 title="Scale & Grow Together"
-                description="Facilitating strategic alliances, master franchise rollouts, and international export partnerships that foster long-term value creation."
+                description="Facilitating strategic alliances, franchise rollouts, and international export partnerships that foster long-term growth."
               />
             </div>
           </Container>

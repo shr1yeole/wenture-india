@@ -27,7 +27,7 @@ export default function ContactPage() {
               Connect With Our Team
             </h1>
             <p className="font-body-lg text-base md:text-lg text-on-surface-variant max-w-xl mx-auto leading-relaxed">
-              Have questions about capital allocation, founder applications, or partnership opportunities? We are here to assist.
+              Have questions about listed opportunities, submitting your business, or partnership enquiries? We are here to assist.
             </p>
           </div>
 

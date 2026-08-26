@@ -5,168 +5,170 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { NetworkMesh } from "@/components/visual/network-mesh";
-import { BentoCard } from "@/components/cards/bento-card";
+import { COMPANY } from "@/lib/constants/company";
 
 export const metadata: Metadata = {
-  title: "How It Works | Wenturex India International",
+  title: "How It Works | The Wenturex Journey | Wenturex",
   description:
-    "Explore how Wenturex bridges vision and capital through structured due diligence, matchmaking, and growth syndicates.",
+    "Discover how Wenturex connects entrepreneurs and investors through a simple 6-step journey: discover, review, express interest, and connect.",
 };
 
 export default function HowItWorksPage() {
-  const narrativePillars = [
+  const steps = [
     {
-      step: "01",
-      title: "Entrepreneurs",
-      desc: "Founders and enterprises submit their business models, growth metrics, and capital requirements in a standardized institutional format.",
+      num: 1,
+      title: "Create Your Profile",
+      desc: "Join Wenturex and introduce yourself or your business.",
     },
     {
-      step: "02",
-      title: "Wenturex Advisory & Due Diligence",
-      desc: "Our vetting framework validates financials, compliance, market traction, and deal readiness before presenting to our network.",
+      num: 2,
+      title: "Discover Opportunities",
+      desc: "Explore relevant businesses and opportunities.",
     },
     {
-      step: "03",
-      title: "Institutional Investors",
-      desc: "Venture capital firms, family offices, and verified angel syndicates explore high-conviction deal flow aligned with their thesis.",
+      num: 3,
+      title: "Explore Businesses",
+      desc: "Discover businesses, startups and opportunities across sectors.",
     },
     {
-      step: "04",
-      title: "Strategic Connections & Growth",
-      desc: "Facilitated discussions, confidential deal rooms, and syndicate formations empower enterprises to scale and grow together.",
+      num: 4,
+      title: "Review Information",
+      desc: "Explore the available information about an opportunity.",
+    },
+    {
+      num: 5,
+      title: "Express Interest",
+      desc: "Submit an enquiry or express interest.",
+    },
+    {
+      num: 6,
+      title: "Connect",
+      desc: "Connect with the relevant entrepreneur, investor or business.",
+      active: true,
     },
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-surface selection:bg-primary-container selection:text-white">
+    <div className="flex flex-col min-h-screen bg-[#F6FAFF] selection:bg-[#00A6E8] selection:text-white">
       <Navbar />
 
       <main className="flex-grow">
-        {/* Header / Hero */}
-        <section className="pt-16 md:pt-24 pb-16 bg-surface-pure border-b border-border-subtle">
+        {/* ============================================================ */}
+        {/* HERO SECTION */}
+        {/* ============================================================ */}
+        <section className="pt-16 md:pt-24 pb-16 bg-white border-b border-[#DCECF2]">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-border-subtle text-primary font-label-caps text-xs mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F6FAFF] border border-[#DCECF2] text-[#00658F] font-semibold text-xs mb-4">
                 Architecture of Connectivity
               </div>
-              <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface mb-4 tracking-tight">
-                How Wenturex Works
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] mb-4 tracking-tight font-heading">
+                The Wenturex Journey
               </h1>
-              <p className="font-body-lg text-lg text-on-surface-variant leading-relaxed">
-                A common online platform to connect entrepreneurs with investors, vision with capital, ideas with funds and giving wings to dreams.
+              <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed max-w-2xl mx-auto">
+                {COMPANY.corePositioning}
               </p>
             </div>
 
-            <div className="mt-12 max-w-2xl mx-auto bg-surface rounded-2xl p-6 border border-border-subtle shadow-sm">
-              <div className="h-64 sm:h-72 w-full flex items-center justify-center">
+            <div className="mt-10 max-w-xl mx-auto bg-[#F6FAFF] rounded-2xl p-6 border border-[#DCECF2] shadow-sm">
+              <div className="h-56 w-full flex items-center justify-center">
                 <NetworkMesh variant="hero" />
               </div>
             </div>
           </Container>
         </section>
 
-        {/* 4-Phase Ecosystem Narrative */}
-        <section className="py-20 bg-surface">
-          <Container>
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-3">
-                The 4 Pillars of Connection
-              </h2>
-              <p className="font-body-lg text-on-surface-variant">
-                From initial submission to capital deployment and continuous enterprise scaling.
-              </p>
-            </div>
+        {/* ============================================================ */}
+        {/* 6-STEP WENTUREX JOURNEY */}
+        {/* ============================================================ */}
+        <section className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-24">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
+              Step-By-Step Process
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A192A] tracking-tight">
+              How Wenturex Works
+            </h2>
+            <p className="text-sm sm:text-base text-[#5F7180] mt-2">
+              Discover opportunities, explore businesses and build meaningful connections.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {narrativePillars.map((pillar) => (
-                <div
-                  key={pillar.step}
-                  className="bg-surface-pure rounded-xl p-6 border border-border-subtle shadow-sm flex flex-col justify-between relative group hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div>
-                    <span className="font-display-lg-mobile text-3xl font-extrabold text-primary-container/40 group-hover:text-primary-container transition-colors">
-                      {pillar.step}
-                    </span>
-                    <h3 className="font-headline-md text-xl font-bold text-on-surface mt-2 mb-3">
-                      {pillar.title}
-                    </h3>
-                    <p className="font-body-md text-sm text-on-surface-variant leading-relaxed">
-                      {pillar.desc}
-                    </p>
+          <div className="relative">
+            {/* Desktop Connecting Line */}
+            <div className="hidden md:block absolute top-8 left-12 right-12 h-0.5 bg-[#DCECF2] z-0" />
+
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-6 relative z-10">
+              {steps.map((step) => (
+                <div key={step.num} className="flex flex-col items-center text-center">
+                  <div
+                    className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-transform hover:scale-105 shadow-sm ${
+                      step.active
+                        ? "bg-[#00A6E8] text-white border-2 border-[#00A6E8]"
+                        : "bg-white text-[#0A192A] border-2 border-[#DCECF2]"
+                    }`}
+                  >
+                    {step.num}
                   </div>
+                  <h4
+                    className={`text-sm sm:text-base mt-4 mb-1.5 font-bold ${
+                      step.active ? "text-[#00A6E8]" : "text-[#0A192A]"
+                    }`}
+                  >
+                    {step.title}
+                  </h4>
+                  <p className="text-xs text-[#5F7180] leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
               ))}
             </div>
-          </Container>
-        </section>
+          </div>
 
-        {/* Dual Track Comparison */}
-        <section className="py-20 bg-surface-container-low border-y border-border-subtle">
-          <Container>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-              <div className="bg-surface-pure rounded-2xl p-8 border border-border-subtle shadow-sm">
-                <div className="w-12 h-12 rounded-lg bg-surface-container-high text-primary-container flex items-center justify-center mb-6">
+          {/* Dual Gateways */}
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* For Entrepreneurs */}
+            <div className="bg-white rounded-2xl p-8 border border-[#DCECF2] shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mb-5">
                   <span className="material-symbols-outlined text-[28px]">rocket_launch</span>
                 </div>
-                <h3 className="font-headline-md text-2xl font-bold text-on-surface mb-4">
-                  For Entrepreneurs & Founders
+                <h3 className="text-xl font-bold text-[#0A192A] mb-3">
+                  For Entrepreneurs &amp; Businesses
                 </h3>
-                <ul className="space-y-3 font-body-md text-sm text-on-surface-variant">
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Direct exposure to verified institutional syndicates
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Standardized data rooms & presentation decks
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Confidentiality and intellectual property protection
-                  </li>
-                </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/signup/entrepreneur"
-                    className="inline-flex items-center justify-center bg-primary-container text-white px-6 py-3 rounded-lg font-button-text text-sm hover:bg-surface-tint"
-                  >
-                    Start Founder Application
-                  </Link>
-                </div>
+                <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-6">
+                  Present your business, startup, franchise, or trade concept to an active network of investors, franchisees, and commercial partners.
+                </p>
               </div>
+              <Link
+                href="/for-entrepreneurs"
+                className="w-full py-3 text-center bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+              >
+                Join as Entrepreneur
+              </Link>
+            </div>
 
-              <div className="bg-surface-pure rounded-2xl p-8 border border-border-subtle shadow-sm">
-                <div className="w-12 h-12 rounded-lg bg-surface-container-high text-primary-container flex items-center justify-center mb-6">
+            {/* For Investors */}
+            <div className="bg-white rounded-2xl p-8 border border-[#DCECF2] shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mb-5">
                   <span className="material-symbols-outlined text-[28px]">account_balance</span>
                 </div>
-                <h3 className="font-headline-md text-2xl font-bold text-on-surface mb-4">
-                  For Investors & Syndicates
+                <h3 className="text-xl font-bold text-[#0A192A] mb-3">
+                  For Investors &amp; Partners
                 </h3>
-                <ul className="space-y-3 font-body-md text-sm text-on-surface-variant">
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Vetted high-growth deals filtered by sector and ticket size
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Comprehensive historical financials and growth models
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container text-[18px]">check</span>
-                    Direct founder access and co-investment syndication
-                  </li>
-                </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/signup/investor"
-                    className="inline-flex items-center justify-center bg-on-surface text-white px-6 py-3 rounded-lg font-button-text text-sm hover:bg-surface-tint"
-                  >
-                    Join as Verified Investor
-                  </Link>
-                </div>
+                <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-6">
+                  Explore high-potential opportunities across diverse sectors, review business details, express interest, and connect directly.
+                </p>
               </div>
+              <Link
+                href="/for-investors"
+                className="w-full py-3 text-center bg-[#0A192A] hover:bg-[#1E293B] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+              >
+                Join as Investor
+              </Link>
             </div>
-          </Container>
+          </div>
         </section>
       </main>
 

@@ -26,7 +26,7 @@ export function GuideCard({ guide }: GuideCardProps) {
         </h3>
 
         <p className="font-body-md text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-6">
-          {guide.summary}
+          {guide.shortDescription}
         </p>
       </div>
 
