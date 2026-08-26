@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Opportunity } from "@/lib/constants/opportunities";
 
@@ -17,10 +15,13 @@ export function OpportunityCard({
     <article className="bg-white border border-[#DCECF2] hover:border-[#00A6E8]/60 rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(10,25,42,0.04)] hover:shadow-[0px_8px_30px_rgba(10,25,42,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col group relative">
       {/* Top Cover Image with Stage Badge */}
       <div className="h-48 w-full relative overflow-hidden bg-slate-100">
-        <img
+        <Image
           src={opportunity.imageUrl}
           alt={opportunity.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          fill
+          unoptimized
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Stage Badge in Top-Right */}

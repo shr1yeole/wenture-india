@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInUser, signUpUser, UserRole } from "@/lib/firebase/auth";
@@ -102,10 +103,12 @@ export function AuthSplitCard({
       <div className="lg:col-span-6 relative p-8 sm:p-10 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-[#DCECF2] bg-[#F4FAFD]">
         {/* Premium 3D Crystalline Origami Background Image */}
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             src="/images/auth-bg.jpg"
             alt="Wenturex Aesthetic Architecture"
-            className="w-full h-full object-cover opacity-85 brightness-105 contrast-[1.02]"
+            fill
+            priority
+            className="object-cover opacity-85 brightness-105 contrast-[1.02]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#EBF6FB]/90 via-[#F4FAFD]/40 to-[#F4FAFD]/80" />
         </div>
