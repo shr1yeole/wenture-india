@@ -1,54 +1,54 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { COMPANY } from "@/lib/constants/company";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-sans",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0A192A",
+  themeColor: "#00A6E8",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wentureindia.com"),
-  title: "Wenturex India International | Connect. Build. Scale. Grow Together.",
-  description:
-    "Wenturex India International connects entrepreneurs, investors and business opportunities — bringing vision, capital and growth together.",
+  metadataBase: new URL(COMPANY.website),
+  title: {
+    default: `${COMPANY.name} — ${COMPANY.tagline}`,
+    template: `%s | ${COMPANY.name}`,
+  },
+  description: COMPANY.corePositioning,
   keywords: [
     "Wenturex",
+    "Wenture India",
     "Wenturex India International",
     "entrepreneurs",
     "investors",
-    "business opportunities",
-    "capital",
-    "venture platform",
-    "startup growth",
-    "India investment platform",
+    "venture capital",
+    "business investment",
+    "angel investment",
+    "franchise opportunities",
+    "EXIM opportunities",
+    "startups India",
+    "Omniverse Technologies",
   ],
-  authors: [{ name: "Wenturex India International" }],
-  creator: "Wenturex India International",
-  publisher: "Wenturex India International",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  authors: [{ name: COMPANY.name }],
+  creator: COMPANY.legalEntity,
+  publisher: COMPANY.name,
   alternates: {
-    canonical: "https://wentureindia.com/",
+    canonical: COMPANY.website,
   },
   openGraph: {
-    title: "Wenturex India International | Connect. Build. Scale. Grow Together.",
-    description:
-      "A common online platform to connect entrepreneurs with investors, vision with capital, ideas with funds and giving wings to dreams.",
-    url: "https://wentureindia.com/",
-    siteName: "Wenturex India International",
+    title: `${COMPANY.name} — ${COMPANY.tagline}`,
+    description: COMPANY.corePositioning,
+    url: COMPANY.website,
+    siteName: COMPANY.name,
     locale: "en_US",
     type: "website",
     images: [
@@ -56,32 +56,18 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Wenturex India International - Connect. Build. Scale. Grow Together.",
+        alt: `${COMPANY.name} — ${COMPANY.tagline}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wenturex India International | Connect. Build. Scale. Grow Together.",
-    description:
-      "A common online platform to connect entrepreneurs with investors, vision with capital, ideas with funds and giving wings to dreams.",
+    title: `${COMPANY.name} — ${COMPANY.tagline}`,
+    description: COMPANY.corePositioning,
     images: ["/og-image.png"],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     shortcut: "/favicon.svg",
     apple: "/favicon.svg",
   },
@@ -92,43 +78,49 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
+  const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Wenturex India International",
-    alternateName: "Wenturex",
-    url: "https://wentureindia.com/",
-    logo: "https://wentureindia.com/favicon.svg",
-    description:
-      "A common online platform to connect entrepreneurs with investors, vision with capital, ideas with funds and giving wings to dreams.",
-    slogan: "Connect. Build. Scale. Grow Together.",
+    name: COMPANY.name,
+    legalName: COMPANY.legalEntity,
+    url: COMPANY.website,
+    logo: `${COMPANY.website}/favicon.svg`,
+    description: COMPANY.corePositioning,
+    slogan: COMPANY.tagline,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "53-B, GK-2",
+      addressLocality: "New Delhi",
+      postalCode: "110017",
+      addressCountry: "IN",
+    },
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+91-95407-21008",
-        contactType: "customer support",
-        email: "wentureindia@gmail.com",
+        telephone: COMPANY.contact.phone,
+        contactType: "Customer Support",
+        email: COMPANY.contact.generalEmail,
         availableLanguage: ["English", "Hindi"],
       },
       {
         "@type": "ContactPoint",
-        telephone: "+91-98418-81008",
-        contactType: "WhatsApp inquiries",
-        email: "info@wentureindia.com",
+        telephone: COMPANY.contact.whatsapp,
+        contactType: "Business Inquiries",
+        email: COMPANY.contact.businessEmail,
         availableLanguage: ["English", "Hindi"],
       },
     ],
   };
 
   return (
-    <html lang="en" className={plusJakartaSans.variable}>
+    <html lang="en" className={inter.variable}>
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-wenture-bg text-wenture-dark antialiased font-sans selection:bg-wenture-cyanLight selection:text-wenture-dark">
+      <body className="min-h-screen bg-surface text-on-surface antialiased font-sans flex flex-col selection:bg-primary-container selection:text-white">
         {children}
       </body>
     </html>
