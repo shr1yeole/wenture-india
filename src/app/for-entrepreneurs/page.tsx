@@ -15,12 +15,12 @@ export const metadata: Metadata = {
 
 export default function ForEntrepreneursPage() {
   const journeySteps = [
-    { num: 1, title: "Create Profile", desc: "Build your founder & company thesis." },
-    { num: 2, title: "Verify Identity", desc: "Institutional compliance check." },
-    { num: 3, title: "Submit Deck", desc: "Upload business deck and financials." },
-    { num: 4, title: "Curation Review", desc: "Advisory alignment & deal readiness." },
-    { num: 5, title: "Investor Matches", desc: "Direct syndicate introductions." },
-    { num: 6, title: "Grow", desc: "Scale with capital & mentorship.", active: true },
+    { num: 1, title: "Create Your Profile", desc: "Join Wenturex and introduce yourself or your business." },
+    { num: 2, title: "Discover Opportunities", desc: "Explore relevant businesses and opportunities." },
+    { num: 3, title: "Explore Businesses", desc: "Discover businesses, startups and opportunities across different sectors." },
+    { num: 4, title: "Review Information", desc: "Explore the available information about an opportunity." },
+    { num: 5, title: "Express Interest", desc: "Submit an enquiry or express interest in an opportunity." },
+    { num: 6, title: "Connect", desc: "Connect with the relevant entrepreneur, investor or business.", active: true },
   ];
 
   return (
@@ -108,18 +108,18 @@ export default function ForEntrepreneursPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* ENTREPRENEUR JOURNEY (The Path to Capital) */}
+        {/* THE WENTUREX JOURNEY SECTION */}
         {/* ============================================================ */}
         <section className="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-20 md:py-28">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="font-label-caps text-xs text-primary uppercase tracking-wider">
-              Step-By-Step Process
+              How It Works
             </span>
             <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mt-1">
-              The Path to Capital
+              The Wenturex Journey
             </h2>
             <p className="font-body-lg text-on-surface-variant mt-2">
-              A transparent, 6-phase journey from profile creation to growth capital.
+              Discover opportunities, explore businesses and build meaningful connections.
             </p>
           </div>
 

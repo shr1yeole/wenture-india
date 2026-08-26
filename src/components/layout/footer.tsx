@@ -11,7 +11,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="md:col-span-4 flex flex-col justify-between">
             <div>
-              <BrandLogo size="md" dark showSubtitle showTagline={false} className="mb-4" />
+              <BrandLogo size="lg" dark showTagline={true} className="mb-4" />
               <p className="font-body-md text-sm text-surface-variant max-w-sm mt-3 leading-relaxed">
                 {COMPANY.corePositioning}
               </p>

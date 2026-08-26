@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInUser, signUpUser, UserRole } from "@/lib/firebase/auth";
+import { BrandLogo } from "@/components/brand-logo";
+import { WentureEmblem } from "@/components/wenture-emblem";
 
 interface AuthSplitCardProps {
   initialMode?: "login" | "signup";
@@ -113,23 +115,19 @@ export function AuthSplitCard({
 
         {/* Top: Brand Header */}
         <div className="relative z-10">
-          <Link href="/" className="inline-block">
-            <h2 className="text-3xl font-extrabold text-[#0A192A] tracking-tight">
-              Wenturex
-            </h2>
+          <Link href="/" className="inline-block transition-opacity hover:opacity-90">
+            <BrandLogo size="md" showTagline={false} />
           </Link>
-          <p className="text-sm font-normal text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm font-normal text-[#5F7180] mt-2">
             The intersection of vision and capital.
           </p>
         </div>
 
-        {/* Center: Floating Glassmorphic Mini-Card Mockup (From User's Image) */}
-        <div className="relative z-10 my-8 self-end w-48 sm:w-56 bg-white/50 backdrop-blur-md rounded-2xl p-4 border border-white/80 shadow-[0_8px_24px_rgba(10,25,42,0.06)] transform rotate-1 hover:rotate-0 transition-transform duration-300">
+        {/* Center: Floating Glassmorphic Mini-Card Mockup */}
+        <div className="relative z-10 my-8 self-end w-48 sm:w-56 bg-white/60 backdrop-blur-md rounded-2xl p-4 border border-white/80 shadow-[0_8px_24px_rgba(10,25,42,0.06)] transform rotate-1 hover:rotate-0 transition-transform duration-300">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-5 h-5 rounded-md bg-[#00A6E8]/20 flex items-center justify-center text-[#00A6E8]">
-              <span className="font-extrabold text-xs">W</span>
-            </div>
-            <span className="text-xs font-bold text-[#0A192A]">Wenturex</span>
+            <WentureEmblem size={22} />
+            <span className="text-xs font-bold text-[#0A192A] font-heading">WentureIndia</span>
           </div>
 
           <div className="space-y-2 mb-3">
@@ -137,7 +135,7 @@ export function AuthSplitCard({
             <div className="h-2 bg-slate-200/80 rounded w-3/4" />
           </div>
 
-          <div className="h-5 bg-[#00A6E8]/30 rounded-md flex items-center justify-center text-[9px] font-semibold text-[#00658F]">
+          <div className="h-5 bg-[#00A6E8]/30 rounded-md flex items-center justify-center text-[9px] font-bold text-[#00658F]">
             Sign In
           </div>
         </div>

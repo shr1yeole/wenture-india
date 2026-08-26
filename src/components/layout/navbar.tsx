@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { BrandLogo } from "@/components/brand-logo";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface NavbarProps {
@@ -54,11 +55,9 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
       )}
     >
       <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-4 flex items-center justify-between">
-        {/* Brand Logo: Clean "Wenturex" matching header design */}
-        <Link href="/" className="flex items-center group">
-          <span className="text-2xl sm:text-[26px] font-extrabold text-[#0A192A] tracking-tight font-heading">
-            Wenturex
-          </span>
+        {/* Official Brand Logo */}
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
+          <BrandLogo size="md" showTagline={false} />
         </Link>
 
         {/* Center Desktop Navigation Links */}

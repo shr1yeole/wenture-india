@@ -9,10 +9,10 @@ interface WentureEmblemProps {
 
 export function WentureEmblem({
   className,
-  size = 48,
+  size = 56,
   showChakra = true,
 }: WentureEmblemProps) {
-  // 24 spokes for Ashoka Chakra
+  // 24 spokes for Ashoka Chakra (15 degrees each)
   const spokes = Array.from({ length: 24 }, (_, i) => i * 15);
 
   return (
@@ -21,22 +21,31 @@ export function WentureEmblem({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn("shrink-0 select-none", className)}
-      style={{ width: size, height: typeof size === "number" ? size * 0.9 : "auto" }}
+      style={{
+        width: size,
+        height: typeof size === "number" ? size * 0.9 : "auto",
+      }}
       aria-label="Wenture India Official Emblem"
     >
       <defs>
+        {/* Subtle drop shadow for 3D realism */}
         <filter id="emblemShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.15" />
+          <feDropShadow dx="0" dy="2.5" stdDeviation="3.5" floodColor="#0A192A" floodOpacity="0.12" />
         </filter>
+        {/* Gradient for Chakra wheel */}
+        <linearGradient id="chakraBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0B1E40" />
+          <stop offset="100%" stopColor="#002B66" />
+        </linearGradient>
       </defs>
 
-      {/* --- 1. ASHOKA CHAKRA (Top) --- */}
+      {/* --- 1. ASHOKA CHAKRA (Top Centered) --- */}
       {showChakra && (
-        <g transform="translate(100, 32)" className="text-[#0B1E40]">
+        <g transform="translate(100, 30)">
           {/* Outer Wheel Rim */}
-          <circle cx="0" cy="0" r="22" stroke="#0B1E40" strokeWidth="2.5" fill="#FFFFFF" />
-          <circle cx="0" cy="0" r="19.5" stroke="#0B1E40" strokeWidth="1" fill="none" opacity="0.6" />
-          
+          <circle cx="0" cy="0" r="22" stroke="url(#chakraBlue)" strokeWidth="2.6" fill="#FFFFFF" />
+          <circle cx="0" cy="0" r="19.5" stroke="url(#chakraBlue)" strokeWidth="1" fill="none" opacity="0.6" />
+
           {/* 24 Radiating Spokes */}
           {spokes.map((angle) => (
             <line
@@ -53,47 +62,46 @@ export function WentureEmblem({
           ))}
 
           {/* Central Hub */}
-          <circle cx="0" cy="0" r="3.5" fill="#0B1E40" />
-          <circle cx="0" cy="0" r="1.5" fill="#FFFFFF" />
+          <circle cx="0" cy="0" r="4" fill="#0B1E40" />
+          <circle cx="0" cy="0" r="1.6" fill="#FFFFFF" />
         </g>
       )}
 
-      {/* --- 2. GEOMETRIC LOW-POLY TRICOLOR EMBLEM (Winged / Crown Polygon) --- */}
-      {/* Total Width spans 30 to 170 (140px width), Height spans 65 to 160 */}
+      {/* --- 2. GEOMETRIC LOW-POLY TRICOLOR EMBLEM (Winged Origami Crown) --- */}
       <g filter="url(#emblemShadow)">
-        {/* === TOP ROW: SAFFRON / ORANGE PEAKS === */}
+        {/* === TOP ROW: SAFFRON / ORANGE FACETS === */}
         {/* Left Peak */}
-        <polygon points="35,100 65,65 75,100" fill="#E65A00" />
-        <polygon points="65,65 100,100 75,100" fill="#FF8026" />
+        <polygon points="34,95 65,60 76,95" fill="#E65100" />
+        <polygon points="65,60 100,95 76,95" fill="#F47920" />
 
         {/* Center Peak */}
-        <polygon points="75,100 100,65 100,100" fill="#FF8D3B" />
-        <polygon points="100,65 125,100 100,100" fill="#FFA559" />
+        <polygon points="76,95 100,60 100,95" fill="#FF8A00" />
+        <polygon points="100,60 124,95 100,95" fill="#FFA726" />
 
         {/* Right Peak */}
-        <polygon points="100,100 135,65 125,100" fill="#FF8026" />
-        <polygon points="135,65 165,100 125,100" fill="#E65A00" />
+        <polygon points="100,95 135,60 124,95" fill="#F47920" />
+        <polygon points="135,60 166,95 124,95" fill="#E65100" />
 
-        {/* === MIDDLE ROW: WHITE / SILVER / LIGHT SLATE FACETS === */}
-        {/* Left side middle facets */}
-        <polygon points="35,100 55,130 75,100" fill="#CBD5E1" />
-        <polygon points="55,130 100,130 75,100" fill="#F8FAFC" />
-        <polygon points="75,100 100,100 100,130" fill="#E2E8F0" />
+        {/* === MIDDLE ROW: WHITE / SILVER / REFLECTIVE FACETS === */}
+        {/* Left middle facets */}
+        <polygon points="34,95 56,128 76,95" fill="#CBD5E1" />
+        <polygon points="56,128 100,128 76,95" fill="#FFFFFF" />
+        <polygon points="76,95 100,95 100,128" fill="#E2E8F0" />
 
-        {/* Right side middle facets */}
-        <polygon points="100,100 125,100 100,130" fill="#FFFFFF" />
-        <polygon points="100,130 125,100 145,130" fill="#E2E8F0" />
-        <polygon points="125,100 165,100 145,130" fill="#CBD5E1" />
+        {/* Right middle facets */}
+        <polygon points="100,95 124,95 100,128" fill="#F8FAFC" />
+        <polygon points="100,128 124,95 144,128" fill="#E2E8F0" />
+        <polygon points="124,95 166,95 144,128" fill="#CBD5E1" />
 
-        {/* === BOTTOM ROW: INDIA GREEN BASE FACETS === */}
-        {/* Left base facet */}
-        <polygon points="55,130 75,160 100,130" fill="#15803D" />
-        {/* Center-Left base facet */}
-        <polygon points="75,160 100,160 100,130" fill="#16A34A" />
-        {/* Center-Right base facet */}
-        <polygon points="100,130 100,160 125,160" fill="#22C55E" />
-        {/* Right base facet */}
-        <polygon points="100,130 125,160 145,130" fill="#15803D" />
+        {/* === BOTTOM ROW: INDIA GREEN FACETS === */}
+        {/* Left green facet */}
+        <polygon points="56,128 76,160 100,128" fill="#0B8043" />
+        {/* Center-Left green facet */}
+        <polygon points="76,160 100,160 100,128" fill="#009639" />
+        {/* Center-Right green facet */}
+        <polygon points="100,128 100,160 124,160" fill="#10B981" />
+        {/* Right green facet */}
+        <polygon points="100,128 124,160 144,128" fill="#0B8043" />
       </g>
     </svg>
   );
