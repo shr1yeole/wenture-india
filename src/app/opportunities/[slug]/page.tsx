@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { OPPORTUNITIES } from "@/lib/constants/opportunities";
+import { OPPORTUNITIES, Opportunity } from "@/lib/constants/opportunities";
 import { OpportunityDetailView } from "@/components/opportunity-detail-view";
+import { getPublishedListingById, convertListingToOpportunity } from "@/lib/firebase/listings";
+
+export const dynamicParams = true;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,7 +21,18 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const opp = OPPORTUNITIES.find((o) => o.slug === slug);
+  let opp: Opportunity | undefined;
+
+  const { listing } = await getPublishedListingById(slug);
+  if (listing && listing.status === "published") {
+    opp = convertListingToOpportunity(listing);
+  } else {
+    const rawOpp = OPPORTUNITIES.find((o) => o.slug === slug || o.id === slug);
+    if (rawOpp) {
+      opp = { ...rawOpp, isDemo: true };
+    }
+  }
+
   if (!opp) return { title: "Opportunity Not Found" };
 
   return {
@@ -29,7 +43,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function OpportunityDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const opp = OPPORTUNITIES.find((o) => o.slug === slug);
+  let opp: Opportunity | undefined;
+
+  const { listing } = await getPublishedListingById(slug);
+  if (listing && listing.status === "published") {
+    opp = convertListingToOpportunity(listing);
+  } else {
+    const rawOpp = OPPORTUNITIES.find((o) => o.slug === slug || o.id === slug);
+    if (rawOpp) {
+      opp = { ...rawOpp, isDemo: true };
+    }
+  }
 
   if (!opp) {
     notFound();

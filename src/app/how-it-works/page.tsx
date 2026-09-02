@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { NetworkMesh } from "@/components/visual/network-mesh";
+import { JoinCta } from "@/components/ui/join-cta";
 import { COMPANY } from "@/lib/constants/company";
 
 export const metadata: Metadata = {
@@ -140,12 +141,18 @@ export default function HowItWorksPage() {
                   Present your business, startup, franchise, or trade concept to an active network of investors, franchisees, and commercial partners.
                 </p>
               </div>
-              <Link
+              <JoinCta
+                roleType="entrepreneur"
+                singleMode
                 href="/for-entrepreneurs"
-                className="w-full py-3 text-center bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+                className="w-full py-3 text-center bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm block"
+                alternateLabel="Join Also as Investor"
+                alternateHref="/signup/investor"
+                bothRolesLabel="Explore Opportunities"
+                bothRolesHref="/opportunities"
               >
                 Join as Entrepreneur
-              </Link>
+              </JoinCta>
             </div>
 
             {/* For Investors */}
@@ -161,12 +168,18 @@ export default function HowItWorksPage() {
                   Explore high-potential opportunities across diverse sectors, review business details, express interest, and connect directly.
                 </p>
               </div>
-              <Link
+              <JoinCta
+                roleType="investor"
+                singleMode
                 href="/for-investors"
-                className="w-full py-3 text-center bg-[#0A192A] hover:bg-[#1E293B] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+                className="w-full py-3 text-center bg-[#0A192A] hover:bg-[#1E293B] text-white font-bold text-xs rounded-xl transition-colors shadow-sm block"
+                alternateLabel="Join Also as Entrepreneur"
+                alternateHref="/signup/entrepreneur"
+                bothRolesLabel="Explore Opportunities"
+                bothRolesHref="/opportunities"
               >
                 Join as Investor
-              </Link>
+              </JoinCta>
             </div>
           </div>
         </section>

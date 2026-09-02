@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   OPPORTUNITIES,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/constants/opportunities";
 import { OpportunityCard } from "@/components/cards/opportunity-card";
 import { OpportunityEnquiryModal } from "@/components/forms/opportunity-enquiry-modal";
+import { getPublishedListings, convertListingToOpportunity } from "@/lib/firebase/listings";
 
 interface TopOpportunitiesProps {
   title?: string;
@@ -31,10 +32,35 @@ export function TopOpportunities({
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [publishedOpps, setPublishedOpps] = useState<Opportunity[]>([]);
 
-  const filteredOpportunities = OPPORTUNITIES.filter(
-    (opp) => opp.category === activeCategory
-  ).slice(0, limit);
+  useEffect(() => {
+    async function load() {
+      const res = await getPublishedListings();
+      if (!res.error && res.listings && res.listings.length > 0) {
+        setPublishedOpps(res.listings.map((l) => convertListingToOpportunity(l)));
+      }
+    }
+    load();
+  }, []);
+
+  const combinedOpportunities = useMemo(() => {
+    const demoWithFlag = OPPORTUNITIES.map((opp) => ({ ...opp, isDemo: true }));
+    const liveSlugs = new Set(publishedOpps.map((l) => l.slug));
+    const liveIds = new Set(publishedOpps.map((l) => l.id));
+    const dedupedDemo = demoWithFlag.filter(
+      (d) =>
+        !liveSlugs.has(d.slug) &&
+        !liveSlugs.has(d.id) &&
+        !liveIds.has(d.id) &&
+        !liveIds.has(d.slug)
+    );
+    return [...publishedOpps, ...dedupedDemo];
+  }, [publishedOpps]);
+
+  const filteredOpportunities = combinedOpportunities
+    .filter((opp) => opp.category.toLowerCase() === activeCategory.toLowerCase())
+    .slice(0, limit);
 
   const handleInterested = (opp: Opportunity) => {
     setSelectedOpportunity(opp);

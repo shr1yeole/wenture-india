@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { BentoCard } from "@/components/cards/bento-card";
 import { NetworkMesh } from "@/components/visual/network-mesh";
+import { JoinCta } from "@/components/ui/join-cta";
 
 export const metadata: Metadata = {
   title: "For Entrepreneurs | Wenturex India International",
@@ -47,13 +48,31 @@ export default function ForEntrepreneursPage() {
                 Present your business to a curated network of institutional investors. We provide the platform to elevate your vision from concept to capital.
               </p>
 
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Link
+              {/* Action Buttons: Join, Find Investors & How It Works */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <JoinCta
+                  roleType="entrepreneur"
+                  singleMode
                   href="/signup/entrepreneur"
                   className="bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
+                  alternateLabel="Join Also as Investor"
+                  alternateHref="/signup/investor"
+                  bothRolesLabel="Explore Wenturex"
+                  bothRolesHref="/opportunities"
                 >
                   Join as Entrepreneur
+                </JoinCta>
+
+                <Link
+                  href="/investors"
+                  className="bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#00658F] font-button-text text-base rounded-lg px-7 py-4 hover:bg-[#F4FAFD] shadow-sm transition-all flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[20px] text-[#00A6E8]">
+                    person_search
+                  </span>
+                  <span>Find Investors</span>
                 </Link>
+
                 <Link
                   href="/how-it-works"
                   className="bg-transparent border border-border-subtle text-on-surface font-button-text text-base rounded-lg px-8 py-4 hover:border-on-surface hover:bg-surface-container-low transition-all"
@@ -66,6 +85,93 @@ export default function ForEntrepreneursPage() {
             <div className="md:col-span-4 hidden md:flex items-center justify-center">
               <div className="w-full h-72 bg-surface-pure rounded-2xl p-4 border border-border-subtle shadow-sm flex items-center justify-center">
                 <NetworkMesh variant="card" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================ */}
+        {/* INVESTOR DISCOVERY SHOWCASE SECTION */}
+        {/* ============================================================ */}
+        <section className="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+          <div className="bg-gradient-to-br from-white to-[#F4FAFD] border border-[#DCECF2] rounded-3xl p-8 sm:p-12 shadow-[0px_8px_30px_rgba(10,25,42,0.04)] flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="max-w-2xl space-y-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF6FC] border border-[#DCECF2] text-[#00658F] font-bold text-xs">
+                <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">
+                  verified
+                </span>
+                <span>Verified Capital Directory</span>
+              </div>
+              <h2 className="font-headline-xl text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+                Explore Active Investors &amp; Capital Partners
+              </h2>
+              <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed">
+                Discover verified angel investors, venture capital funds, and institutional financiers actively seeking high-growth opportunities across technology, healthcare, manufacturing, and consumer sectors.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link
+                  href="/investors"
+                  className="bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm px-6 py-3.5 rounded-xl transition-all shadow-sm flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">person_search</span>
+                  <span>Browse Investor Directory</span>
+                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </Link>
+
+                <JoinCta
+                  roleType="entrepreneur"
+                  singleMode
+                  href="/signup/entrepreneur"
+                  className="bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] font-bold text-sm px-6 py-3.5 rounded-xl transition-all flex items-center gap-2"
+                  alternateLabel={
+                    <>
+                      <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">badge</span>
+                      <span>Join Also as Investor</span>
+                    </>
+                  }
+                  alternateHref="/signup/investor"
+                  bothRolesLabel={
+                    <>
+                      <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">explore</span>
+                      <span>Explore Wenturex</span>
+                    </>
+                  }
+                  bothRolesHref="/opportunities"
+                >
+                  <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">rocket_launch</span>
+                  <span>Register Your Venture</span>
+                </JoinCta>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 lg:w-80 shrink-0">
+              <div className="p-4 bg-white border border-[#DCECF2] rounded-2xl shadow-sm">
+                <span className="material-symbols-outlined text-[24px] text-[#00A6E8] mb-1">
+                  groups
+                </span>
+                <div className="text-base font-extrabold text-[#0A192A]">5+ Types</div>
+                <p className="text-[11px] text-[#5F7180] mt-0.5">Angel, VC, Corporate &amp; Financiers</p>
+              </div>
+              <div className="p-4 bg-white border border-[#DCECF2] rounded-2xl shadow-sm">
+                <span className="material-symbols-outlined text-[24px] text-[#00A6E8] mb-1">
+                  currency_rupee
+                </span>
+                <div className="text-base font-extrabold text-[#0A192A]">Flexible</div>
+                <p className="text-[11px] text-[#5F7180] mt-0.5">₹5 Lakhs to ₹10 Cr+ Ticket Sizes</p>
+              </div>
+              <div className="p-4 bg-white border border-[#DCECF2] rounded-2xl shadow-sm">
+                <span className="material-symbols-outlined text-[24px] text-[#00A6E8] mb-1">
+                  category
+                </span>
+                <div className="text-base font-extrabold text-[#0A192A]">Multi-Sector</div>
+                <p className="text-[11px] text-[#5F7180] mt-0.5">Tech, Retail, Health &amp; Beyond</p>
+              </div>
+              <div className="p-4 bg-white border border-[#DCECF2] rounded-2xl shadow-sm">
+                <span className="material-symbols-outlined text-[24px] text-[#00A6E8] mb-1">
+                  handshake
+                </span>
+                <div className="text-base font-extrabold text-[#0A192A]">Direct</div>
+                <p className="text-[11px] text-[#5F7180] mt-0.5">Express Interest to Verified Leads</p>
               </div>
             </div>
           </div>
@@ -154,13 +260,37 @@ export default function ForEntrepreneursPage() {
             </div>
           </div>
 
-          <div className="mt-16 text-center">
-            <Link
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-4">
+            <JoinCta
+              roleType="entrepreneur"
+              singleMode
               href="/signup/entrepreneur"
               className="inline-flex items-center gap-2 bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
+              alternateLabel={
+                <>
+                  <span>Join Also as Investor</span>
+                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </>
+              }
+              alternateHref="/signup/investor"
+              bothRolesLabel={
+                <>
+                  <span>Explore Wenturex</span>
+                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </>
+              }
+              bothRolesHref="/opportunities"
             >
-              Join as Entrepreneur
+              <span>Join as Entrepreneur</span>
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </JoinCta>
+
+            <Link
+              href="/investors"
+              className="inline-flex items-center gap-2 bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#00658F] font-button-text text-base rounded-lg px-8 py-4 hover:bg-[#F4FAFD] transition-all shadow-sm"
+            >
+              <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">person_search</span>
+              <span>Find Investors</span>
             </Link>
           </div>
         </section>

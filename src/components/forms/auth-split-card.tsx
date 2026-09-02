@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signInUser, signUpUser, UserRole } from "@/lib/firebase/auth";
+import { signInUser, signUpUser, resetUserPassword, UserRole } from "@/lib/firebase/auth";
 import { BrandLogo } from "@/components/brand-logo";
 import { WentureEmblem } from "@/components/wenture-emblem";
 
@@ -35,6 +35,24 @@ export function AuthSplitCard({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setErrorMsg("Please enter your email address first, then click Forgot.");
+      return;
+    }
+    setErrorMsg(null);
+    setLoading(true);
+    const res = await resetUserPassword(email);
+    setLoading(false);
+    if (res.error) {
+      setErrorMsg(res.error);
+    } else {
+      setSuccessMsg("Password reset link sent! Check your inbox.");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
@@ -47,7 +65,7 @@ export function AuthSplitCard({
         setLoading(false);
         return;
       }
-      const res = await signInUser(email, password);
+      const res = await signInUser(email, password, role);
       setLoading(false);
       if (res.error) {
         setErrorMsg(res.error);
@@ -76,7 +94,7 @@ export function AuthSplitCard({
       }
 
       const res = await signUpUser(email, password, {
-        fullName,
+        name: fullName,
         companyName: role === "entrepreneur" ? companyName : undefined,
         phone,
         location,
@@ -305,23 +323,33 @@ export function AuthSplitCard({
                 {mode === "login" && (
                   <button
                     type="button"
-                    onClick={() =>
-                      alert("Password reset instructions sent to your corporate email.")
-                    }
+                    onClick={handlePasswordReset}
                     className="text-xs font-semibold text-[#00A6E8] hover:underline"
                   >
                     Forgot?
                   </button>
                 )}
               </div>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-3 bg-white border border-[#DCECF2] rounded-lg text-sm text-[#0A192A] placeholder:text-slate-400 focus:outline-none focus:border-[#00A6E8] focus:ring-2 focus:ring-[#00A6E8]/15 transition-all"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 pr-11 bg-white border border-[#DCECF2] rounded-lg text-sm text-[#0A192A] placeholder:text-slate-400 focus:outline-none focus:border-[#00A6E8] focus:ring-2 focus:ring-[#00A6E8]/15 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {showPassword ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
+              </div>
             </div>
 
             {mode === "signup" && (

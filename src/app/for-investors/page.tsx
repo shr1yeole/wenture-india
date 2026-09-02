@@ -1,19 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { OpportunityCard } from "@/components/cards/opportunity-card";
 import { OpportunityEnquiryModal } from "@/components/forms/opportunity-enquiry-modal";
+import { JoinCta } from "@/components/ui/join-cta";
 import { OPPORTUNITIES, Opportunity } from "@/lib/constants/opportunities";
+import { getPublishedListings, convertListingToOpportunity } from "@/lib/firebase/listings";
 
 export default function ForInvestorsPage() {
   const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [publishedOpps, setPublishedOpps] = useState<Opportunity[]>([]);
 
-  const featuredOpps = OPPORTUNITIES.slice(0, 3);
+  useEffect(() => {
+    async function load() {
+      const res = await getPublishedListings();
+      if (!res.error && res.listings && res.listings.length > 0) {
+        setPublishedOpps(res.listings.map((l) => convertListingToOpportunity(l)));
+      }
+    }
+    load();
+  }, []);
+
+  const featuredOpps = useMemo(() => {
+    const demoWithFlag = OPPORTUNITIES.map((opp) => ({ ...opp, isDemo: true }));
+    const liveSlugs = new Set(publishedOpps.map((l) => l.slug));
+    const liveIds = new Set(publishedOpps.map((l) => l.id));
+    const dedupedDemo = demoWithFlag.filter(
+      (d) =>
+        !liveSlugs.has(d.slug) &&
+        !liveSlugs.has(d.id) &&
+        !liveIds.has(d.id) &&
+        !liveIds.has(d.slug)
+    );
+    return [...publishedOpps, ...dedupedDemo].slice(0, 3);
+  }, [publishedOpps]);
 
   const handleEnquire = (opp: Opportunity) => {
     setSelectedOpportunity(opp);
@@ -53,16 +78,29 @@ export default function ForInvestorsPage() {
                 Access curated investment opportunities, connect with visionary entrepreneurs, and build a diversified portfolio in a transparent, professional ecosystem.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
                 <Link
+                  href="/profile/investor"
+                  className="inline-flex items-center justify-center gap-2 bg-[#00A6E8] text-white font-button-text text-base px-8 py-4 rounded-xl hover:bg-[#0093CE] shadow-[0px_4px_16px_rgba(0,166,232,0.35)] transition-all hover:-translate-y-0.5 font-bold"
+                >
+                  <span className="material-symbols-outlined text-[20px]">badge</span>
+                  <span>Get Listed as an Investor</span>
+                </Link>
+                <JoinCta
+                  roleType="investor"
+                  singleMode
                   href="/signup/investor"
-                  className="inline-flex items-center justify-center bg-primary-container text-white font-button-text text-base px-8 py-4 rounded-lg hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center bg-white text-[#00658F] font-button-text text-base px-7 py-4 rounded-xl border border-[#DCECF2] hover:bg-[#F4FAFD] transition-colors font-bold"
+                  alternateLabel="Join Also as Entrepreneur"
+                  alternateHref="/signup/entrepreneur"
+                  bothRolesLabel="Explore Wenturex"
+                  bothRolesHref="/opportunities"
                 >
                   Join as Investor
-                </Link>
+                </JoinCta>
                 <Link
                   href="#how-it-works"
-                  className="inline-flex items-center justify-center text-on-surface font-button-text text-base px-8 py-4 rounded-lg border border-border-subtle hover:bg-surface-container-low transition-colors"
+                  className="inline-flex items-center justify-center text-on-surface font-button-text text-base px-6 py-4 rounded-xl border border-border-subtle hover:bg-surface-container-low transition-colors font-semibold"
                 >
                   See How It Works
                 </Link>
@@ -128,9 +166,115 @@ export default function ForInvestorsPage() {
         </section>
 
         {/* ============================================================ */}
+        {/* TOP OPPORTUNITIES SHOWCASE */}
+        {/* ============================================================ */}
+        <section className="bg-surface-pure py-20 px-margin-mobile md:px-margin-desktop border-t border-border-subtle">
+          <div className="max-w-container-max mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+              <div>
+                <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-2">
+                  Featured Opportunities
+                </h2>
+                <p className="font-body-lg text-on-surface-variant">
+                  A curated selection of high-growth ventures currently seeking institutional capital.
+                </p>
+              </div>
+              <Link
+                href="/opportunities"
+                className="font-button-text text-primary flex items-center gap-1 hover:text-surface-tint font-semibold transition-colors"
+              >
+                View All Opportunities
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+
+            {featuredOpps.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                {featuredOpps.map((opp) => (
+                  <OpportunityCard
+                    key={opp.id}
+                    opportunity={opp}
+                    featured
+                    onEnquire={handleEnquire}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-[#F4FAFD] rounded-2xl border border-[#DCECF2] p-8">
+                <span className="material-symbols-outlined text-[36px] text-slate-300 mb-2 block">
+                  storefront
+                </span>
+                <p className="text-sm font-semibold text-[#0A192A] mb-1">
+                  No Approved Opportunities Currently Listed
+                </p>
+                <p className="text-xs text-[#5F7180]">
+                  New verified investment opportunities will be featured here as they are published.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ============================================================ */}
+        {/* PROMINENT CTA: GET LISTED AS AN INVESTOR */}
+        {/* ============================================================ */}
+        <section className="w-full py-12 md:py-16 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-[#F4FAFD] via-white to-[#F4FAFD] border-t border-b border-[#DCECF2]">
+          <div className="max-w-container-max mx-auto">
+            <div className="bg-gradient-to-br from-white to-[#F8FCFE] rounded-2xl md:rounded-3xl p-8 md:p-12 border border-[#DCECF2] shadow-[0px_8px_30px_rgba(10,25,42,0.06)] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 relative overflow-hidden">
+              {/* Decorative subtle ambient circle */}
+              <div className="absolute -right-16 -top-16 w-72 h-72 bg-[#00A6E8]/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="max-w-2xl relative z-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EBF6FC] text-[#00658F] font-bold text-xs mb-3 border border-[#00A6E8]/20">
+                  <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">verified</span>
+                  <span>Investor Discovery Program</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0A192A] mb-3 font-heading tracking-tight">
+                  Get Listed as an Investor
+                </h2>
+                <p className="text-base sm:text-lg text-[#5F7180] leading-relaxed">
+                  Create your investor profile and let entrepreneurs discover your investment interests, expertise and experience.
+                </p>
+                <div className="mt-4 flex items-center gap-4 text-xs font-semibold text-[#00658F] flex-wrap">
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                    Admin approval & verification
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                    Public directory discovery
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+                    Direct entrepreneur interest
+                  </span>
+                </div>
+              </div>
+
+              <div className="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 relative z-10 w-full lg:w-auto">
+                <Link
+                  href="/profile/investor"
+                  className="inline-flex items-center justify-center gap-2 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0px_4px_16px_rgba(0,166,232,0.35)] transition-all hover:-translate-y-0.5"
+                >
+                  <span className="material-symbols-outlined text-[20px]">badge</span>
+                  <span>Get Listed as an Investor</span>
+                </Link>
+                <Link
+                  href="/investors"
+                  className="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-[#F4FAFD] text-[#0A192A] font-bold text-sm px-6 py-4 rounded-xl border border-[#DCECF2] transition-colors"
+                >
+                  <span>Explore Directory</span>
+                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================ */}
         {/* "MORE THAN CAPITAL. BUILD CONNECTIONS." SECTION */}
         {/* ============================================================ */}
-        <section className="relative py-20 md:py-24 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-surface via-[#F7FBFD] to-surface border-y border-border-subtle overflow-hidden">
+        <section className="relative py-20 md:py-24 px-margin-mobile md:px-margin-desktop bg-gradient-to-b from-surface via-[#F7FBFD] to-surface border-b border-border-subtle overflow-hidden">
           {/* Subtle Grid with Fade on Top, Bottom, and Sides */}
           <div
             className="absolute inset-0 pointer-events-none opacity-35"
@@ -256,42 +400,6 @@ export default function ForInvestorsPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* TOP OPPORTUNITIES SHOWCASE */}
-        {/* ============================================================ */}
-        <section className="bg-surface-pure py-20 px-margin-mobile md:px-margin-desktop border-t border-border-subtle">
-          <div className="max-w-container-max mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
-              <div>
-                <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-2">
-                  Featured Opportunities
-                </h2>
-                <p className="font-body-lg text-on-surface-variant">
-                  A curated selection of high-growth ventures currently seeking institutional capital.
-                </p>
-              </div>
-              <Link
-                href="/opportunities"
-                className="font-button-text text-primary flex items-center gap-1 hover:text-surface-tint font-semibold transition-colors"
-              >
-                View All Opportunities
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-              {featuredOpps.map((opp) => (
-                <OpportunityCard
-                  key={opp.id}
-                  opportunity={opp}
-                  featured
-                  onEnquire={handleEnquire}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================================ */}
         {/* FINAL CTA */}
         {/* ============================================================ */}
         <section className="py-20 px-margin-mobile md:px-margin-desktop bg-surface-container-low text-center border-t border-border-subtle">
@@ -302,12 +410,27 @@ export default function ForInvestorsPage() {
             <p className="font-body-lg text-on-surface-variant mb-8">
               Join a network of professional investors and discover the next generation of industry leaders.
             </p>
-            <Link
-              href="/signup/investor"
-              className="inline-flex items-center justify-center bg-primary-container text-white font-button-text text-base px-10 py-4 rounded-lg hover:bg-surface-tint transition-all shadow-[0px_4px_15px_rgba(0,166,232,0.3)] hover:-translate-y-0.5"
-            >
-              Join as Investor
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/profile/investor"
+                className="inline-flex items-center justify-center gap-2 bg-[#00A6E8] text-white font-button-text text-base px-8 py-4 rounded-xl hover:bg-[#0093CE] shadow-[0px_4px_16px_rgba(0,166,232,0.35)] transition-all hover:-translate-y-0.5 font-bold"
+              >
+                <span className="material-symbols-outlined text-[20px]">badge</span>
+                <span>Get Listed as an Investor</span>
+              </Link>
+              <JoinCta
+                roleType="investor"
+                singleMode
+                href="/signup/investor"
+                className="inline-flex items-center justify-center bg-white text-[#00658F] font-button-text text-base px-8 py-4 rounded-xl border border-[#DCECF2] hover:bg-[#F4FAFD] transition-colors font-bold"
+                alternateLabel="Join Also as Entrepreneur"
+                alternateHref="/signup/entrepreneur"
+                bothRolesLabel="Explore Wenturex"
+                bothRolesHref="/opportunities"
+              >
+                Join as Investor
+              </JoinCta>
+            </div>
           </div>
         </section>
       </main>

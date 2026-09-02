@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { OpportunityCard } from "@/components/cards/opportunity-card";
@@ -14,6 +15,7 @@ import {
   OpportunityCategory,
 } from "@/lib/constants/opportunities";
 import { SECTORS } from "@/lib/constants/sectors";
+import { getPublishedListings, convertListingToOpportunity } from "@/lib/firebase/listings";
 import { AnimatePresence, motion } from "framer-motion";
 
 function OpportunitiesContent() {
@@ -33,6 +35,24 @@ function OpportunitiesContent() {
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [publishedListings, setPublishedListings] = useState<Opportunity[]>([]);
+  const [sortBy, setSortBy] = useState<"newest" | "low-high" | "high-low" | "title">("newest");
+
+  useEffect(() => {
+    const loadPublished = async () => {
+      setLoading(true);
+      const res = await getPublishedListings();
+      if (!res.error && res.listings) {
+        const converted = res.listings
+          .filter((item) => item.status === "published")
+          .map((item) => convertListingToOpportunity(item));
+        setPublishedListings(converted);
+      }
+      setLoading(false);
+    };
+    loadPublished();
+  }, []);
 
   useEffect(() => {
     if (sectorParam) {
@@ -51,11 +71,27 @@ function OpportunitiesContent() {
     setSelectedCategory("All");
     setSelectedSector("All Sectors");
     setSelectedRange("all");
+    setSortBy("newest");
   };
+
+  // Combine live published listings (shown first) with demo opportunities
+  const allOpportunities = useMemo(() => {
+    const demoWithFlag = OPPORTUNITIES.map((opp) => ({ ...opp, isDemo: true }));
+    const liveSlugs = new Set(publishedListings.map((l) => l.slug));
+    const liveIds = new Set(publishedListings.map((l) => l.id));
+    const dedupedDemo = demoWithFlag.filter(
+      (d) =>
+        !liveSlugs.has(d.slug) &&
+        !liveSlugs.has(d.id) &&
+        !liveIds.has(d.id) &&
+        !liveIds.has(d.slug)
+    );
+    return [...publishedListings, ...dedupedDemo];
+  }, [publishedListings]);
 
   // Filter opportunities
   const filteredOpps = useMemo(() => {
-    return OPPORTUNITIES.filter((opp) => {
+    const result = allOpportunities.filter((opp) => {
       // Search match
       if (
         searchQuery &&
@@ -68,12 +104,18 @@ function OpportunitiesContent() {
       }
 
       // Category match
-      if (selectedCategory !== "All" && opp.category !== selectedCategory) {
+      if (
+        selectedCategory !== "All" &&
+        opp.category.toLowerCase() !== selectedCategory.toLowerCase()
+      ) {
         return false;
       }
 
       // Sector match
-      if (selectedSector !== "All Sectors" && opp.sector !== selectedSector) {
+      if (
+        selectedSector !== "All Sectors" &&
+        opp.sector.toLowerCase() !== selectedSector.toLowerCase()
+      ) {
         return false;
       }
 
@@ -86,7 +128,18 @@ function OpportunitiesContent() {
 
       return true;
     });
-  }, [searchQuery, selectedCategory, selectedSector, selectedRange]);
+
+    // Apply sorting
+    if (sortBy === "low-high") {
+      result.sort((a, b) => a.targetAmountNum - b.targetAmountNum);
+    } else if (sortBy === "high-low") {
+      result.sort((a, b) => b.targetAmountNum - a.targetAmountNum);
+    } else if (sortBy === "title") {
+      result.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    return result;
+  }, [allOpportunities, searchQuery, selectedCategory, selectedSector, selectedRange, sortBy]);
 
   const handleInterested = (opp: Opportunity) => {
     setSelectedOpportunity(opp);
@@ -271,31 +324,55 @@ function OpportunitiesContent() {
         {/* ============================================================ */}
         <section className="w-full py-10 sm:py-14">
           <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
-            {/* Active Filters Summary Header */}
-            <div className="flex items-center justify-between mb-8 pb-3 border-b border-[#DCECF2]">
+            {/* Active Filters Summary Header & Sorting Controls */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-3 border-b border-[#DCECF2] gap-4">
               <div className="text-sm text-[#5F7180]">
                 Showing <strong className="text-[#0A192A]">{filteredOpps.length}</strong> of{" "}
-                {OPPORTUNITIES.length} opportunities
+                <strong className="text-[#0A192A]">{allOpportunities.length}</strong> opportunities
                 {selectedCategory !== "All" && ` in ${selectedCategory}`}
                 {selectedSector !== "All Sectors" && ` • ${selectedSector}`}
               </div>
 
-              {(searchQuery ||
-                selectedCategory !== "All" ||
-                selectedSector !== "All Sectors" ||
-                selectedRange !== "all") && (
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="text-xs font-bold text-[#00A6E8] hover:underline"
-                >
-                  Clear Filters
-                </button>
-              )}
+              <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+                {/* Sort Dropdown */}
+                <div className="flex items-center gap-2 text-xs text-[#5F7180]">
+                  <span className="font-semibold shrink-0">Sort by:</span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) =>
+                      setSortBy(e.target.value as "newest" | "low-high" | "high-low" | "title")
+                    }
+                    className="bg-white border border-[#DCECF2] rounded-lg px-2.5 py-1.5 text-xs text-[#0A192A] font-medium focus:outline-none focus:border-[#00A6E8] cursor-pointer"
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="low-high">Investment: Low to High</option>
+                    <option value="high-low">Investment: High to Low</option>
+                    <option value="title">Title: A-Z</option>
+                  </select>
+                </div>
+
+                {(searchQuery ||
+                  selectedCategory !== "All" ||
+                  selectedSector !== "All Sectors" ||
+                  selectedRange !== "all") && (
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="text-xs font-bold text-[#00A6E8] hover:underline shrink-0"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Grid */}
-            {filteredOpps.length > 0 ? (
+            {/* Grid or Clean Empty States */}
+            {loading ? (
+              <div className="py-24 text-center text-slate-400">
+                <div className="w-9 h-9 border-3 border-[#00A6E8] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-sm font-semibold text-[#5F7180]">Loading published opportunities...</p>
+              </div>
+            ) : filteredOpps.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {filteredOpps.map((opp) => (
                   <OpportunityCard
@@ -305,21 +382,40 @@ function OpportunitiesContent() {
                   />
                 ))}
               </div>
+            ) : allOpportunities.length === 0 ? (
+              <div className="text-center py-20 bg-white rounded-3xl border border-[#DCECF2] p-8 max-w-lg mx-auto shadow-sm">
+                <div className="w-14 h-14 rounded-full bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mx-auto mb-4">
+                  <span className="material-symbols-outlined text-[28px]">storefront</span>
+                </div>
+                <h3 className="text-xl font-bold text-[#0A192A] mb-2 font-heading">
+                  No Approved Opportunities Yet
+                </h3>
+                <p className="text-sm text-[#5F7180] mb-6 leading-relaxed">
+                  There are currently no published opportunities available in the directory. New verified business listings will appear here as they are reviewed and approved.
+                </p>
+                <Link
+                  href="/profile/listings"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-[16px]">add_circle</span>
+                  <span>List Your Venture</span>
+                </Link>
+              </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-3xl border border-[#DCECF2] p-8 max-w-lg mx-auto">
+              <div className="text-center py-20 bg-white rounded-3xl border border-[#DCECF2] p-8 max-w-lg mx-auto shadow-sm">
                 <div className="w-14 h-14 rounded-full bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mx-auto mb-4">
                   <span className="material-symbols-outlined text-[28px]">search_off</span>
                 </div>
-                <h3 className="text-xl font-bold text-[#0A192A] mb-2">
+                <h3 className="text-xl font-bold text-[#0A192A] mb-2 font-heading">
                   No Matching Opportunities Found
                 </h3>
-                <p className="text-sm text-[#5F7180] mb-6">
-                  Try adjusting your search terms, selecting a broader sector, or resetting your investment range filter.
+                <p className="text-sm text-[#5F7180] mb-6 leading-relaxed">
+                  Try adjusting your search terms, selecting a broader category, or resetting your investment range filter.
                 </p>
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="px-6 py-2.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors"
+                  className="px-6 py-2.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
                 >
                   Reset All Filters
                 </button>

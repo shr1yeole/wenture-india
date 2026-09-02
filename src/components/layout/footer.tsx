@@ -43,6 +43,9 @@ export function Footer() {
               <Link href="/for-investors" className="font-body-md text-sm text-surface-variant hover:text-primary-container transition-colors duration-200">
                 For Investors
               </Link>
+              <Link href="/investors" className="font-body-md text-sm text-surface-variant hover:text-primary-container transition-colors duration-200">
+                Find Investors
+              </Link>
               <Link href="/opportunities" className="font-body-md text-sm text-surface-variant hover:text-primary-container transition-colors duration-200">
                 Opportunities
               </Link>

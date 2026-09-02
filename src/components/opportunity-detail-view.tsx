@@ -3,21 +3,37 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Opportunity } from "@/lib/constants/opportunities";
+import { Opportunity, formatWhatsAppNumber } from "@/lib/constants/opportunities";
 import { OpportunityEnquiryModal } from "@/components/forms/opportunity-enquiry-modal";
+import { useAuth } from "@/lib/firebase/auth-context";
 import { COMPANY } from "@/lib/constants/company";
 
 interface OpportunityDetailViewProps {
   opportunity: Opportunity;
 }
 
+const DEFAULT_IMAGE =
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80";
+
 export function OpportunityDetailView({
   opportunity: opp,
 }: OpportunityDetailViewProps) {
+  const { isAuthenticated } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
+  const [imgSrc, setImgSrc] = useState(opp.imageUrl || DEFAULT_IMAGE);
 
-  const whatsappUrl = `https://wa.me/91984181008?text=${encodeURIComponent(
-    `Hello Wenturex Team, I am interested in: ${opp.title} (${opp.category} - ${opp.sector}). Please share further information.`
+  // Extract this particular opportunity's contact phone number
+  const oppPhone =
+    opp.contactPhone ||
+    opp.whatsappNumber ||
+    opp.keyInformation?.find((k) => k.label.toLowerCase().includes("phone"))?.value ||
+    "";
+
+  const targetWaNumber = formatWhatsAppNumber(oppPhone, "919841881008");
+  const displayPhone = oppPhone || COMPANY.contact.phone;
+
+  const whatsappUrl = `https://wa.me/${targetWaNumber}?text=${encodeURIComponent(
+    `Hello, I am interested in: ${opp.title} (${opp.category} - ${opp.sector}) listed on Wenturex. Please share further details.`
   )}`;
 
   return (
@@ -48,8 +64,18 @@ export function OpportunityDetailView({
               <span className="bg-slate-100 text-[#5F7180] font-semibold text-xs px-3 py-1 rounded">
                 {opp.sector}
               </span>
+              {opp.isDemo ? (
+                <span className="bg-slate-100 text-[#5F7180] font-bold text-xs px-3 py-1 rounded border border-slate-200 uppercase tracking-wider">
+                  Sample Showcase
+                </span>
+              ) : (
+                <span className="bg-emerald-50 text-emerald-700 font-extrabold text-xs px-3 py-1 rounded border border-emerald-200 flex items-center gap-1 uppercase tracking-wider">
+                  <span className="material-symbols-outlined text-[14px]">verified</span>
+                  Live Published Listing
+                </span>
+              )}
               {opp.stageBadge && (
-                <span className="bg-emerald-50 text-emerald-700 font-bold text-xs px-3 py-1 rounded border border-emerald-200">
+                <span className="bg-[#EBF6FC] text-[#00658F] font-bold text-xs px-3 py-1 rounded border border-[#DCECF2]">
                   {opp.stageBadge}
                 </span>
               )}
@@ -100,11 +126,12 @@ export function OpportunityDetailView({
           {/* Cover Media */}
           <div className="h-64 sm:h-96 w-full relative rounded-2xl overflow-hidden border border-[#DCECF2] bg-slate-100 shadow-sm">
             <Image
-              src={opp.imageUrl}
-              alt={opp.title}
+              src={imgSrc}
+              alt={opp.title || "Opportunity"}
               fill
               unoptimized
               className="object-cover"
+              onError={() => setImgSrc(DEFAULT_IMAGE)}
             />
           </div>
 
@@ -182,15 +209,26 @@ export function OpportunityDetailView({
               </Link>
 
               {/* WhatsApp CTA */}
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                <span className="material-symbols-outlined text-[18px]">chat</span>
-                <span>Chat on WhatsApp</span>
-              </a>
+              {isAuthenticated ? (
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-[18px]">chat</span>
+                  <span>Chat on WhatsApp ({displayPhone})</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(true)}
+                  className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-[18px]">chat</span>
+                  <span>Chat on WhatsApp</span>
+                </button>
+              )}
             </div>
 
             {/* Key Information Table */}
@@ -198,25 +236,56 @@ export function OpportunityDetailView({
               <h4 className="text-xs font-bold text-[#0A192A] uppercase tracking-wider">
                 Key Opportunity Details
               </h4>
-              {opp.keyInformation.map((info, idx) => (
-                <div key={idx} className="flex items-center justify-between text-xs py-1.5 border-b border-slate-100">
-                  <span className="text-[#5F7180]">{info.label}:</span>
-                  <span className="font-semibold text-[#0A192A] text-right">{info.value}</span>
-                </div>
-              ))}
+              {opp.keyInformation
+                .filter((info) => {
+                  if (!isAuthenticated) {
+                    const lower = info.label.toLowerCase();
+                    if (lower.includes("phone") || lower.includes("email") || lower.includes("contact")) {
+                      return false;
+                    }
+                  }
+                  return true;
+                })
+                .map((info, idx) => (
+                  <div key={idx} className="flex items-center justify-between text-xs py-1.5 border-b border-slate-100">
+                    <span className="text-[#5F7180]">{info.label}:</span>
+                    <span className="font-semibold text-[#0A192A] text-right">{info.value}</span>
+                  </div>
+                ))}
             </div>
 
             {/* Direct Contact Info */}
-            <div className="mt-6 pt-4 border-t border-[#DCECF2] text-xs text-[#5F7180] space-y-1">
-              <p>
-                <strong>Phone:</strong> {COMPANY.contact.phone}
-              </p>
-              <p>
-                <strong>Email:</strong> {COMPANY.contact.generalEmail}
-              </p>
-              <p>
-                <strong>Business Email:</strong> {COMPANY.contact.businessEmail}
-              </p>
+            <div className="mt-6 pt-4 border-t border-[#DCECF2] text-xs text-[#5F7180] space-y-2">
+              {isAuthenticated ? (
+                <>
+                  <p>
+                    <strong>Direct Contact:</strong> {displayPhone}
+                  </p>
+                  {opp.contactEmail && (
+                    <p>
+                      <strong>Listing Email:</strong> {opp.contactEmail}
+                    </p>
+                  )}
+                  <p>
+                    <strong>Wenturex Desk:</strong> {COMPANY.contact.generalEmail}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl flex items-start gap-2.5">
+                    <span className="material-symbols-outlined text-[18px] text-[#00A6E8] shrink-0 mt-0.5">lock</span>
+                    <div>
+                      <p className="font-bold text-[#0A192A] text-xs">Direct Contact Protected</p>
+                      <p className="text-[11px] text-[#5F7180] leading-snug mt-0.5">
+                        Private contact details are reserved for verified users. Sign in and express interest to connect directly.
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-[#5F7180]">
+                    <strong>Platform Desk:</strong> {COMPANY.contact.generalEmail}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

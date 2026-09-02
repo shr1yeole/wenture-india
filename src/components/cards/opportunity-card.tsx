@@ -1,7 +1,12 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Opportunity } from "@/lib/constants/opportunities";
+
+const DEFAULT_IMAGE =
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80";
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
@@ -15,6 +20,8 @@ export function OpportunityCard({
   onInterested,
   onEnquire,
 }: OpportunityCardProps) {
+  const [imgSrc, setImgSrc] = useState(opportunity.imageUrl || DEFAULT_IMAGE);
+
   const handleInterestClick = () => {
     if (onInterested) onInterested(opportunity);
     else if (onEnquire) onEnquire(opportunity);
@@ -24,18 +31,29 @@ export function OpportunityCard({
       {/* Top Cover Image with Stage Badge */}
       <div className="h-48 w-full relative overflow-hidden bg-slate-100">
         <Image
-          src={opportunity.imageUrl}
-          alt={opportunity.title}
+          src={imgSrc}
+          alt={opportunity.title || "Opportunity"}
           fill
           unoptimized
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={() => setImgSrc(DEFAULT_IMAGE)}
         />
 
         {/* Stage or Category Badge in Top-Right */}
-        <div className="absolute top-3 right-3 z-10 flex gap-2">
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 flex-wrap justify-end">
+          {opportunity.isDemo ? (
+            <span className="bg-white/95 backdrop-blur-sm text-[#5F7180] font-bold text-[10px] px-2 py-0.5 rounded shadow-sm border border-slate-200 tracking-wide uppercase">
+              Sample
+            </span>
+          ) : (
+            <span className="bg-emerald-600/95 backdrop-blur-sm text-white font-extrabold text-[10px] px-2 py-0.5 rounded shadow-sm flex items-center gap-1 tracking-wide uppercase">
+              <span className="material-symbols-outlined text-[12px]">verified</span>
+              Live Listing
+            </span>
+          )}
           {opportunity.stageBadge && (
-            <span className="bg-white/95 backdrop-blur-sm text-[#00658F] font-bold text-[11px] px-2.5 py-1 rounded shadow-sm border border-slate-100 tracking-wide">
+            <span className="bg-white/95 backdrop-blur-sm text-[#00658F] font-bold text-[11px] px-2.5 py-0.5 rounded shadow-sm border border-slate-100 tracking-wide">
               {opportunity.stageBadge}
             </span>
           )}

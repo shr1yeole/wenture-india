@@ -39,6 +39,22 @@ export interface Opportunity {
     value: string;
   }[];
   imageUrl: string;
+  isDemo?: boolean;
+  ownerId?: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  whatsappNumber?: string;
+}
+
+export function formatWhatsAppNumber(phone?: string, defaultNumber: string = "919841881008"): string {
+  if (!phone) return defaultNumber;
+  const digits = phone.replace(/[^0-9]/g, "");
+  if (!digits) return defaultNumber;
+  if (digits.length === 10) return `91${digits}`;
+  if (digits.length === 11 && digits.startsWith("0")) return `91${digits.slice(1)}`;
+  return digits;
 }
 
 export const INVESTMENT_RANGES = [

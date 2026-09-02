@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { COMPANY } from "@/lib/constants/company";
+import { AuthProvider } from "@/lib/firebase/auth-context";
+import { GlobalPageLoader } from "@/components/layout/global-page-loader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -121,7 +123,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-surface text-on-surface antialiased font-sans flex flex-col selection:bg-primary-container selection:text-white">
-        {children}
+        <AuthProvider>
+          <GlobalPageLoader />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

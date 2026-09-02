@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { JoinCta, RoleCtaGroup } from "@/components/ui/join-cta";
 import { Container } from "@/components/layout/container";
 import { NetworkMesh } from "@/components/visual/network-mesh";
 import { TopOpportunities } from "@/components/sections/top-opportunities";
@@ -15,8 +16,36 @@ import { COMPANY } from "@/lib/constants/company";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
+  const [deletedNotice, setDeletedNotice] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("deleted") === "true") {
+        setDeletedNotice(true);
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-surface selection:bg-primary-container selection:text-white">
+      {deletedNotice && (
+        <div className="bg-emerald-50 border-b border-emerald-200 px-4 py-3 text-center text-sm font-bold text-emerald-800 flex items-center justify-center gap-2 transition-all">
+          <span className="material-symbols-outlined text-[20px] text-emerald-600">
+            check_circle
+          </span>
+          <span>Your Wenturex account has been deleted.</span>
+          <button
+            type="button"
+            onClick={() => setDeletedNotice(false)}
+            className="ml-3 text-emerald-700 hover:text-emerald-950 text-xs font-semibold underline"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Sticky Navigation */}
       <Navbar />
 
@@ -213,20 +242,12 @@ export default function HomePage() {
                   Join Wenturex India International to explore active opportunities, discover vetted businesses, and connect with visionary entrepreneurs.
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-4">
-                  <Link
-                    href="/signup/investor"
-                    className="bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm sm:text-base px-8 py-4 rounded-xl shadow-lg transition-all"
-                  >
-                    Join as Investor
-                  </Link>
-                  <Link
-                    href="/signup/entrepreneur"
-                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base px-8 py-4 rounded-xl backdrop-blur-sm transition-all"
-                  >
-                    Join as Entrepreneur
-                  </Link>
-                </div>
+                <RoleCtaGroup
+                  className="flex flex-wrap justify-center gap-4"
+                  investorClassName="bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm sm:text-base px-8 py-4 rounded-xl shadow-lg transition-all"
+                  entrepreneurClassName="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base px-8 py-4 rounded-xl backdrop-blur-sm transition-all"
+                  exploreClassName="bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm sm:text-base px-8 py-4 rounded-xl shadow-lg transition-all"
+                />
               </div>
             </div>
           </Container>

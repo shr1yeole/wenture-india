@@ -1,0 +1,178 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper to check if caller is an admin (independent of normal platform role)
+    function isAdmin() {
+      return request.auth != null && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')) ||
+        (request.auth.token.email in ['wentureindia@gmail.com', 'info@wentureindia.com', 'payalnkapse1720@gmail.com'])
+      );
+    }
+
+    // --- 1. User Profiles Collection ---
+    match /users/{userId} {
+      // User can read their own profile; Admin can read all
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      
+      // User can create their profile on signup, but cannot self-assign isAdmin: true
+      allow create: if request.auth != null && (
+        isAdmin() || (
+          request.auth.uid == userId &&
+          (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == false)
+        )
+      );
+
+      // User can update their own profile fields, but CANNOT self-elevate to isAdmin: true
+      allow update: if request.auth != null && (
+        isAdmin() || (
+          request.auth.uid == userId &&
+          (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == resource.data.isAdmin) &&
+          (!('role' in request.resource.data) || request.resource.data.role == resource.data.role || request.resource.data.role in ['investor', 'entrepreneur'])
+        )
+      );
+
+      // User or Admin can delete
+      allow delete: if request.auth != null && (request.auth.uid == userId || isAdmin());
+    }
+
+    // --- 2. Admins Collection ---
+    match /admins/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      // Admin privilege can only be granted/written by an existing Admin
+      allow write: if isAdmin();
+    }
+
+    // --- 3. Listings Collection ---
+    match /listings/{listingId} {
+      // Public can read published listings; Owner and Admin can read all
+      allow read: if resource.data.status == 'published' 
+                  || (request.auth != null && (resource.data.ownerId == request.auth.uid || isAdmin()));
+      
+      // Authenticated users can create listings, strictly forced to "pending"
+      allow create: if request.auth != null 
+                    && request.resource.data.ownerId == request.auth.uid 
+                    && request.resource.data.status == 'pending';
+      
+      // Owner can update their own listing if it's not changing status to "published"
+      // Admin can update any listing (e.g. approve/reject)
+      allow update: if isAdmin() || (
+        request.auth != null 
+        && request.auth.uid == resource.data.ownerId
+        && request.resource.data.ownerId == resource.data.ownerId
+        && request.resource.data.status != 'published'
+      );
+
+      // Owner or Admin can delete
+      allow delete: if isAdmin() || (
+        request.auth != null && request.auth.uid == resource.data.ownerId
+      );
+    }
+    
+    // --- 4. Opportunity Enquiries ---
+    match /opportunity_enquiries/{enquiryId} {
+      // Authenticated users can submit an enquiry for an opportunity
+      allow create: if request.auth != null
+                    && (request.resource.data.senderId == request.auth.uid || request.resource.data.userId == request.auth.uid)
+                    && request.resource.data.opportunityId is string;
+      
+      // Opportunity owner, sender, and Admin can read enquiries
+      allow read: if request.auth != null && (
+        resource.data.opportunityOwnerId == request.auth.uid ||
+        resource.data.ownerId == request.auth.uid ||
+        resource.data.senderId == request.auth.uid ||
+        resource.data.userId == request.auth.uid ||
+        (request.auth.token.email != null && (
+          resource.data.opportunityOwnerEmail == request.auth.token.email ||
+          resource.data.ownerEmail == request.auth.token.email
+        )) ||
+        resource.data.opportunityOwnerId == 'platform-admin' ||
+        isAdmin()
+      );
+
+      // Opportunity owner can update status; Admin has full update capability
+      allow update: if request.auth != null && (
+        ((resource.data.opportunityOwnerId == request.auth.uid || resource.data.ownerId == request.auth.uid || resource.data.opportunityOwnerId == 'platform-admin')
+         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt', 'opportunityOwnerId', 'ownerId', 'opportunityOwnerEmail', 'ownerEmail'])) ||
+        isAdmin()
+      );
+
+      // Sender (investor), opportunity owner, or Admin can delete
+      allow delete: if request.auth != null && (
+        resource.data.senderId == request.auth.uid ||
+        resource.data.userId == request.auth.uid ||
+        resource.data.opportunityOwnerId == request.auth.uid ||
+        resource.data.ownerId == request.auth.uid ||
+        isAdmin()
+      );
+    }
+    
+    // --- 5. General Contact Inquiries ---
+    match /contact_inquiries/{inquiryId} {
+      // Public submissions allowed with valid contact information
+      allow create: if request.resource.data.fullName is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string;
+      
+      // Only Admin can read/update/delete
+      allow read, update, delete: if isAdmin();
+    }
+    
+    // --- 6. Catalogs, Featured & Content Overrides ---
+    match /catalogs/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /featured/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /guides/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- 7. Investor Profiles Directory ---
+    match /investorProfiles/{profileId} {
+      // Public can read published profiles; Owner and Admin can read all
+      allow read: if resource.data.status == 'published'
+                  || (request.auth != null && (request.auth.uid == profileId || isAdmin()));
+
+      // Authenticated investor can create their profile with initial 'pending' status
+      allow create: if request.auth != null 
+                    && request.auth.uid == profileId
+                    && request.resource.data.status == 'pending';
+
+      // Investor can update their own profile ONLY if not currently 'pending', and CANNOT self-publish
+      // Admin can update any profile (e.g. approve/publish, reject, edit)
+      allow update: if isAdmin() || (
+        request.auth != null
+        && request.auth.uid == profileId
+        && resource.data.status != 'pending'
+        && request.resource.data.status != 'published'
+      );
+
+      // Investor or Admin can delete
+      allow delete: if request.auth != null && (request.auth.uid == profileId || isAdmin());
+    }
+
+    // --- 8. Investor Enquiries (Express Interest) ---
+    match /investor_enquiries/{enquiryId} {
+      // Any authenticated or guest user can submit an expression of interest with valid data
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.investorId is string;
+
+      // Only the recipient investor or Admin can read inquiries
+      allow read: if request.auth != null && (
+        isAdmin() || resource.data.investorId == request.auth.uid
+      );
+
+      // Only Admin can update/delete enquiries
+      allow update, delete: if isAdmin();
+    }
+  }
+}
