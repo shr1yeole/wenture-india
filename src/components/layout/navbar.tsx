@@ -180,44 +180,6 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                               </p>
                             </div>
                           </Link>
-
-                          {/* 3. How It Works */}
-                          <Link
-                            href="/how-it-works"
-                            onClick={() => setEntrepreneurDropdownOpen(false)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#F4FAFD] transition-colors group/item"
-                          >
-                            <div className="w-9 h-9 rounded-xl bg-[#EBF6FC] text-[#00A6E8] group-hover/item:bg-[#00A6E8] group-hover/item:text-white flex items-center justify-center shrink-0 transition-colors shadow-xs">
-                              <span className="material-symbols-outlined text-[20px]">help_outline</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-bold text-[#0A192A] group-hover/item:text-[#00658F] transition-colors">
-                                How It Works
-                              </div>
-                              <p className="text-xs text-[#5F7180] leading-snug mt-0.5">
-                                Discover our verification, deal review, and investor introduction workflow.
-                              </p>
-                            </div>
-                          </Link>
-
-                          {/* Bottom overview link */}
-                          <div className="pt-2 mt-1 border-t border-[#DCECF2] px-2.5 pb-1 flex items-center justify-between">
-                            <Link
-                              href="/for-entrepreneurs"
-                              onClick={() => setEntrepreneurDropdownOpen(false)}
-                              className="text-xs font-bold text-[#00658F] hover:text-[#00A6E8] transition-colors flex items-center gap-1"
-                            >
-                              <span>For Entrepreneurs Overview</span>
-                              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                            </Link>
-                            <Link
-                              href="/opportunities"
-                              onClick={() => setEntrepreneurDropdownOpen(false)}
-                              className="text-[11px] font-semibold text-[#5F7180] hover:text-[#0A192A] transition-colors"
-                            >
-                              Browse Opportunities
-                            </Link>
-                          </div>
                         </div>
                       </motion.div>
                     )}
@@ -309,44 +271,6 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                               </p>
                             </div>
                           </Link>
-
-                          {/* 3. How It Works */}
-                          <Link
-                            href="/how-it-works"
-                            onClick={() => setInvestorDropdownOpen(false)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#F4FAFD] transition-colors group/item"
-                          >
-                            <div className="w-9 h-9 rounded-xl bg-[#EBF6FC] text-[#00A6E8] group-hover/item:bg-[#00A6E8] group-hover/item:text-white flex items-center justify-center shrink-0 transition-colors shadow-xs">
-                              <span className="material-symbols-outlined text-[20px]">help_outline</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-bold text-[#0A192A] group-hover/item:text-[#00658F] transition-colors">
-                                How It Works
-                              </div>
-                              <p className="text-xs text-[#5F7180] leading-snug mt-0.5">
-                                Learn about the verified investor process, discovery, and deal review.
-                              </p>
-                            </div>
-                          </Link>
-
-                          {/* Bottom overview link */}
-                          <div className="pt-2 mt-1 border-t border-[#DCECF2] px-2.5 pb-1 flex items-center justify-between">
-                            <Link
-                              href="/for-investors"
-                              onClick={() => setInvestorDropdownOpen(false)}
-                              className="text-xs font-bold text-[#00658F] hover:text-[#00A6E8] transition-colors flex items-center gap-1"
-                            >
-                              <span>For Investors Overview</span>
-                              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                            </Link>
-                            <Link
-                              href="/investors"
-                              onClick={() => setInvestorDropdownOpen(false)}
-                              className="text-[11px] font-semibold text-[#5F7180] hover:text-[#0A192A] transition-colors"
-                            >
-                              Investor Directory
-                            </Link>
-                          </div>
                         </div>
                       </motion.div>
                     )}
@@ -539,26 +463,6 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                             <div className="text-[11px] text-[#5F7180] leading-snug">Publish opportunities to reach accredited investors</div>
                           </div>
                         </Link>
-
-                        {/* 3. How It Works */}
-                        <Link
-                          href="/how-it-works"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={cn(
-                            "text-xs py-2 px-3 rounded-xl flex items-start gap-2.5 transition-colors",
-                            pathname.startsWith("/how-it-works")
-                              ? "bg-[#EBF6FC] text-[#00658F] font-bold border border-[#00A6E8]/30"
-                              : "text-[#5F7180] bg-[#F4FAFD] border border-[#DCECF2] hover:text-[#0A192A]"
-                          )}
-                        >
-                          <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="material-symbols-outlined text-[15px]">help_outline</span>
-                          </div>
-                          <div>
-                            <div className="font-bold text-[#0A192A]">How It Works</div>
-                            <div className="text-[11px] text-[#5F7180] leading-snug">Learn about review, listing, and introduction process</div>
-                          </div>
-                        </Link>
                       </div>
                     )}
 
@@ -604,26 +508,6 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                             <div className="text-[11px] text-[#5F7180] leading-snug mt-0.5">
                               Create and manage the investor profile that entrepreneurs can discover on Wenturex.
                             </div>
-                          </div>
-                        </Link>
-
-                        {/* 3. How It Works */}
-                        <Link
-                          href="/how-it-works"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={cn(
-                            "text-xs py-2 px-3 rounded-xl flex items-start gap-2.5 transition-colors",
-                            pathname.startsWith("/how-it-works")
-                              ? "bg-[#EBF6FC] text-[#00658F] font-bold border border-[#00A6E8]/30"
-                              : "text-[#5F7180] bg-[#F4FAFD] border border-[#DCECF2] hover:text-[#0A192A]"
-                          )}
-                        >
-                          <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="material-symbols-outlined text-[15px]">help_outline</span>
-                          </div>
-                          <div>
-                            <div className="font-bold text-[#0A192A]">How It Works</div>
-                            <div className="text-[11px] text-[#5F7180] leading-snug">Understand our review and introduction process</div>
                           </div>
                         </Link>
                       </div>

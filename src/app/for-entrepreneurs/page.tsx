@@ -15,14 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default function ForEntrepreneursPage() {
-  const journeySteps = [
-    { num: 1, title: "Create Your Profile", desc: "Join Wenturex and introduce yourself or your business." },
-    { num: 2, title: "Discover Opportunities", desc: "Explore relevant businesses and opportunities." },
-    { num: 3, title: "Explore Businesses", desc: "Discover businesses, startups and opportunities across different sectors." },
-    { num: 4, title: "Review Information", desc: "Explore the available information about an opportunity." },
-    { num: 5, title: "Express Interest", desc: "Submit an enquiry or express interest in an opportunity." },
-    { num: 6, title: "Connect", desc: "Connect with the relevant entrepreneur, investor or business.", active: true },
-  ];
+
 
   return (
     <div className="flex flex-col min-h-screen bg-surface selection:bg-primary-container selection:text-white">
@@ -48,7 +41,7 @@ export default function ForEntrepreneursPage() {
                 Present your business to a curated network of institutional investors. We provide the platform to elevate your vision from concept to capital.
               </p>
 
-              {/* Action Buttons: Join, Find Investors & How It Works */}
+              {/* Action Buttons: Join & Find Investors */}
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <JoinCta
                   roleType="entrepreneur"
@@ -71,13 +64,6 @@ export default function ForEntrepreneursPage() {
                     person_search
                   </span>
                   <span>Find Investors</span>
-                </Link>
-
-                <Link
-                  href="/how-it-works"
-                  className="bg-transparent border border-border-subtle text-on-surface font-button-text text-base rounded-lg px-8 py-4 hover:border-on-surface hover:bg-surface-container-low transition-all"
-                >
-                  How It Works
                 </Link>
               </div>
             </div>
@@ -214,84 +200,49 @@ export default function ForEntrepreneursPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* THE WENTUREX JOURNEY SECTION */}
+        {/* FINAL CTA */}
         {/* ============================================================ */}
-        <section className="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-20 md:py-28">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="font-label-caps text-xs text-primary uppercase tracking-wider">
-              How It Works
-            </span>
-            <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mt-1">
-              The Wenturex Journey
+        <section className="py-20 px-margin-mobile md:px-margin-desktop bg-surface-container-low text-center border-t border-border-subtle">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-4">
+              Ready to Scale Your Venture?
             </h2>
-            <p className="font-body-lg text-on-surface-variant mt-2">
-              Discover opportunities, explore businesses and build meaningful connections.
+            <p className="font-body-lg text-on-surface-variant mb-8">
+              Join visionary entrepreneurs raising capital, expanding reach, and building strategic partnerships on Wenturex.
             </p>
-          </div>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <JoinCta
+                roleType="entrepreneur"
+                singleMode
+                href="/signup/entrepreneur"
+                className="inline-flex items-center gap-2 bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
+                alternateLabel={
+                  <>
+                    <span>Join Also as Investor</span>
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </>
+                }
+                alternateHref="/signup/investor"
+                bothRolesLabel={
+                  <>
+                    <span>Explore Wenturex</span>
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </>
+                }
+                bothRolesHref="/opportunities"
+              >
+                <span>Join as Entrepreneur</span>
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </JoinCta>
 
-          <div className="relative">
-            {/* Desktop Connecting Line */}
-            <div className="hidden md:block absolute top-8 left-12 right-12 h-0.5 bg-border-subtle z-0" />
-
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-8 relative z-10">
-              {journeySteps.map((step) => (
-                <div key={step.num} className="flex flex-col items-center text-center">
-                  <div
-                    className={`w-16 h-16 rounded-full flex items-center justify-center font-button-text text-lg ambient-shadow relative z-10 transition-transform hover:scale-105 ${
-                      step.active
-                        ? "bg-primary-container text-white border-2 border-primary-container"
-                        : "bg-surface-pure text-on-surface border-2 border-border-subtle"
-                    }`}
-                  >
-                    {step.num}
-                  </div>
-                  <h4
-                    className={`font-button-text text-base mt-4 mb-1 ${
-                      step.active ? "text-primary-container font-bold" : "text-on-surface font-semibold"
-                    }`}
-                  >
-                    {step.title}
-                  </h4>
-                  <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-              ))}
+              <Link
+                href="/investors"
+                className="inline-flex items-center gap-2 bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#00658F] font-button-text text-base rounded-lg px-8 py-4 hover:bg-[#F4FAFD] transition-all shadow-sm"
+              >
+                <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">person_search</span>
+                <span>Find Investors</span>
+              </Link>
             </div>
-          </div>
-
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-4">
-            <JoinCta
-              roleType="entrepreneur"
-              singleMode
-              href="/signup/entrepreneur"
-              className="inline-flex items-center gap-2 bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
-              alternateLabel={
-                <>
-                  <span>Join Also as Investor</span>
-                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </>
-              }
-              alternateHref="/signup/investor"
-              bothRolesLabel={
-                <>
-                  <span>Explore Wenturex</span>
-                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </>
-              }
-              bothRolesHref="/opportunities"
-            >
-              <span>Join as Entrepreneur</span>
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </JoinCta>
-
-            <Link
-              href="/investors"
-              className="inline-flex items-center gap-2 bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#00658F] font-button-text text-base rounded-lg px-8 py-4 hover:bg-[#F4FAFD] transition-all shadow-sm"
-            >
-              <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">person_search</span>
-              <span>Find Investors</span>
-            </Link>
           </div>
         </section>
       </main>

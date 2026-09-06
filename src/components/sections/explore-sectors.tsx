@@ -1,8 +1,156 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { SECTORS } from "@/lib/constants/sectors";
+import { OPPORTUNITIES, Opportunity } from "@/lib/constants/opportunities";
+import { getPublishedListings, convertListingToOpportunity } from "@/lib/firebase/listings";
+
+function matchesSector(oppSector: string, sectorName: string): boolean {
+  if (!oppSector || !sectorName) return false;
+  const s1 = oppSector.trim().toLowerCase();
+  const s2 = sectorName.trim().toLowerCase();
+  if (s1 === s2) return true;
+
+  // Domain / alias matching
+  if (
+    s2 === "food & beverage" &&
+    (s1 === "food & beverages" ||
+      s1.includes("food") ||
+      s1.includes("beverage") ||
+      s1.includes("restaurant") ||
+      s1.includes("cafe"))
+  )
+    return true;
+  if (
+    s2 === "ev & mobility" &&
+    (s1.includes("ev") ||
+      s1.includes("mobility") ||
+      s1.includes("cleantech") ||
+      s1.includes("electric"))
+  )
+    return true;
+  if (s2 === "agriculture" && (s1.includes("agri") || s1.includes("farming"))) return true;
+  if (
+    s2 === "technology" &&
+    (s1.includes("tech") || s1.includes("software") || s1.includes("saas") || s1.includes("it"))
+  )
+    return true;
+  if (
+    s2 === "healthcare" &&
+    (s1.includes("health") ||
+      s1.includes("pharma") ||
+      s1.includes("medical") ||
+      s1.includes("clinic") ||
+      s1.includes("diagnostic"))
+  )
+    return true;
+  if (
+    s2 === "real estate" &&
+    (s1.includes("real estate") || s1.includes("property") || s1.includes("commercial space"))
+  )
+    return true;
+  if (
+    s2 === "manufacturing" &&
+    (s1.includes("manufactur") ||
+      s1.includes("industrial") ||
+      s1.includes("cnc") ||
+      s1.includes("machining"))
+  )
+    return true;
+  if (
+    s2 === "retail" &&
+    (s1.includes("retail") || s1.includes("store") || s1.includes("consumer brand"))
+  )
+    return true;
+  if (
+    s2 === "education" &&
+    (s1.includes("educat") ||
+      s1.includes("edtech") ||
+      s1.includes("school") ||
+      s1.includes("academy"))
+  )
+    return true;
+  if (
+    s2 === "fashion" &&
+    (s1.includes("fashion") || s1.includes("apparel") || s1.includes("clothing"))
+  )
+    return true;
+  if (
+    s2 === "travel & hospitality" &&
+    (s1.includes("travel") ||
+      s1.includes("hospitality") ||
+      s1.includes("hotel") ||
+      s1.includes("tourism"))
+  )
+    return true;
+  if (
+    s2 === "business services" &&
+    (s1.includes("business service") || s1.includes("consulting") || s1.includes("staffing"))
+  )
+    return true;
+  if (
+    s2 === "exim" &&
+    (s1.includes("exim") || s1.includes("export") || s1.includes("import") || s1.includes("trade"))
+  )
+    return true;
+
+  return s1.includes(s2) || s2.includes(s1);
+}
 
 export function ExploreSectors() {
+  const [publishedOpps, setPublishedOpps] = useState<Opportunity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await getPublishedListings();
+        if (!res.error && res.listings && res.listings.length > 0) {
+          setPublishedOpps(res.listings.map((l) => convertListingToOpportunity(l)));
+        }
+      } catch (err) {
+        console.error("Failed to load listings for sectors:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  // Combine live published listings with demo opportunities
+  const allOpportunities = useMemo(() => {
+    const demoWithFlag = OPPORTUNITIES.map((opp) => ({ ...opp, isDemo: true }));
+    const liveSlugs = new Set(publishedOpps.map((l) => l.slug));
+    const liveIds = new Set(publishedOpps.map((l) => l.id));
+    const dedupedDemo = demoWithFlag.filter(
+      (d) =>
+        !liveSlugs.has(d.slug) &&
+        !liveSlugs.has(d.id) &&
+        !liveIds.has(d.id) &&
+        !liveIds.has(d.slug)
+    );
+    return [...publishedOpps, ...dedupedDemo];
+  }, [publishedOpps]);
+
+  // Compute real count per sector and filter out sectors with 0 opportunities
+  const activeSectorsWithCounts = useMemo(() => {
+    return SECTORS.map((sector) => {
+      const matchingCount = allOpportunities.filter((opp) =>
+        matchesSector(opp.sector, sector.name)
+      ).length;
+      return {
+        ...sector,
+        realCount: matchingCount,
+      };
+    }).filter((sector) => sector.realCount > 0); // Strictly hide sectors with 0 opportunities
+  }, [allOpportunities]);
+
+  // If loading finished and no active sectors with opportunities exist, hide the section
+  if (!loading && activeSectorsWithCounts.length === 0) {
+    return null;
+  }
+
   return (
     <section className="w-full py-16 sm:py-20 bg-white border-b border-[#DCECF2]">
       <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
@@ -21,7 +169,7 @@ export function ExploreSectors() {
 
         {/* Sectors Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6">
-          {SECTORS.map((sector) => (
+          {activeSectorsWithCounts.map((sector) => (
             <Link
               key={sector.id}
               href={`/opportunities?sector=${encodeURIComponent(sector.name)}`}
@@ -42,7 +190,9 @@ export function ExploreSectors() {
               </div>
 
               <div className="mt-4 pt-3 border-t border-[#DCECF2]/60 flex items-center justify-between text-[11px] text-[#5F7180]">
-                <span>{sector.count}</span>
+                <span className="font-semibold text-[#0A192A]">
+                  {sector.realCount} {sector.realCount === 1 ? "Opportunity" : "Opportunities"}
+                </span>
                 <span className="material-symbols-outlined text-[16px] text-[#00A6E8] group-hover:translate-x-1 transition-transform">
                   arrow_forward
                 </span>

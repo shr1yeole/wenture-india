@@ -84,17 +84,22 @@ export default function HomePage() {
                 <div className="flex flex-wrap items-center gap-4">
                   <Link
                     href="/for-investors"
-                    className="bg-[#00A6E8] text-white font-bold text-sm sm:text-base rounded-xl px-7 py-3.5 hover:bg-[#0093CE] shadow-[0px_4px_15px_rgba(0,166,232,0.25)] transition-all flex items-center gap-2"
+                    className="group bg-white border border-[#DCECF2] text-[#0A192A] hover:bg-[#00A6E8] hover:border-[#00A6E8] hover:text-white font-bold text-sm sm:text-base rounded-xl px-7 py-3.5 shadow-sm hover:shadow-[0px_4px_15px_rgba(0,166,232,0.3)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
                   >
                     <span>For Investors</span>
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    <span className="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
+                      arrow_forward
+                    </span>
                   </Link>
 
                   <Link
                     href="/for-entrepreneurs"
-                    className="bg-white border border-[#DCECF2] text-[#0A192A] font-bold text-sm sm:text-base rounded-xl px-7 py-3.5 hover:border-[#00A6E8] hover:bg-[#F6FAFF] shadow-sm transition-all"
+                    className="group bg-white border border-[#DCECF2] text-[#0A192A] hover:bg-[#00A6E8] hover:border-[#00A6E8] hover:text-white font-bold text-sm sm:text-base rounded-xl px-7 py-3.5 shadow-sm hover:shadow-[0px_4px_15px_rgba(0,166,232,0.3)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
                   >
                     <span>For Entrepreneurs</span>
+                    <span className="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
+                      arrow_forward
+                    </span>
                   </Link>
                 </div>
               </motion.div>
@@ -129,70 +134,7 @@ export default function HomePage() {
         </section>
 
         {/* ============================================================ */}
-        {/* 2. INVESTOR & ENTREPRENEUR ENTRY GATEWAYS */}
-        {/* ============================================================ */}
-        <section className="w-full py-12 bg-white border-b border-[#DCECF2]">
-          <Container>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Investor Gateway Card */}
-              <div className="bg-[#F6FAFF] border border-[#DCECF2] hover:border-[#00A6E8] p-8 rounded-2xl transition-all duration-300 flex flex-col justify-between group shadow-sm">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-white border border-[#DCECF2] text-[#00A6E8] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                    <span className="material-symbols-outlined text-[28px]">trending_up</span>
-                  </div>
-                  <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
-                    Direct Opportunities
-                  </span>
-                  <h3 className="text-2xl font-bold text-[#0A192A] mb-3">
-                    Looking to Invest or Expand?
-                  </h3>
-                  <p className="text-sm text-[#5F7180] leading-relaxed mb-6">
-                    Discover high-potential businesses, franchise expansions, dealership rights, and international trade opportunities across India.
-                  </p>
-                </div>
-                <Link
-                  href="/for-investors"
-                  className="inline-flex items-center gap-2 text-sm font-bold text-[#00658F] group-hover:text-[#00A6E8] transition-colors"
-                >
-                  <span>Explore Investor Opportunities</span>
-                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
-                </Link>
-              </div>
-
-              {/* Entrepreneur Gateway Card */}
-              <div className="bg-[#F6FAFF] border border-[#DCECF2] hover:border-[#00A6E8] p-8 rounded-2xl transition-all duration-300 flex flex-col justify-between group shadow-sm">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-white border border-[#DCECF2] text-[#00A6E8] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                    <span className="material-symbols-outlined text-[28px]">rocket_launch</span>
-                  </div>
-                  <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
-                    Strategic Growth
-                  </span>
-                  <h3 className="text-2xl font-bold text-[#0A192A] mb-3">
-                    Looking for Growth Capital or Partners?
-                  </h3>
-                  <p className="text-sm text-[#5F7180] leading-relaxed mb-6">
-                    Present your company, startup, or franchise concept to a nationwide network of active investors, franchisees, and trade partners.
-                  </p>
-                </div>
-                <Link
-                  href="/for-entrepreneurs"
-                  className="inline-flex items-center gap-2 text-sm font-bold text-[#00658F] group-hover:text-[#00A6E8] transition-colors"
-                >
-                  <span>Present Your Business</span>
-                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        {/* ============================================================ */}
-        {/* 3. TOP OPPORTUNITIES (Investment, Business, Franchise, etc.) */}
+        {/* 2. TOP OPPORTUNITIES (Investment, Business, Franchise, etc.) */}
         {/* ============================================================ */}
         <TopOpportunities
           title="Top Opportunities"

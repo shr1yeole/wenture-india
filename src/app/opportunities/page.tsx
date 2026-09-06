@@ -89,6 +89,19 @@ function OpportunitiesContent() {
     return [...publishedListings, ...dedupedDemo];
   }, [publishedListings]);
 
+  // Dynamically calculate accurate counts for each category based on all active + sample opportunities
+  const categoryCounts = useMemo(() => {
+    const map: Record<string, number> = {
+      All: allOpportunities.length,
+    };
+    OPPORTUNITY_CATEGORIES.forEach((cat) => {
+      map[cat] = allOpportunities.filter(
+        (o) => o.category.toLowerCase() === cat.toLowerCase()
+      ).length;
+    });
+    return map;
+  }, [allOpportunities]);
+
   // Filter opportunities
   const filteredOpps = useMemo(() => {
     const result = allOpportunities.filter((opp) => {
@@ -106,6 +119,7 @@ function OpportunitiesContent() {
       // Category match
       if (
         selectedCategory !== "All" &&
+        selectedCategory.toLowerCase() !== "all" &&
         opp.category.toLowerCase() !== selectedCategory.toLowerCase()
       ) {
         return false;
@@ -181,16 +195,16 @@ function OpportunitiesContent() {
                 type="button"
                 onClick={() => setSelectedCategory("All")}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                  selectedCategory === "All"
+                  selectedCategory.toLowerCase() === "all"
                     ? "bg-[#00A6E8] text-white border-[#00A6E8] shadow-sm"
                     : "bg-[#F6FAFF] text-[#5F7180] border-[#DCECF2] hover:border-[#00A6E8] hover:text-[#0A192A]"
                 }`}
               >
-                All Opportunities ({OPPORTUNITIES.length})
+                All Opportunities ({categoryCounts["All"] ?? allOpportunities.length})
               </button>
               {OPPORTUNITY_CATEGORIES.map((cat) => {
-                const count = OPPORTUNITIES.filter((o) => o.category === cat).length;
-                const isActive = selectedCategory === cat;
+                const count = categoryCounts[cat] ?? 0;
+                const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
                 return (
                   <button
                     key={cat}
@@ -328,8 +342,16 @@ function OpportunitiesContent() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-3 border-b border-[#DCECF2] gap-4">
               <div className="text-sm text-[#5F7180]">
                 Showing <strong className="text-[#0A192A]">{filteredOpps.length}</strong> of{" "}
-                <strong className="text-[#0A192A]">{allOpportunities.length}</strong> opportunities
-                {selectedCategory !== "All" && ` in ${selectedCategory}`}
+                <strong className="text-[#0A192A]">
+                  {selectedCategory.toLowerCase() === "all"
+                    ? allOpportunities.length
+                    : (categoryCounts[selectedCategory] ??
+                        allOpportunities.filter(
+                          (o) => o.category.toLowerCase() === selectedCategory.toLowerCase()
+                        ).length)}
+                </strong>{" "}
+                opportunities
+                {selectedCategory.toLowerCase() !== "all" && ` in ${selectedCategory}`}
                 {selectedSector !== "All Sectors" && ` • ${selectedSector}`}
               </div>
 

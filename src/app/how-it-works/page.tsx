@@ -5,7 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/layout/container";
 import { NetworkMesh } from "@/components/visual/network-mesh";
-import { JoinCta } from "@/components/ui/join-cta";
+import { HowItWorksGatewayCards } from "@/components/ui/join-cta";
 import { COMPANY } from "@/lib/constants/company";
 
 export const metadata: Metadata = {
@@ -126,62 +126,8 @@ export default function HowItWorksPage() {
             </div>
           </div>
 
-          {/* Dual Gateways */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* For Entrepreneurs */}
-            <div className="bg-white rounded-2xl p-8 border border-[#DCECF2] shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mb-5">
-                  <span className="material-symbols-outlined text-[28px]">rocket_launch</span>
-                </div>
-                <h3 className="text-xl font-bold text-[#0A192A] mb-3">
-                  For Entrepreneurs &amp; Businesses
-                </h3>
-                <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-6">
-                  Present your business, startup, franchise, or trade concept to an active network of investors, franchisees, and commercial partners.
-                </p>
-              </div>
-              <JoinCta
-                roleType="entrepreneur"
-                singleMode
-                href="/for-entrepreneurs"
-                className="w-full py-3 text-center bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs rounded-xl transition-colors shadow-sm block"
-                alternateLabel="Join Also as Investor"
-                alternateHref="/signup/investor"
-                bothRolesLabel="Explore Opportunities"
-                bothRolesHref="/opportunities"
-              >
-                Join as Entrepreneur
-              </JoinCta>
-            </div>
-
-            {/* For Investors */}
-            <div className="bg-white rounded-2xl p-8 border border-[#DCECF2] shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center mb-5">
-                  <span className="material-symbols-outlined text-[28px]">account_balance</span>
-                </div>
-                <h3 className="text-xl font-bold text-[#0A192A] mb-3">
-                  For Investors &amp; Partners
-                </h3>
-                <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-6">
-                  Explore high-potential opportunities across diverse sectors, review business details, express interest, and connect directly.
-                </p>
-              </div>
-              <JoinCta
-                roleType="investor"
-                singleMode
-                href="/for-investors"
-                className="w-full py-3 text-center bg-[#0A192A] hover:bg-[#1E293B] text-white font-bold text-xs rounded-xl transition-colors shadow-sm block"
-                alternateLabel="Join Also as Entrepreneur"
-                alternateHref="/signup/entrepreneur"
-                bothRolesLabel="Explore Opportunities"
-                bothRolesHref="/opportunities"
-              >
-                Join as Investor
-              </JoinCta>
-            </div>
-          </div>
+          {/* Role-Aware Dynamic Gateways */}
+          <HowItWorksGatewayCards />
         </section>
       </main>
 

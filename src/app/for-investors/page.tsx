@@ -45,14 +45,6 @@ export default function ForInvestorsPage() {
     setModalOpen(true);
   };
 
-  const investorSteps = [
-    { num: 1, title: "Create Your Profile", desc: "Join Wenturex as an investor and create your basic profile." },
-    { num: 2, title: "Discover Opportunities", desc: "Explore relevant business and investment opportunities." },
-    { num: 3, title: "Explore Businesses", desc: "Discover businesses, startups and opportunities across sectors." },
-    { num: 4, title: "Review Information", desc: "Review the available business and opportunity information." },
-    { num: 5, title: "Express Interest", desc: "Submit an enquiry or express interest in an opportunity." },
-    { num: 6, title: "Connect", desc: "Connect with the relevant entrepreneur or business.", active: true },
-  ];
 
   return (
     <div className="flex flex-col min-h-screen bg-surface selection:bg-primary-container selection:text-white">
@@ -78,19 +70,13 @@ export default function ForInvestorsPage() {
                 Access curated investment opportunities, connect with visionary entrepreneurs, and build a diversified portfolio in a transparent, professional ecosystem.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
-                <Link
-                  href="/profile/investor"
-                  className="inline-flex items-center justify-center gap-2 bg-[#00A6E8] text-white font-button-text text-base px-8 py-4 rounded-xl hover:bg-[#0093CE] shadow-[0px_4px_16px_rgba(0,166,232,0.35)] transition-all hover:-translate-y-0.5 font-bold"
-                >
-                  <span className="material-symbols-outlined text-[20px]">badge</span>
-                  <span>Get Listed as an Investor</span>
-                </Link>
+              {/* Action Buttons: Join & Explore Opportunities */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <JoinCta
                   roleType="investor"
                   singleMode
                   href="/signup/investor"
-                  className="inline-flex items-center justify-center bg-white text-[#00658F] font-button-text text-base px-7 py-4 rounded-xl border border-[#DCECF2] hover:bg-[#F4FAFD] transition-colors font-bold"
+                  className="bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
                   alternateLabel="Join Also as Entrepreneur"
                   alternateHref="/signup/entrepreneur"
                   bothRolesLabel="Explore Wenturex"
@@ -98,11 +84,15 @@ export default function ForInvestorsPage() {
                 >
                   Join as Investor
                 </JoinCta>
+
                 <Link
-                  href="#how-it-works"
-                  className="inline-flex items-center justify-center text-on-surface font-button-text text-base px-6 py-4 rounded-xl border border-border-subtle hover:bg-surface-container-low transition-colors font-semibold"
+                  href="/opportunities"
+                  className="bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#00658F] font-button-text text-base rounded-lg px-7 py-4 hover:bg-[#F4FAFD] shadow-sm transition-all flex items-center gap-2"
                 >
-                  See How It Works
+                  <span className="material-symbols-outlined text-[20px] text-[#00A6E8]">
+                    explore
+                  </span>
+                  <span>Explore Opportunities</span>
                 </Link>
               </div>
             </div>
@@ -353,51 +343,7 @@ export default function ForInvestorsPage() {
           </div>
         </section>
 
-        {/* ============================================================ */}
-        {/* INVESTOR JOURNEY TIMELINE */}
-        {/* ============================================================ */}
-        <section className="py-20 md:py-28 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="how-it-works">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
-            <span className="font-label-caps text-xs text-primary uppercase tracking-wider">
-              How It Works
-            </span>
-            <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mt-1 mb-3">
-              Your Investment Journey
-            </h2>
-            <p className="font-body-lg text-on-surface-variant">
-              A simple, 6-step overview of exploring and connecting with opportunities on Wenturex.
-            </p>
-          </div>
 
-          <div className="relative">
-            <div className="hidden md:block absolute top-7 left-12 right-12 h-0.5 bg-border-subtle z-0" />
-
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-6 relative z-10">
-              {investorSteps.map((step) => (
-                <div
-                  key={step.num}
-                  className="flex flex-col items-center text-center bg-surface-pure md:bg-transparent p-5 md:p-0 rounded-xl md:rounded-none border md:border-none border-border-subtle shadow-sm md:shadow-none"
-                >
-                  <div
-                    className={`w-14 h-14 rounded-full flex items-center justify-center font-button-text text-base relative z-10 transition-colors shadow-sm ${
-                      step.active
-                        ? "bg-primary-container text-white border-2 border-primary-container"
-                        : "bg-surface-pure border-2 border-border-subtle text-on-surface"
-                    }`}
-                  >
-                    {step.num}
-                  </div>
-                  <h4 className="font-button-text text-sm text-on-surface mt-3 mb-1 font-bold">
-                    {step.title}
-                  </h4>
-                  <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ============================================================ */}
         {/* FINAL CTA */}
