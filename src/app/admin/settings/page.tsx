@@ -52,7 +52,7 @@ export default function AdminSettingsPage() {
 
         <div className="space-y-4 text-xs text-[#5F7180] leading-relaxed">
           <p>
-            Wenturex enforces a 3-tier administrator authorization security check across client and Firestore:
+            Wenture India enforces a 3-tier administrator authorization security check across client and Firestore:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

@@ -5,7 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Investor Login | Wenturex India International",
+  title: "Investor Login | Wenture India International",
   description: "Securely access your investor portfolio and discover high-growth opportunities.",
 };
 

@@ -9,9 +9,9 @@ import { HowItWorksGatewayCards } from "@/components/ui/join-cta";
 import { COMPANY } from "@/lib/constants/company";
 
 export const metadata: Metadata = {
-  title: "How It Works | The Wenturex Journey | Wenturex",
+  title: "How It Works | The Wenture India Journey | Wenture India",
   description:
-    "Discover how Wenturex connects entrepreneurs and investors through a simple 6-step journey: discover, review, express interest, and connect.",
+    "Discover how Wenture India connects entrepreneurs and investors through a simple 6-step journey: discover, review, express interest, and connect.",
 };
 
 export default function HowItWorksPage() {
@@ -19,7 +19,7 @@ export default function HowItWorksPage() {
     {
       num: 1,
       title: "Create Your Profile",
-      desc: "Join Wenturex and introduce yourself or your business.",
+      desc: "Join Wenture India and introduce yourself or your business.",
     },
     {
       num: 2,
@@ -64,7 +64,7 @@ export default function HowItWorksPage() {
                 Architecture of Connectivity
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] mb-4 tracking-tight font-heading">
-                The Wenturex Journey
+                The Wenture India Journey
               </h1>
               <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed max-w-2xl mx-auto">
                 {COMPANY.corePositioning}
@@ -80,7 +80,7 @@ export default function HowItWorksPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* 6-STEP WENTUREX JOURNEY */}
+        {/* 6-STEP WENTURE INDIA JOURNEY */}
         {/* ============================================================ */}
         <section className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -88,7 +88,7 @@ export default function HowItWorksPage() {
               Step-By-Step Process
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A192A] tracking-tight">
-              How Wenturex Works
+              How Wenture India Works
             </h2>
             <p className="text-sm sm:text-base text-[#5F7180] mt-2">
               Discover opportunities, explore businesses and build meaningful connections.

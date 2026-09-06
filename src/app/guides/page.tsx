@@ -7,7 +7,7 @@ import { GuideCard } from "@/components/cards/guide-card";
 import { GUIDES, GUIDES_HEADING } from "@/lib/constants/guides";
 
 export const metadata: Metadata = {
-  title: "Business & Investment Guides | Learn. Explore. Grow. | Wenturex",
+  title: "Business & Investment Guides | Learn. Explore. Grow. | Wenture India",
   description:
     "Understand business opportunities, investment concepts, venture capital, angel funding, partnerships, and franchise growth models.",
 };

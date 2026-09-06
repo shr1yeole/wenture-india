@@ -1,13 +1,13 @@
 export const COMPANY = {
-  name: "Wenturex India International",
-  shortName: "Wenturex",
+  name: "Wenture India International",
+  shortName: "Wenture India",
   legalEntity: "Omniverse Technologies Private Limited",
   website: "https://wentureindia.com",
   tagline: "Connect. Build. Scale. Grow Together.",
   corePositioning:
     "A common online platform to connect entrepreneurs with investors, vision with capital, ideas with funds and giving wings to dreams.",
   description:
-    "Wenturex connects entrepreneurs, investors, businesses and opportunities — bringing ideas, capital and growth together in a world-class institutional environment.",
+    "Wenture India connects entrepreneurs, investors, businesses and opportunities — bringing ideas, capital and growth together in a world-class institutional environment.",
   
   contact: {
     address: "53-B, GK-2, New Delhi 110017, India",
@@ -27,9 +27,9 @@ export const COMPANY = {
   },
   
   socials: {
-    linkedin: "https://www.linkedin.com/company/wenturex",
-    twitter: "https://twitter.com/wenturex",
+    linkedin: "https://www.linkedin.com/company/wentureindia",
+    twitter: "https://twitter.com/wentureindia",
   },
   
-  copyright: "© 2024 Wenturex India International. All Rights Reserved.",
+  copyright: "© 2026 Wenture India International. All Rights Reserved.",
 } as const;

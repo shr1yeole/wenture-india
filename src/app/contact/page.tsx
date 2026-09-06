@@ -7,9 +7,9 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { COMPANY } from "@/lib/constants/company";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Wenturex India International",
+  title: "Contact Us | Wenture India International",
   description:
-    "Get in touch with the Wenturex India International team. Phone, email, WhatsApp, and office address in New Delhi, India.",
+    "Get in touch with the Wenture India International team. Phone, email, WhatsApp, and office address in New Delhi, India.",
 };
 
 export default function ContactPage() {

@@ -65,7 +65,7 @@ export function formatFirebaseAuthError(errorCode?: string, fallback = "Authenti
     case "auth/network-request-failed":
       return "Please check your internet connection and try again.";
     case "auth/user-disabled":
-      return "This account has been disabled. Please contact Wenturex support.";
+      return "This account has been disabled. Please contact Wenture India support.";
     case "auth/requires-recent-login":
       return "Please log in again before performing this action.";
     default:

@@ -5,7 +5,7 @@ import { GUIDES } from "@/lib/constants/guides";
 import { GuideTemplate } from "@/components/guides/guide-template";
 
 export const metadata: Metadata = {
-  title: "Guide to Business Investment | Wenturex",
+  title: "Guide to Business Investment | Wenture India",
   description: "A comprehensive institutional framework for evaluating and structuring private market business investments.",
 };
 

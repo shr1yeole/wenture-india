@@ -5,7 +5,7 @@ import { GUIDES } from "@/lib/constants/guides";
 import { GuideTemplate } from "@/components/guides/guide-template";
 
 export const metadata: Metadata = {
-  title: "Guide to Business Franchise | Wenturex",
+  title: "Guide to Business Franchise | Wenture India",
   description: "Evaluating franchise models, master franchise licenses, unit economics, and operational playbooks.",
 };
 

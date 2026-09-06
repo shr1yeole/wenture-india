@@ -105,7 +105,7 @@ export function AuthSplitCard({
       if (res.error) {
         setErrorMsg(res.error);
       } else {
-        setSuccessMsg("Profile registered successfully! Welcome to Wenturex.");
+        setSuccessMsg("Profile registered successfully! Welcome to Wenture India.");
         setTimeout(() => {
           router.push(role === "investor" ? "/for-investors" : "/for-entrepreneurs");
         }, 1500);
@@ -123,7 +123,7 @@ export function AuthSplitCard({
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/auth-bg.jpg"
-            alt="Wenturex Aesthetic Architecture"
+            alt="Wenture India Aesthetic Architecture"
             fill
             priority
             className="object-cover opacity-85 brightness-105 contrast-[1.02]"
@@ -388,7 +388,7 @@ export function AuthSplitCard({
           <div className="mt-6 text-center text-sm text-[#5F7180]">
             {mode === "login" ? (
               <p>
-                New to Wenturex?{" "}
+                New to Wenture India?{" "}
                 <button
                   type="button"
                   onClick={() => {

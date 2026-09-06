@@ -55,7 +55,7 @@ export function ContactForm() {
           Message Received
         </h3>
         <p className="font-body-md text-on-surface-variant max-w-md mx-auto mb-6">
-          Thank you for reaching out to Wenturex India International. Our institutional advisory team will review your inquiry and connect with you shortly.
+          Thank you for reaching out to Wenture India International. Our institutional advisory team will review your inquiry and connect with you shortly.
         </p>
         <Button variant="outline" onClick={() => setSubmitted(false)}>
           Send Another Message

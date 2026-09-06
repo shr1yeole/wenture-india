@@ -15,7 +15,7 @@ export function formatEnquiryWhatsAppText(enq: OpportunityEnquiry): string {
 
   return `Hello ${name},
 
-Thank you for your interest in "${opp}" on Wenturex.
+Thank you for your interest in "${opp}" on Wenture India.
 
 *Inquiry Details:*
 • Investor Name: ${name} (${role})
@@ -27,7 +27,7 @@ I would be glad to share further details and discuss this opportunity with you.`
 }
 
 export function formatEnquiryEmailSubject(enq: OpportunityEnquiry): string {
-  return `Re: Interest in "${enq.opportunityTitle || "Business Opportunity"}" on Wenturex`;
+  return `Re: Interest in "${enq.opportunityTitle || "Business Opportunity"}" on Wenture India`;
 }
 
 export function formatEnquiryEmailBody(enq: OpportunityEnquiry, entrepreneurName?: string): string {
@@ -40,7 +40,7 @@ export function formatEnquiryEmailBody(enq: OpportunityEnquiry, entrepreneurName
 
   return `Dear ${name},
 
-Thank you for expressing interest in "${opp}" on Wenturex.
+Thank you for expressing interest in "${opp}" on Wenture India.
 
 --- Enquiry Summary ---
 • Investor Name: ${name}

@@ -9,9 +9,9 @@ import { NetworkMesh } from "@/components/visual/network-mesh";
 import { JoinCta } from "@/components/ui/join-cta";
 
 export const metadata: Metadata = {
-  title: "For Entrepreneurs | Wenturex India International",
+  title: "For Entrepreneurs | Wenture India International",
   description:
-    "Present your vision to a curated network of institutional investors. Elevate your venture from concept to capital with Wenturex.",
+    "Present your vision to a curated network of institutional investors. Elevate your venture from concept to capital with Wenture India.",
 };
 
 export default function ForEntrepreneursPage() {
@@ -50,7 +50,7 @@ export default function ForEntrepreneursPage() {
                   className="bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
                   alternateLabel="Join Also as Investor"
                   alternateHref="/signup/investor"
-                  bothRolesLabel="Explore Wenturex"
+                  bothRolesLabel="Explore Wenture India"
                   bothRolesHref="/opportunities"
                 >
                   Join as Entrepreneur
@@ -119,7 +119,7 @@ export default function ForEntrepreneursPage() {
                   bothRolesLabel={
                     <>
                       <span className="material-symbols-outlined text-[18px] text-[#00A6E8]">explore</span>
-                      <span>Explore Wenturex</span>
+                      <span>Explore Wenture India</span>
                     </>
                   }
                   bothRolesHref="/opportunities"
@@ -170,7 +170,7 @@ export default function ForEntrepreneursPage() {
           <Container>
             <div className="text-center max-w-2xl mx-auto mb-14">
               <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-3">
-                Why Build With Wenturex
+                Why Build With Wenture India
               </h2>
               <p className="font-body-lg text-on-surface-variant">
                 Strategic resources, verified capital access, and standardized presentation frameworks.
@@ -208,7 +208,7 @@ export default function ForEntrepreneursPage() {
               Ready to Scale Your Venture?
             </h2>
             <p className="font-body-lg text-on-surface-variant mb-8">
-              Join visionary entrepreneurs raising capital, expanding reach, and building strategic partnerships on Wenturex.
+              Join visionary entrepreneurs raising capital, expanding reach, and building strategic partnerships on Wenture India.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <JoinCta
@@ -225,7 +225,7 @@ export default function ForEntrepreneursPage() {
                 alternateHref="/signup/investor"
                 bothRolesLabel={
                   <>
-                    <span>Explore Wenturex</span>
+                    <span>Explore Wenture India</span>
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                   </>
                 }

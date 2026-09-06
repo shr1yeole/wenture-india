@@ -52,10 +52,10 @@ export function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
           {isPrivacy ? (
             <>
               <p className="font-semibold text-wenture-dark">
-                Wenturex India International is committed to protecting your privacy.
+                Wenture India International is committed to protecting your privacy.
               </p>
               <p>
-                This website is currently serving as an official preliminary Coming Soon landing page for Wenturex India International (
+                This website is currently serving as an official preliminary Coming Soon landing page for Wenture India International (
                 <span className="font-medium text-wenture-dark">https://wentureindia.com/</span>).
               </p>
               <h4 className="text-sm font-bold text-wenture-dark pt-2">Information We Collect</h4>
@@ -68,13 +68,13 @@ export function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
               </p>
               <h4 className="text-sm font-bold text-wenture-dark pt-2">Full Policy Release</h4>
               <p>
-                A comprehensive Privacy Policy will be published upon the official commercial rollout of the full Wenturex platform.
+                A comprehensive Privacy Policy will be published upon the official commercial rollout of the full Wenture India platform.
               </p>
             </>
           ) : (
             <>
               <p className="font-semibold text-wenture-dark">
-                Terms of Use for Wenturex India International Preliminary Portal.
+                Terms of Use for Wenture India International Preliminary Portal.
               </p>
               <p>
                 By accessing this website (
@@ -82,11 +82,11 @@ export function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
               </p>
               <h4 className="text-sm font-bold text-wenture-dark pt-2">No Financial Guarantees</h4>
               <p>
-                Information presented on this landing page is for introductory and informational purposes only. Wenturex India International does not offer guaranteed investment returns or solicit unregulated securities through this coming-soon landing page.
+                Information presented on this landing page is for introductory and informational purposes only. Wenture India International does not offer guaranteed investment returns or solicit unregulated securities through this coming-soon landing page.
               </p>
               <h4 className="text-sm font-bold text-wenture-dark pt-2">Intellectual Property</h4>
               <p>
-                All trademarks, brand assets, logos, and materials appearing on this site are the property of Wenturex India International. Unauthorized reproduction or distribution is strictly prohibited.
+                All trademarks, brand assets, logos, and materials appearing on this site are the property of Wenture India International. Unauthorized reproduction or distribution is strictly prohibited.
               </p>
               <h4 className="text-sm font-bold text-wenture-dark pt-2">Future Platform Agreement</h4>
               <p>

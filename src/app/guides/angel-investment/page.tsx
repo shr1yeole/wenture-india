@@ -5,7 +5,7 @@ import { GUIDES } from "@/lib/constants/guides";
 import { GuideTemplate } from "@/components/guides/guide-template";
 
 export const metadata: Metadata = {
-  title: "Guide to Angel Investment | Wenturex",
+  title: "Guide to Angel Investment | Wenture India",
   description: "Empowering visionary early-stage founders through strategic angel syndicates and individual capital.",
 };
 

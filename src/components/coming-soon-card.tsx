@@ -12,7 +12,7 @@ export function ComingSoonCard() {
     if (!emailInput || !emailInput.includes("@")) return;
     
     // Smoothly redirect to email client with pre-filled subject/body or show success note
-    window.location.href = `mailto:wentureindia@gmail.com?subject=Early Access & Inquiry - Wenturex Platform&body=Hello Wenturex Team,%0D%0A%0D%0AI would like to stay connected regarding platform updates and opportunities.%0D%0A%0D%0AMy email: ${encodeURIComponent(
+    window.location.href = `mailto:wentureindia@gmail.com?subject=Early Access & Inquiry - Wenture India Platform&body=Hello Wenture India Team,%0D%0A%0D%0AI would like to stay connected regarding platform updates and opportunities.%0D%0A%0D%0AMy email: ${encodeURIComponent(
       emailInput
     )}`;
     setSubmitted(true);
@@ -43,7 +43,7 @@ export function ComingSoonCard() {
 
             {/* Supporting Copy */}
             <p className="text-base sm:text-xl text-slate-300 font-normal leading-relaxed">
-              We&apos;re building a new digital experience for entrepreneurs, investors and businesses. Stay connected with Wenturex.
+              We&apos;re building a new digital experience for entrepreneurs, investors and businesses. Stay connected with Wenture India.
             </p>
 
             {/* Subtle Animated Progress / Momentum Element (No fake dates or countdowns) */}

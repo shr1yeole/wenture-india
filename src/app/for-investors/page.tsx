@@ -79,7 +79,7 @@ export default function ForInvestorsPage() {
                   className="bg-primary-container text-white font-button-text text-base rounded-lg px-8 py-4 hover:bg-surface-tint shadow-[0px_4px_15px_rgba(0,166,232,0.3)] transition-all"
                   alternateLabel="Join Also as Entrepreneur"
                   alternateHref="/signup/entrepreneur"
-                  bothRolesLabel="Explore Wenturex"
+                  bothRolesLabel="Explore Wenture India"
                   bothRolesHref="/opportunities"
                 >
                   Join as Investor
@@ -371,7 +371,7 @@ export default function ForInvestorsPage() {
                 className="inline-flex items-center justify-center bg-white text-[#00658F] font-button-text text-base px-8 py-4 rounded-xl border border-[#DCECF2] hover:bg-[#F4FAFD] transition-colors font-bold"
                 alternateLabel="Join Also as Entrepreneur"
                 alternateHref="/signup/entrepreneur"
-                bothRolesLabel="Explore Wenturex"
+                bothRolesLabel="Explore Wenture India"
                 bothRolesHref="/opportunities"
               >
                 Join as Investor

@@ -267,7 +267,7 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                                 My Investor Profile
                               </div>
                               <p className="text-xs text-[#5F7180] leading-snug mt-0.5">
-                                Create and manage the investor profile that entrepreneurs can discover on Wenturex. Add your investment interests, experience, preferred sectors and other details.
+                                Create and manage the investor profile that entrepreneurs can discover on Wenture India. Add your investment interests, experience, preferred sectors and other details.
                               </p>
                             </div>
                           </Link>
@@ -341,7 +341,7 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                 href="/signup"
                 className="bg-[#00A6E8] hover:bg-[#0093CE] text-white px-5 py-2 rounded-md text-sm font-bold tracking-normal transition-all duration-200 shadow-sm shadow-[#00A6E8]/20 hover:shadow"
               >
-                Join Wenturex
+                Join Wenture India
               </Link>
             )}
           </div>
@@ -506,7 +506,7 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                           <div>
                             <div className="font-bold text-[#0A192A]">My Investor Profile</div>
                             <div className="text-[11px] text-[#5F7180] leading-snug mt-0.5">
-                              Create and manage the investor profile that entrepreneurs can discover on Wenturex.
+                              Create and manage the investor profile that entrepreneurs can discover on Wenture India.
                             </div>
                           </div>
                         </Link>
@@ -548,7 +548,7 @@ export function Navbar({ className, hideAuth = false }: NavbarProps) {
                         onClick={() => setMobileMenuOpen(false)}
                         className="w-full text-center py-2.5 rounded-md bg-[#00A6E8] text-white font-bold text-xs hover:bg-[#0093CE] transition-colors"
                       >
-                        Join Wenturex
+                        Join Wenture India
                       </Link>
                       <Link
                         href="/login"

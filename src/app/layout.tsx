@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   description: COMPANY.corePositioning,
   keywords: [
-    "Wenturex",
     "Wenture India",
-    "Wenturex India International",
+    "Wenture India International",
+    "Wenture",
     "entrepreneurs",
     "investors",
     "venture capital",

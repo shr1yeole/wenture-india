@@ -116,7 +116,7 @@ export function convertListingToOpportunity(item: BusinessListing): Opportunity 
     shortDescription:
       item.shortDescription ||
       (typeof item.description === "string" ? item.description.slice(0, 160) : "") ||
-      "Verified commercial opportunity on Wenturex.",
+      "Verified commercial opportunity on Wenture India.",
     overview: item.shortDescription || item.description || "",
     businessDescription: item.description || item.shortDescription || "",
     opportunityDetails: detailsList,

@@ -39,7 +39,7 @@ export function Hero() {
 
           {/* Supporting Copy */}
           <p className="text-lg sm:text-xl lg:text-2xl text-slate-600 font-normal leading-relaxed max-w-3xl mx-auto">
-            Wenturex is building a platform that connects entrepreneurs, investors and business opportunities — bringing vision, capital and growth together.
+            Wenture India is building a platform that connects entrepreneurs, investors and business opportunities — bringing vision, capital and growth together.
           </p>
 
           {/* Micro Mission Statement */}

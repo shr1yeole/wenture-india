@@ -64,7 +64,7 @@ export function Footer() {
           </div>
 
           <p className="text-center sm:text-left">
-            &copy; 2026 Wenturex India International. All rights reserved.
+            &copy; 2026 Wenture India International. All rights reserved.
           </p>
 
           <div className="flex items-center gap-5">

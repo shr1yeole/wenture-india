@@ -5,7 +5,7 @@ import { GUIDES } from "@/lib/constants/guides";
 import { GuideTemplate } from "@/components/guides/guide-template";
 
 export const metadata: Metadata = {
-  title: "Guide to Venture Capital | Wenturex",
+  title: "Guide to Venture Capital | Wenture India",
   description: "Navigating early-stage and growth-stage high-growth technology funding rounds and term sheets.",
 };
 

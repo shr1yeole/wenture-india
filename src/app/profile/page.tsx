@@ -279,7 +279,7 @@ export default function ProfilePage() {
                   Your Profile
                 </h1>
                 <p className="text-sm sm:text-base text-[#5F7180] mt-1">
-                  Manage your Wenturex account and business information.
+                  Manage your Wenture India account and business information.
                 </p>
               </div>
 
@@ -359,7 +359,7 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-[#0A192A]">
-                    {profile?.fullName || profile?.name || "Wenturex Member"}
+                    {profile?.fullName || profile?.name || "Wenture India Member"}
                   </h2>
                   <p className="text-xs sm:text-sm text-[#5F7180]">
                     {user?.email}
@@ -632,7 +632,7 @@ export default function ProfilePage() {
                     </div>
                   </div>
                   <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-5">
-                    Create and manage the investor profile that entrepreneurs can discover on Wenturex. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
+                    Create and manage the investor profile that entrepreneurs can discover on Wenture India. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
                   </p>
                 </div>
 
@@ -666,7 +666,7 @@ export default function ProfilePage() {
                   </h3>
                 </div>
                 <p className="text-sm text-[#5F7180] max-w-2xl leading-relaxed mb-6">
-                  Manage your active and pending venture listings, track investor views, and add new opportunities to Wenturex.
+                  Manage your active and pending venture listings, track investor views, and add new opportunities to Wenture India.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3">
@@ -994,7 +994,7 @@ export default function ProfilePage() {
                 </h3>
               </div>
               <p className="text-sm text-[#5F7180] max-w-2xl leading-relaxed mb-6">
-                Create and manage the investor profile that entrepreneurs can discover on Wenturex. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
+                Create and manage the investor profile that entrepreneurs can discover on Wenture India. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
               </p>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -1084,7 +1084,7 @@ export default function ProfilePage() {
                       No Expressed Interests Yet
                     </h3>
                     <p className="text-xs sm:text-sm text-[#5F7180] max-w-md mx-auto leading-relaxed mb-6">
-                      When you explore the Wenturex catalog and click &ldquo;I&apos;m Interested&rdquo; on any business opportunity, the details of your inquiry and current entrepreneur discussion status will appear here.
+                      When you explore the Wenture India catalog and click &ldquo;I&apos;m Interested&rdquo; on any business opportunity, the details of your inquiry and current entrepreneur discussion status will appear here.
                     </p>
                     <Link
                       href="/opportunities"
@@ -1200,7 +1200,7 @@ export default function ProfilePage() {
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-[#5F7180] pt-2 border-t border-[#DCECF2]/50 mt-1">
                             <span className="flex items-center gap-1">
                               <span className="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
-                              Delivered directly to opportunity entrepreneur &amp; monitored by Wenturex Admin
+                              Delivered directly to opportunity entrepreneur &amp; monitored by Wenture India Admin
                             </span>
 
                             <div className="flex items-center gap-3 shrink-0">
@@ -1333,7 +1333,7 @@ export default function ProfilePage() {
               Delete your account?
             </h3>
             <p className="text-sm text-[#5F7180] leading-relaxed mb-6">
-              This action is permanent and cannot be undone. Your Wenturex account and associated profile information will be deleted.
+              This action is permanent and cannot be undone. Your Wenture India account and associated profile information will be deleted.
             </p>
 
             {deleteError && (

@@ -360,7 +360,7 @@ export default function EntrepreneurListingsPage() {
                 My Business Listings
               </h1>
               <p className="text-sm sm:text-base text-[#5F7180] mt-1">
-                Manage your business opportunities and track their review status on Wenturex.
+                Manage your business opportunities and track their review status on Wenture India.
               </p>
             </div>
 
@@ -648,7 +648,7 @@ export default function EntrepreneurListingsPage() {
                   verified
                 </span>
                 <div className="leading-relaxed">
-                  <strong>Quality &amp; Review Policy:</strong> All business opportunities submitted on Wenturex are verified by our institutional review team. New submissions start with a <span className="font-bold">Pending</span> status and become public immediately upon approval.
+                  <strong>Quality &amp; Review Policy:</strong> All business opportunities submitted on Wenture India are verified by our institutional review team. New submissions start with a <span className="font-bold">Pending</span> status and become public immediately upon approval.
                 </div>
               </div>
 

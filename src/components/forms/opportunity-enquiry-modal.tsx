@@ -224,7 +224,7 @@ export function OpportunityEnquiryModal({
   const displayPhone = oppPhone || COMPANY.contact.whatsapp;
 
   const whatsappUrl = `https://wa.me/${targetWaNumber}?text=${encodeURIComponent(
-    `Hello, I am interested in learning more about: ${opportunity.title} (${opportunity.category} - ${opportunity.sector}) on Wenturex.`
+    `Hello, I am interested in learning more about: ${opportunity.title} (${opportunity.category} - ${opportunity.sector}) on Wenture India.`
   )}`;
 
   return (
@@ -323,7 +323,7 @@ export function OpportunityEnquiryModal({
                   Enquiry Received
                 </h4>
                 <p className="text-sm text-[#5F7180] max-w-md mx-auto mb-6 leading-relaxed">
-                  Thank you. Your enquiry has been received. The Wenturex team will get in touch with you.
+                  Thank you. Your enquiry has been received. The Wenture India team will get in touch with you.
                 </p>
                 <button
                   type="button"

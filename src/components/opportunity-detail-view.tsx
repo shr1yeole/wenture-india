@@ -33,7 +33,7 @@ export function OpportunityDetailView({
   const displayPhone = oppPhone || COMPANY.contact.phone;
 
   const whatsappUrl = `https://wa.me/${targetWaNumber}?text=${encodeURIComponent(
-    `Hello, I am interested in: ${opp.title} (${opp.category} - ${opp.sector}) listed on Wenturex. Please share further details.`
+    `Hello, I am interested in: ${opp.title} (${opp.category} - ${opp.sector}) listed on Wenture India. Please share further details.`
   )}`;
 
   return (
@@ -186,7 +186,7 @@ export function OpportunityDetailView({
               Express Interest
             </h3>
             <p className="text-xs sm:text-sm text-[#5F7180] mb-6 leading-relaxed">
-              Connect directly with Wenturex to receive further information or discuss terms.
+              Connect directly with Wenture India to receive further information or discuss terms.
             </p>
 
             <div className="space-y-3">
@@ -205,7 +205,7 @@ export function OpportunityDetailView({
                 href="/contact"
                 className="w-full py-3 bg-[#F6FAFF] hover:bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#0A192A] font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2"
               >
-                <span>Contact Wenturex</span>
+                <span>Contact Wenture India</span>
               </Link>
 
               {/* WhatsApp CTA */}
@@ -267,7 +267,7 @@ export function OpportunityDetailView({
                     </p>
                   )}
                   <p>
-                    <strong>Wenturex Desk:</strong> {COMPANY.contact.generalEmail}
+                    <strong>Wenture India Desk:</strong> {COMPANY.contact.generalEmail}
                   </p>
                 </>
               ) : (

@@ -282,7 +282,7 @@ export default function ProfileInvestorPage() {
                   My Investor Profile
                 </h1>
                 <p className="text-xs sm:text-sm text-[#5F7180] mt-1.5 leading-relaxed max-w-2xl">
-                  Create and manage the investor profile that entrepreneurs can discover on Wenturex. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
+                  Create and manage the investor profile that entrepreneurs can discover on Wenture India. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
                 </p>
               </div>
 

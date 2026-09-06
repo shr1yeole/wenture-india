@@ -35,7 +35,7 @@ export default function HomePage() {
           <span className="material-symbols-outlined text-[20px] text-emerald-600">
             check_circle
           </span>
-          <span>Your Wenturex account has been deleted.</span>
+          <span>Your Wenture India account has been deleted.</span>
           <button
             type="button"
             onClick={() => setDeletedNotice(false)}
@@ -181,7 +181,7 @@ export default function HomePage() {
                   Ready to Connect, Build &amp; Scale?
                 </h2>
                 <p className="text-sm sm:text-base text-slate-300 mb-8 leading-relaxed">
-                  Join Wenturex India International to explore active opportunities, discover vetted businesses, and connect with visionary entrepreneurs.
+                  Join Wenture India International to explore active opportunities, discover vetted businesses, and connect with visionary entrepreneurs.
                 </p>
 
                 <RoleCtaGroup

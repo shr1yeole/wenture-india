@@ -8,9 +8,9 @@ import { COMPANY } from "@/lib/constants/company";
 import { BentoCard } from "@/components/cards/bento-card";
 
 export const metadata: Metadata = {
-  title: "About Wenturex | Omniverse Technologies Private Limited",
+  title: "About Wenture India | Omniverse Technologies Private Limited",
   description:
-    "Learn about Wenturex India International — our mission, vision, and core positioning as an institutional business ecosystem.",
+    "Learn about Wenture India International — our mission, vision, and core positioning as an institutional business ecosystem.",
 };
 
 export default function AboutPage() {
@@ -27,7 +27,7 @@ export default function AboutPage() {
                 Corporate Overview
               </div>
               <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface mb-4 tracking-tight">
-                About Wenturex
+                About Wenture India
               </h1>
               <p className="font-headline-md text-2xl text-secondary font-medium mb-4">
                 {COMPANY.tagline}
@@ -84,7 +84,7 @@ export default function AboutPage() {
                 Omniverse Technologies Private Limited
               </h3>
               <p className="font-body-md text-base text-on-surface-variant leading-relaxed">
-                Wenturex India International operates under <strong>{COMPANY.legalEntity}</strong>, headquartered in New Delhi, India. The company is committed to upholding institutional integrity, data confidentiality, and regulatory compliance across all business networking and advisory activities.
+                Wenture India International operates under <strong>{COMPANY.legalEntity}</strong>, headquartered in New Delhi, India. The company is committed to upholding institutional integrity, data confidentiality, and regulatory compliance across all business networking and advisory activities.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-border-subtle text-sm">

@@ -80,7 +80,7 @@ export function ContactSection() {
             Let&apos;s connect.
           </h2>
           <p className="text-base sm:text-lg text-slate-600">
-            For enquiries, partnerships or business opportunities, get in touch with the Wenturex team.
+            For enquiries, partnerships or business opportunities, get in touch with the Wenture India team.
           </p>
         </div>
 

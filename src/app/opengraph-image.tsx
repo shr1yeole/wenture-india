@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Wenturex India International | Connect. Build. Scale. Grow Together.";
+export const alt = "Wenture India International | Connect. Build. Scale. Grow Together.";
 export const size = {
   width: 1200,
   height: 630,

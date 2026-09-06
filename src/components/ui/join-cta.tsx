@@ -12,7 +12,7 @@ export interface JoinCtaProps {
   children?: React.ReactNode;
   /**
    * If true, this CTA is a standalone hero button that shows the alternate
-   * role if the user already has this role, or Explore Wenturex if both.
+   * role if the user already has this role, or Explore Wenture India if both.
    */
   singleMode?: boolean;
   alternateLabel?: React.ReactNode;
@@ -29,7 +29,7 @@ export interface JoinCtaProps {
  * - Logged-out users: show “Join as Entrepreneur” and “Join as Investor”.
  * - Logged-in Entrepreneur: hide “Join as Entrepreneur” and show “Join Also as Investor”.
  * - Logged-in Investor: hide “Join as Investor” and show “Join Also as Entrepreneur”.
- * - Both roles joined: hide both join CTAs and show a suitable “Explore Wenturex” or profile action.
+ * - Both roles joined: hide both join CTAs and show a suitable “Explore Wenture India” or profile action.
  */
 export function JoinCta({
   roleType,
@@ -81,7 +81,7 @@ export function JoinCta({
           href={bothRolesHref}
           className={bothRolesClassName || className}
         >
-          {bothRolesLabel || "Explore Wenturex"}
+          {bothRolesLabel || "Explore Wenture India"}
         </Link>
       );
     }
@@ -185,12 +185,12 @@ export function RoleCtaGroup({
     );
   }
 
-  // If user has both roles, hide both join CTAs and show Explore Wenturex + Profile
+  // If user has both roles, hide both join CTAs and show Explore Wenture India + Profile
   if (hasBothRoles) {
     return (
       <div className={className}>
         <Link href="/opportunities" className={exploreClassName}>
-          Explore Wenturex
+          Explore Wenture India
         </Link>
         <Link
           href="/profile"

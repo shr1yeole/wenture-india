@@ -86,7 +86,7 @@ export function EntrepreneurAuthForm({ mode }: EntrepreneurAuthFormProps) {
     if (res.error) {
       setServerError(res.error);
     } else {
-      setSuccessMessage("Founder registration received! Welcome to Wenturex.");
+      setSuccessMessage("Founder registration received! Welcome to Wenture India.");
     }
   };
 

@@ -11,7 +11,7 @@ export function Navbar() {
         <Link
           href="/"
           className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wenture-blue rounded-lg p-1 transition-opacity hover:opacity-90"
-          aria-label="Wenturex India International - Home"
+          aria-label="Wenture India International - Home"
         >
           <BrandLogo size="md" />
         </Link>

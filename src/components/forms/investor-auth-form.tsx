@@ -82,7 +82,7 @@ export function InvestorAuthForm({ mode }: InvestorAuthFormProps) {
     if (res.error) {
       setServerError(res.error);
     } else {
-      setSuccessMessage("Profile application submitted successfully! Welcome to Wenturex.");
+      setSuccessMessage("Profile application submitted successfully! Welcome to Wenture India.");
     }
   };
 

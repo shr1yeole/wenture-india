@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!opp) return { title: "Opportunity Not Found" };
 
   return {
-    title: `${opp.title} (${opp.category} - ${opp.sector}) | Wenturex India International`,
+    title: `${opp.title} (${opp.category} - ${opp.sector}) | Wenture India International`,
     description: opp.shortDescription,
   };
 }

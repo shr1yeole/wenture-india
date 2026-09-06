@@ -81,7 +81,7 @@ export function ExpressInterestModal({
   if (!isOpen || !investor) return null;
 
   const whatsappUrl = `https://wa.me/91984181008?text=${encodeURIComponent(
-    `Hello Wenturex Team, I would like to express interest in connecting with Investor: ${investor.investorName} (${investor.investorType} - ${investor.location}).`
+    `Hello Wenture India Team, I would like to express interest in connecting with Investor: ${investor.investorName} (${investor.investorType} - ${investor.location}).`
   )}`;
 
   return (
@@ -137,7 +137,7 @@ export function ExpressInterestModal({
                 </h3>
                 <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed max-w-md mx-auto mb-6">
                   Your venture proposition has been recorded for{" "}
-                  <strong>{investor.investorName}</strong>. Wenturex facilitates verified institutional introductions in accordance with investor criteria.
+                  <strong>{investor.investorName}</strong>. Wenture India facilitates verified institutional introductions in accordance with investor criteria.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

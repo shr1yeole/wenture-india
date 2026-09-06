@@ -56,7 +56,7 @@ export function Footer() {
                 Investment Guides
               </Link>
               <Link href="/about" className="font-body-md text-sm text-surface-variant hover:text-primary-container transition-colors duration-200">
-                About Wenturex
+                About Wenture India
               </Link>
             </div>
 

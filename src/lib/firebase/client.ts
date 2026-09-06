@@ -3,8 +3,17 @@ import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 
+const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+
+if (!apiKey && typeof window !== "undefined") {
+  console.error(
+    "[Firebase Config Error] Missing NEXT_PUBLIC_FIREBASE_API_KEY. " +
+    "Please set NEXT_PUBLIC_FIREBASE_API_KEY in your environment variables (e.g. Vercel Project Settings) and redeploy."
+  );
+}
+
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDummyKeyForBuildOnly123456789",
+  apiKey: apiKey || "",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "wenture-india.firebaseapp.com",
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "wenture-india",
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "wenture-india.firebasestorage.app",

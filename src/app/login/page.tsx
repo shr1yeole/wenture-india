@@ -5,8 +5,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Authenticate | Wenturex India International",
-  description: "Securely access your Wenturex investor or entrepreneur account.",
+  title: "Authenticate | Wenture India International",
+  description: "Securely access your Wenture India investor or entrepreneur account.",
 };
 
 export default function LoginPage() {

@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Access Restricted
           </h2>
           <p className="text-sm text-[#5F7180] leading-relaxed mb-6">
-            The Wenturex Admin Portal is strictly restricted to authorized administrators. Your account ({user?.email || "Guest"}) does not possess administrative privileges.
+            The Wenture India Admin Portal is strictly restricted to authorized administrators. Your account ({user?.email || "Guest"}) does not possess administrative privileges.
           </p>
           <div className="flex flex-col gap-3">
             <Link
@@ -171,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <div className="p-4 border-t border-[#DCECF2] bg-[#F4FAFD]/50">
             <div className="text-[11px] text-[#5F7180] leading-snug">
-              <strong className="text-[#0A192A]">Wenturex India</strong>
+              <strong className="text-[#0A192A]">Wenture India</strong>
               <span className="block text-[10px] text-slate-400 mt-0.5">Admin Security Layer v2.0</span>
             </div>
           </div>

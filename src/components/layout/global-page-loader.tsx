@@ -156,7 +156,7 @@ export function GlobalPageLoader() {
       <AnimatePresence>
         {isLoading && (
           <motion.div
-            key="wenturex-page-loader"
+            key="wenture-page-loader"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

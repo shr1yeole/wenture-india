@@ -5,7 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Entrepreneur Registration | Wenturex India International",
+  title: "Entrepreneur Registration | Wenture India International",
   description: "Register your founder and enterprise profile to connect with capital partners.",
 };
 

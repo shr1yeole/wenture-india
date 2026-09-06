@@ -5,7 +5,7 @@ import { GUIDES } from "@/lib/constants/guides";
 import { GuideTemplate } from "@/components/guides/guide-template";
 
 export const metadata: Metadata = {
-  title: "Guide to Business Partnerships | Wenturex",
+  title: "Guide to Business Partnerships | Wenture India",
   description: "Structuring collaborative joint ventures, strategic alliances, and profit-sharing ventures.",
 };
 
