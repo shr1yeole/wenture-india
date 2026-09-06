@@ -27,8 +27,8 @@ export interface JoinCtaProps {
 /**
  * Role-aware Join CTA component.
  * - Logged-out users: show “Join as Entrepreneur” and “Join as Investor”.
- * - Logged-in Entrepreneur: hide “Join as Entrepreneur” and show “Join Also as Investor”.
- * - Logged-in Investor: hide “Join as Investor” and show “Join Also as Entrepreneur”.
+ * - Logged-in Entrepreneur: NEVER show “Join as Entrepreneur” or “Join Also as Entrepreneur”; only show “Join Also as Investor”.
+ * - Logged-in Investor: NEVER show “Join as Investor” or “Join Also as Investor”; only show “Join Also as Entrepreneur”.
  * - Both roles joined: hide both join CTAs and show a suitable “Explore Wenture India” or profile action.
  */
 export function JoinCta({
@@ -73,7 +73,7 @@ export function JoinCta({
     );
   }
 
-  // 2. Both roles already joined
+  // 2. Both roles already joined: NEVER show "Join as..." or "Join Also as..."
   if (hasBothRoles) {
     if (showExploreWhenBoth || singleMode) {
       return (
@@ -89,10 +89,11 @@ export function JoinCta({
   }
 
   // 3. Logged-in Entrepreneur (not investor)
+  // RULE: NEVER show “Join as Entrepreneur” or “Join Also as Entrepreneur”; only show “Join Also as Investor”.
   if (isEntrepreneur && !isInvestor) {
     if (roleType === "entrepreneur") {
+      // In singleMode, switch to "Join Also as Investor"
       if (singleMode) {
-        // On an entrepreneur-focused page hero, an entrepreneur sees "Join Also as Investor"
         return (
           <Link
             href={alternateHref || "/signup/investor"}
@@ -106,22 +107,23 @@ export function JoinCta({
       return null;
     }
 
-    // roleType === "investor": show "Join Also as Investor"
+    // roleType === "investor": user is an Entrepreneur wanting to join as an investor
     return (
       <Link
-        href={alternateHref || "/signup/investor"}
-        className={alternateClassName || className}
+        href={href || "/signup/investor"}
+        className={className}
       >
-        {alternateLabel || "Join Also as Investor"}
+        {"Join Also as Investor"}
       </Link>
     );
   }
 
   // 4. Logged-in Investor (not entrepreneur)
+  // RULE: NEVER show “Join as Investor” or “Join Also as Investor”; only show “Join Also as Entrepreneur”.
   if (isInvestor && !isEntrepreneur) {
     if (roleType === "investor") {
+      // In singleMode, switch to "Join Also as Entrepreneur"
       if (singleMode) {
-        // On an investor-focused page hero, an investor sees "Join Also as Entrepreneur"
         return (
           <Link
             href={alternateHref || "/signup/entrepreneur"}
@@ -135,19 +137,23 @@ export function JoinCta({
       return null;
     }
 
-    // roleType === "entrepreneur": show "Join Also as Entrepreneur"
+    // roleType === "entrepreneur": user is an Investor wanting to join as an entrepreneur
     return (
       <Link
-        href={alternateHref || "/signup/entrepreneur"}
-        className={alternateClassName || className}
+        href={href || "/signup/entrepreneur"}
+        className={className}
       >
-        {alternateLabel || "Join Also as Entrepreneur"}
+        {"Join Also as Entrepreneur"}
       </Link>
     );
   }
 
-  // Fallback
-  return null;
+  // 5. Authenticated user without designated role
+  return (
+    <Link href={defaultHref} className={className}>
+      {defaultText}
+    </Link>
+  );
 }
 
 /**
@@ -171,7 +177,7 @@ export function RoleCtaGroup({
     setMounted(true);
   }, []);
 
-  // Stable default render during SSR and loading
+  // Stable default render during SSR, loading, and logged-out state
   if (!mounted || loading || !isAuthenticated) {
     return (
       <div className={className}>
@@ -185,7 +191,7 @@ export function RoleCtaGroup({
     );
   }
 
-  // If user has both roles, hide both join CTAs and show Explore Wenture India + Profile
+  // If user has both roles: NEVER show Join CTAs
   if (hasBothRoles) {
     return (
       <div className={className}>
@@ -202,11 +208,12 @@ export function RoleCtaGroup({
     );
   }
 
-  // Logged-in Entrepreneur: hide Join as Entrepreneur, show Join Also as Investor
+  // Logged-in Entrepreneur: ONLY show "Join Also as Investor" + "Explore Opportunities"
+  // (NEVER show "Join as Entrepreneur" or "Join Also as Entrepreneur")
   if (isEntrepreneur && !isInvestor) {
     return (
       <div className={className}>
-        <Link href="/profile/investor" className={investorClassName}>
+        <Link href="/signup/investor" className={investorClassName}>
           Join Also as Investor
         </Link>
         <Link href="/opportunities" className={entrepreneurClassName}>
@@ -216,11 +223,12 @@ export function RoleCtaGroup({
     );
   }
 
-  // Logged-in Investor: hide Join as Investor, show Join Also as Entrepreneur
+  // Logged-in Investor: ONLY show "Join Also as Entrepreneur" + "Explore Opportunities"
+  // (NEVER show "Join as Investor" or "Join Also as Investor")
   if (isInvestor && !isEntrepreneur) {
     return (
       <div className={className}>
-        <Link href="/profile/listings" className={investorClassName}>
+        <Link href="/signup/entrepreneur" className={investorClassName}>
           Join Also as Entrepreneur
         </Link>
         <Link href="/opportunities" className={entrepreneurClassName}>
@@ -230,12 +238,22 @@ export function RoleCtaGroup({
     );
   }
 
-  return null;
+  // Authenticated user without specific role set
+  return (
+    <div className={className}>
+      <Link href="/signup/investor" className={investorClassName}>
+        Join as Investor
+      </Link>
+      <Link href="/signup/entrepreneur" className={entrepreneurClassName}>
+        Join as Entrepreneur
+      </Link>
+    </div>
+  );
 }
 
 /**
  * Role-aware Dual/Single Gateway Cards for the How-It-Works page.
- * - Logged-out: Shows both "For Entrepreneurs & Businesses" and "For Investors & Partners".
+ * - Logged-out: Shows both "For Entrepreneurs & Businesses" ("Join as Entrepreneur") and "For Investors & Partners" ("Join as Investor").
  * - Logged-in Entrepreneur: Shows ONLY ONE card — "For Investors & Partners" with "Join Also as Investor".
  * - Logged-in Investor: Shows ONLY ONE card — "For Entrepreneurs & Businesses" with "Join Also as Entrepreneur".
  * - Both roles joined: Shows a single card to "Explore Opportunities".
@@ -262,7 +280,7 @@ export function HowItWorksGatewayCards() {
         </p>
       </div>
       <Link
-        href={isOppositeRole ? "/signup/entrepreneur" : "/for-entrepreneurs"}
+        href="/signup/entrepreneur"
         className="w-full py-3.5 text-center bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm rounded-xl transition-colors shadow-sm block"
       >
         {isOppositeRole ? "Join Also as Entrepreneur" : "Join as Entrepreneur"}
@@ -284,7 +302,7 @@ export function HowItWorksGatewayCards() {
         </p>
       </div>
       <Link
-        href={isOppositeRole ? "/signup/investor" : "/for-investors"}
+        href="/signup/investor"
         className={cn(
           "w-full py-3.5 text-center font-bold text-sm rounded-xl transition-colors shadow-sm block",
           isOppositeRole
@@ -342,7 +360,7 @@ export function HowItWorksGatewayCards() {
     );
   }
 
-  // 3. Logged-in Entrepreneur (not investor): show ONLY the opposite card (Investor)
+  // 3. Logged-in Entrepreneur (not investor): show ONLY the opposite card (Investor) with "Join Also as Investor"
   if (isEntrepreneur && !isInvestor) {
     return (
       <div className="mt-20 max-w-xl mx-auto">
@@ -351,7 +369,7 @@ export function HowItWorksGatewayCards() {
     );
   }
 
-  // 4. Logged-in Investor (not entrepreneur): show ONLY the opposite card (Entrepreneur)
+  // 4. Logged-in Investor (not entrepreneur): show ONLY the opposite card (Entrepreneur) with "Join Also as Entrepreneur"
   if (isInvestor && !isEntrepreneur) {
     return (
       <div className="mt-20 max-w-xl mx-auto">
@@ -360,5 +378,11 @@ export function HowItWorksGatewayCards() {
     );
   }
 
-  return null;
+  // 5. Authenticated user without specific role set
+  return (
+    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      {entrepreneurCard(false)}
+      {investorCard(false)}
+    </div>
+  );
 }
