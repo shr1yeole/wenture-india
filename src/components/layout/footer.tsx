@@ -6,8 +6,8 @@ import { BrandLogo } from "@/components/brand-logo";
 export function Footer() {
   return (
     <footer className="bg-on-surface text-surface mt-auto border-t border-secondary/20">
-      <div className="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-gutter">
+      <div className="w-full max-w-container-max mx-auto px-3.5 sm:px-6 md:px-margin-desktop py-12 sm:py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-gutter">
           {/* Brand Column */}
           <div className="md:col-span-4 flex flex-col justify-between">
             <div>

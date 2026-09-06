@@ -56,8 +56,6 @@ export default function EntrepreneurListingsPage() {
     profile,
     role,
     isEntrepreneur,
-    isInvestor,
-    hasBothRoles,
     isAdmin,
     loading,
     isAuthenticated,
@@ -135,22 +133,17 @@ export default function EntrepreneurListingsPage() {
     return "Recent";
   };
 
-  // User is restricted if their role is Investor (and not dual-role) OR if they are not an entrepreneur and not admin
-  const isInvestorOnly =
-    (role === "investor" && !hasBothRoles) ||
-    (isInvestor && !isEntrepreneur && !hasBothRoles) ||
-    (profile?.role === "investor" && !hasBothRoles);
-
+  // User is restricted if their role is not entrepreneur and not admin
   const isRestricted =
     !loading &&
     isAuthenticated &&
-    (isInvestorOnly || (!isEntrepreneur && role !== "entrepreneur" && !isAdmin));
+    (!isEntrepreneur && role !== "entrepreneur" && !isAdmin);
 
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
         router.push("/login?redirect=/profile/listings");
-      } else if (!isRestricted && (isEntrepreneur || hasBothRoles || role === "entrepreneur" || isAdmin)) {
+      } else if (!isRestricted && (isEntrepreneur || role === "entrepreneur" || isAdmin)) {
         loadUserListings();
         loadEnquiries();
         if (user?.email) {
@@ -163,7 +156,6 @@ export default function EntrepreneurListingsPage() {
     isAuthenticated,
     isRestricted,
     isEntrepreneur,
-    hasBothRoles,
     role,
     isAdmin,
     router,

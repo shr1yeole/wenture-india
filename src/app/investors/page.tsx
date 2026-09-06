@@ -128,21 +128,21 @@ export default function FindInvestorsPage() {
 
       <main className="flex-grow">
         {/* Header Hero Banner */}
-        <section className="bg-white border-b border-[#DCECF2] py-12 sm:py-16">
-          <div className="w-full max-w-[1240px] mx-auto px-5 sm:px-8">
+        <section className="bg-white border-b border-[#DCECF2] py-8 sm:py-12 md:py-16">
+          <div className="w-full max-w-[1240px] mx-auto px-3.5 sm:px-8">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               className="max-w-3xl"
             >
-              <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-2">
+              <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1 sm:mb-2">
                 Capital &amp; Venture Directory
               </span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-2 sm:mb-4">
                 Find Investors
               </h1>
-              <p className="text-base sm:text-lg text-[#5F7180] leading-relaxed">
+              <p className="text-xs sm:text-base md:text-lg text-[#5F7180] leading-relaxed">
                 Explore investors, capital partners and business-focused investment profiles across sectors.
               </p>
             </motion.div>
@@ -150,8 +150,8 @@ export default function FindInvestorsPage() {
         </section>
 
         {/* Filter Bar & Content Section */}
-        <section className="py-8 sm:py-12">
-          <div className="w-full max-w-[1240px] mx-auto px-5 sm:px-8 space-y-8">
+        <section className="py-6 sm:py-10 md:py-12">
+          <div className="w-full max-w-[1240px] mx-auto px-3.5 sm:px-8 space-y-6 sm:space-y-8">
             {/* Desktop Filters Card */}
             <div className="bg-white border border-[#DCECF2] rounded-2xl p-5 sm:p-6 shadow-sm">
               <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
@@ -446,7 +446,7 @@ export default function FindInvestorsPage() {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
                 {filteredInvestors.map((inv) => (
                   <InvestorCard key={inv.id} investor={inv} />
                 ))}

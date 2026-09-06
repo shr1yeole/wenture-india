@@ -17,21 +17,21 @@ export default function GuidesHubPage() {
     <div className="flex flex-col min-h-screen bg-[#F6FAFF] selection:bg-[#00A6E8] selection:text-white">
       <Navbar />
 
-      <main className="flex-grow py-12 md:py-20">
+      <main className="flex-grow py-8 sm:py-12 md:py-20">
         <Container>
-          <div className="max-w-3xl mx-auto text-center mb-14">
+          <div className="max-w-3xl mx-auto text-center mb-6 sm:mb-14">
             <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
               Educational Hub
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-3">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-2 sm:mb-3">
               {GUIDES_HEADING.title}
             </h1>
-            <p className="text-sm sm:text-base text-[#5F7180] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-[#5F7180] max-w-2xl mx-auto leading-relaxed">
               {GUIDES_HEADING.subtitle}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
             {GUIDES.map((guide) => (
               <GuideCard key={guide.slug} guide={guide} />
             ))}

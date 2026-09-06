@@ -13,7 +13,6 @@ interface AuthContextType {
   role: UserRole | null;
   isEntrepreneur: boolean;
   isInvestor: boolean;
-  hasBothRoles: boolean;
   hasInvestorProfile: boolean;
   isAdmin: boolean;
   loading: boolean;
@@ -28,7 +27,6 @@ const AuthContext = createContext<AuthContextType>({
   role: null,
   isEntrepreneur: false,
   isInvestor: false,
-  hasBothRoles: false,
   hasInvestorProfile: false,
   isAdmin: false,
   loading: true,
@@ -92,26 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const userRole = profile?.role || null;
-  const rolesList: UserRole[] = Array.isArray(profile?.roles)
-    ? profile.roles
-    : userRole
-    ? [userRole]
-    : [];
-
-  const isInvestor =
-    !!user &&
-    (userRole === "investor" ||
-      rolesList.includes("investor") ||
-      hasInvestorProfile ||
-      profile?.hasJoinedInvestor === true);
-
-  const isEntrepreneur =
-    !!user &&
-    (userRole === "entrepreneur" ||
-      rolesList.includes("entrepreneur") ||
-      profile?.hasJoinedEntrepreneur === true);
-
-  const hasBothRoles = !!user && isInvestor && isEntrepreneur;
+  const isInvestor = !!user && userRole === "investor";
+  const isEntrepreneur = !!user && userRole === "entrepreneur";
 
   return (
     <AuthContext.Provider
@@ -121,7 +101,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         role: userRole,
         isEntrepreneur,
         isInvestor,
-        hasBothRoles,
         hasInvestorProfile,
         isAdmin,
         loading,

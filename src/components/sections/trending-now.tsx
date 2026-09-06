@@ -52,21 +52,21 @@ const TRENDING_ITEMS: TrendingItem[] = [
 
 export function TrendingNow() {
   return (
-    <section className="w-full py-16 sm:py-20 bg-[#F6FAFF] border-b border-[#DCECF2]">
-      <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
+    <section className="w-full py-10 sm:py-16 md:py-20 bg-[#F6FAFF] border-b border-[#DCECF2]">
+      <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-6 lg:px-12">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-5 sm:mb-8">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00A6E8] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00A6E8]"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-[#00A6E8]"></span>
               </span>
-              <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider">
+              <span className="text-[10px] sm:text-xs font-bold text-[#00A6E8] uppercase tracking-wider">
                 Curated Highlights
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight mt-1">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0A192A] tracking-tight mt-0.5 sm:mt-1">
               Trending Now
             </h2>
           </div>
@@ -75,42 +75,42 @@ export function TrendingNow() {
             href="/opportunities"
             className="text-xs sm:text-sm font-bold text-[#00A6E8] hover:text-[#00658F] transition-colors"
           >
-            Browse Catalog →
+            Catalog →
           </Link>
         </div>
 
-        {/* 4 Trending Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* 4 Trending Cards (2x2 on mobile, 4-col on desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
           {TRENDING_ITEMS.map((item) => (
             <Link
               key={item.id}
               href={item.link}
-              className="bg-white border border-[#DCECF2] hover:border-[#00A6E8] p-5 rounded-xl shadow-[0px_4px_16px_rgba(10,25,42,0.03)] hover:shadow-[0px_8px_24px_rgba(10,25,42,0.07)] hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group"
+              className="bg-white border border-[#DCECF2] hover:border-[#00A6E8] p-3 sm:p-5 rounded-xl shadow-[0px_4px_16px_rgba(10,25,42,0.03)] hover:shadow-[0px_8px_24px_rgba(10,25,42,0.07)] hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group h-full"
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center justify-between gap-1.5 mb-2 sm:mb-3">
                   <span
-                    className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${item.badgeColor}`}
+                    className={`text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[105px] sm:max-w-none ${item.badgeColor}`}
                   >
                     {item.tag}
                   </span>
-                  <span className="material-symbols-outlined text-[18px] text-[#5F7180] group-hover:text-[#00A6E8] transition-colors">
+                  <span className="material-symbols-outlined text-[15px] sm:text-[18px] text-[#5F7180] group-hover:text-[#00A6E8] transition-colors shrink-0">
                     {item.icon}
                   </span>
                 </div>
 
-                <h3 className="font-bold text-base text-[#0A192A] group-hover:text-[#00A6E8] transition-colors mb-1.5 leading-snug">
+                <h3 className="font-bold text-xs sm:text-base text-[#0A192A] group-hover:text-[#00A6E8] transition-colors mb-1 sm:mb-1.5 leading-snug line-clamp-2">
                   {item.title}
                 </h3>
 
-                <p className="text-xs text-[#5F7180] leading-relaxed">
+                <p className="text-[10px] sm:text-xs text-[#5F7180] leading-relaxed line-clamp-2">
                   {item.subtitle}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#DCECF2] flex items-center justify-between text-xs font-semibold text-[#00A6E8]">
+              <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-[#DCECF2] flex items-center justify-between text-[10px] sm:text-xs font-semibold text-[#00A6E8]">
                 <span>Explore</span>
-                <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+                <span className="material-symbols-outlined text-[13px] sm:text-[16px] group-hover:translate-x-1 transition-transform">
                   arrow_forward
                 </span>
               </div>

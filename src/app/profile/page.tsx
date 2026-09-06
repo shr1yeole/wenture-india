@@ -26,7 +26,7 @@ import {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, profile, role, isEntrepreneur, isInvestor, hasBothRoles, isAdmin, loading, isAuthenticated, signOut, refreshProfile } = useAuth();
+  const { user, profile, role, isEntrepreneur, isInvestor, isAdmin, loading, isAuthenticated, signOut, refreshProfile } = useAuth();
 
   // Edit Mode State
   const [isEditing, setIsEditing] = useState(false);
@@ -95,16 +95,16 @@ export default function ProfilePage() {
   }, [user?.uid]);
 
   useEffect(() => {
-    if (!loading && isAuthenticated && user?.uid && (isEntrepreneur || hasBothRoles || role === "entrepreneur" || isAdmin)) {
+    if (!loading && isAuthenticated && user?.uid && (isEntrepreneur || role === "entrepreneur" || isAdmin)) {
       loadEnquiries();
     }
-  }, [loading, isAuthenticated, user?.uid, isEntrepreneur, hasBothRoles, role, isAdmin, loadEnquiries]);
+  }, [loading, isAuthenticated, user?.uid, isEntrepreneur, role, isAdmin, loadEnquiries]);
 
   useEffect(() => {
-    if (!loading && isAuthenticated && user?.uid && (isInvestor || hasBothRoles || role === "investor" || isAdmin)) {
+    if (!loading && isAuthenticated && user?.uid && (isInvestor || role === "investor" || isAdmin)) {
       loadSentEnquiries();
     }
-  }, [loading, isAuthenticated, user?.uid, isInvestor, hasBothRoles, role, isAdmin, loadSentEnquiries]);
+  }, [loading, isAuthenticated, user?.uid, isInvestor, role, isAdmin, loadSentEnquiries]);
 
   const handleEnquiryStatusUpdate = async (enquiryId?: string, newStatus?: EnquiryStatus) => {
     if (!enquiryId || !newStatus) return;
@@ -247,9 +247,7 @@ export default function ProfilePage() {
     return null;
   }
 
-  const roleLabel = hasBothRoles
-    ? "ENTREPRENEUR & INVESTOR"
-    : isEntrepreneur
+  const roleLabel = isEntrepreneur
     ? "ENTREPRENEUR"
     : isInvestor
     ? "INVESTOR"
@@ -577,78 +575,8 @@ export default function ProfilePage() {
           {/* ============================================================ */}
           {/* 3. ROLE SPECIFIC SECTION */}
           {/* ============================================================ */}
-          {hasBothRoles && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Entrepreneur Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="bg-white border border-[#DCECF2] rounded-2xl p-6 shadow-[0_8px_30px_rgba(10,25,42,0.04)] flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[24px]">rocket_launch</span>
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg font-bold text-[#0A192A]">
-                        Entrepreneur Workspace
-                      </h3>
-                      <span className="text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Active Role</span>
-                    </div>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-5">
-                    Manage and publish your business ventures, funding requirements, and trade opportunities.
-                  </p>
-                </div>
-
-                <Link
-                  href="/profile/listings"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-xs transition-all shadow-sm w-full"
-                >
-                  <span>Manage Business Listings</span>
-                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </Link>
-              </motion.div>
-
-              {/* Investor Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-white border border-[#DCECF2] rounded-2xl p-6 shadow-[0_8px_30px_rgba(10,25,42,0.04)] flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[24px]">badge</span>
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg font-bold text-[#0A192A]">
-                        My Investor Profile
-                      </h3>
-                      <span className="text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Active Role</span>
-                    </div>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed mb-5">
-                    Create and manage the investor profile that entrepreneurs can discover on Wenture India. Add your investment interests, experience, preferred sectors and other details to help entrepreneurs understand your profile.
-                  </p>
-                </div>
-
-                <Link
-                  href="/profile/investor"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#00658F] hover:bg-[#005173] text-white font-bold text-xs transition-all shadow-sm w-full"
-                >
-                  <span>My Investor Profile</span>
-                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </Link>
-              </motion.div>
-            </div>
-          )}
-
-          {/* Entrepreneur Enquiries Section (shown for single-role entrepreneur and dual-role) */}
-          {(isEntrepreneur || hasBothRoles || role === "entrepreneur") ? (
+          {/* Entrepreneur Enquiries Section */}
+          {(isEntrepreneur || role === "entrepreneur") ? (
             <div className="space-y-8 mb-8">
               {/* Business & Opportunities Manage Card */}
               <motion.div
@@ -1020,7 +948,7 @@ export default function ProfilePage() {
           {/* ============================================================ */}
           {/* 3B. INVESTOR EXPRESSED INTEREST HISTORY */}
           {/* ============================================================ */}
-          {(isInvestor || hasBothRoles || role === "investor") && (
+          {(isInvestor || role === "investor") && (
             <div id="expressed-interests" className="space-y-8 mb-8 scroll-mt-24">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

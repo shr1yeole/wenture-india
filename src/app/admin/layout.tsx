@@ -16,7 +16,6 @@ const NAV_ITEMS = [
   { name: "Featured Content", href: "/admin/featured", icon: "stars" },
   { name: "Guides", href: "/admin/guides", icon: "menu_book" },
   { name: "Enquiries", href: "/admin/enquiries", icon: "mark_email_unread" },
-  { name: "Settings", href: "/admin/settings", icon: "settings" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

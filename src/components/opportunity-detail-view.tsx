@@ -18,9 +18,17 @@ const DEFAULT_IMAGE =
 export function OpportunityDetailView({
   opportunity: opp,
 }: OpportunityDetailViewProps) {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [imgSrc, setImgSrc] = useState(opp.imageUrl || DEFAULT_IMAGE);
+
+  const isOwner = Boolean(
+    isAuthenticated &&
+      user &&
+      ((opp.ownerId && opp.ownerId !== "platform-admin" && opp.ownerId === user.uid) ||
+        (opp.ownerEmail && user.email && opp.ownerEmail.trim().toLowerCase() === user.email.trim().toLowerCase()) ||
+        (opp.contactEmail && user.email && opp.contactEmail.trim().toLowerCase() === user.email.trim().toLowerCase()))
+  );
 
   // Extract this particular opportunity's contact phone number
   const oppPhone =
@@ -37,86 +45,86 @@ export function OpportunityDetailView({
   )}`;
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-16">
+    <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-8 lg:px-12 py-6 sm:py-12">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs font-medium text-[#5F7180] mb-6">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-[#5F7180] mb-4 sm:mb-6">
         <Link href="/opportunities" className="hover:text-[#00A6E8] transition-colors">
           Opportunities
         </Link>
         <span>/</span>
         <span className="text-[#00A6E8] font-bold">{opp.category}</span>
         <span>/</span>
-        <span className="text-[#0A192A] font-semibold">{opp.title}</span>
+        <span className="text-[#0A192A] font-semibold truncate max-w-[160px] sm:max-w-none">{opp.title}</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
         {/* ============================================================ */}
         {/* LEFT COLUMN: Opportunity Profile & Content */}
         {/* ============================================================ */}
-        <div className="lg:col-span-8 space-y-8">
+        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
           {/* Main Hero Header Card */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#DCECF2] shadow-sm">
+          <div className="bg-white rounded-2xl p-4 sm:p-8 border border-[#DCECF2] shadow-sm">
             {/* Top Badges */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="bg-[#EBF6FC] text-[#00A6E8] font-bold text-xs px-3 py-1 rounded">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+              <span className="bg-[#EBF6FC] text-[#00A6E8] font-bold text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded">
                 {opp.category}
               </span>
-              <span className="bg-slate-100 text-[#5F7180] font-semibold text-xs px-3 py-1 rounded">
+              <span className="bg-slate-100 text-[#5F7180] font-semibold text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded">
                 {opp.sector}
               </span>
               {opp.isDemo ? (
-                <span className="bg-slate-100 text-[#5F7180] font-bold text-xs px-3 py-1 rounded border border-slate-200 uppercase tracking-wider">
+                <span className="bg-slate-100 text-[#5F7180] font-bold text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded border border-slate-200 uppercase tracking-wider">
                   Sample Showcase
                 </span>
               ) : (
-                <span className="bg-emerald-50 text-emerald-700 font-extrabold text-xs px-3 py-1 rounded border border-emerald-200 flex items-center gap-1 uppercase tracking-wider">
-                  <span className="material-symbols-outlined text-[14px]">verified</span>
+                <span className="bg-emerald-50 text-emerald-700 font-extrabold text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded border border-emerald-200 flex items-center gap-1 uppercase tracking-wider">
+                  <span className="material-symbols-outlined text-[13px] sm:text-[14px]">verified</span>
                   Live Published Listing
                 </span>
               )}
               {opp.stageBadge && (
-                <span className="bg-[#EBF6FC] text-[#00658F] font-bold text-xs px-3 py-1 rounded border border-[#DCECF2]">
+                <span className="bg-[#EBF6FC] text-[#00658F] font-bold text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded border border-[#DCECF2]">
                   {opp.stageBadge}
                 </span>
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-3">
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A192A] tracking-tight font-heading mb-2 sm:mb-3">
               {opp.title}
             </h1>
 
-            <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed mb-6">
+            <p className="text-xs sm:text-base text-[#5F7180] leading-relaxed mb-4 sm:mb-6">
               {opp.shortDescription}
             </p>
 
             {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 border-t border-[#DCECF2]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-[#DCECF2]">
               <div>
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
+                <span className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
                   Location
                 </span>
-                <span className="text-sm sm:text-base font-bold text-[#0A192A] flex items-center gap-1 mt-0.5">
-                  <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">
+                <span className="text-xs sm:text-base font-bold text-[#0A192A] flex items-center gap-1 mt-0.5">
+                  <span className="material-symbols-outlined text-[14px] sm:text-[16px] text-[#00A6E8]">
                     location_on
                   </span>
-                  {opp.location}
+                  <span className="truncate">{opp.location}</span>
                 </span>
               </div>
 
               <div>
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
+                <span className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
                   Investment Range
                 </span>
-                <span className="text-sm sm:text-base font-bold text-[#00658F] mt-0.5 block">
+                <span className="text-xs sm:text-base font-bold text-[#00658F] mt-0.5 block truncate">
                   {opp.investmentRange}
                 </span>
               </div>
 
-              <div>
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
+              <div className="col-span-2 sm:col-span-1">
+                <span className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#5F7180]">
                   Target Requirement
                 </span>
-                <span className="text-sm sm:text-base font-bold text-[#0A192A] mt-0.5 block">
+                <span className="text-xs sm:text-base font-bold text-[#0A192A] mt-0.5 block truncate">
                   {opp.targetRaise}
                 </span>
               </div>
@@ -124,7 +132,7 @@ export function OpportunityDetailView({
           </div>
 
           {/* Cover Media */}
-          <div className="h-64 sm:h-96 w-full relative rounded-2xl overflow-hidden border border-[#DCECF2] bg-slate-100 shadow-sm">
+          <div className="h-48 sm:h-80 md:h-96 w-full relative rounded-2xl overflow-hidden border border-[#DCECF2] bg-slate-100 shadow-sm">
             <Image
               src={imgSrc}
               alt={opp.title || "Opportunity"}
@@ -136,21 +144,21 @@ export function OpportunityDetailView({
           </div>
 
           {/* Overview & Narrative */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#DCECF2] shadow-sm space-y-6">
+          <div className="bg-white rounded-2xl p-4 sm:p-8 border border-[#DCECF2] shadow-sm space-y-4 sm:space-y-6">
             <div>
-              <h2 className="text-xl font-bold text-[#0A192A] mb-3 font-heading">
+              <h2 className="text-lg sm:text-xl font-bold text-[#0A192A] mb-2 sm:mb-3 font-heading">
                 Overview
               </h2>
-              <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed">
+              <p className="text-xs sm:text-base text-[#5F7180] leading-relaxed">
                 {opp.overview}
               </p>
             </div>
 
-            <div className="pt-4 border-t border-[#DCECF2]">
-              <h2 className="text-xl font-bold text-[#0A192A] mb-3 font-heading">
+            <div className="pt-3 sm:pt-4 border-t border-[#DCECF2]">
+              <h2 className="text-lg sm:text-xl font-bold text-[#0A192A] mb-2 sm:mb-3 font-heading">
                 Business Description
               </h2>
-              <p className="text-sm sm:text-base text-[#5F7180] leading-relaxed">
+              <p className="text-xs sm:text-base text-[#5F7180] leading-relaxed">
                 {opp.businessDescription}
               </p>
             </div>
@@ -190,44 +198,73 @@ export function OpportunityDetailView({
             </p>
 
             <div className="space-y-3">
-              {/* Primary CTA */}
-              <button
-                type="button"
-                onClick={() => setModalOpen(true)}
-                className="w-full py-3.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
-              >
-                <span>I&apos;m Interested</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
+              {isOwner ? (
+                <>
+                  <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2">
+                    <span className="material-symbols-outlined text-[18px] text-amber-600 shrink-0 mt-0.5">info</span>
+                    <div>
+                      <strong className="block mb-0.5">This is your business listing</strong>
+                      <span>Direct investor enquiries will appear in your business listings dashboard.</span>
+                    </div>
+                  </div>
 
-              {/* Secondary Contact CTA */}
-              <Link
-                href="/contact"
-                className="w-full py-3 bg-[#F6FAFF] hover:bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#0A192A] font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                <span>Contact Wenture India</span>
-              </Link>
+                  <Link
+                    href="/profile/listings"
+                    className="w-full py-3.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">list_alt</span>
+                    <span>Manage in My Listings</span>
+                  </Link>
 
-              {/* WhatsApp CTA */}
-              {isAuthenticated ? (
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
-                >
-                  <span className="material-symbols-outlined text-[18px]">chat</span>
-                  <span>Chat on WhatsApp ({displayPhone})</span>
-                </a>
+                  <Link
+                    href="/contact"
+                    className="w-full py-3 bg-[#F6FAFF] hover:bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#0A192A] font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Contact Wenture India Support</span>
+                  </Link>
+                </>
               ) : (
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(true)}
-                  className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
-                >
-                  <span className="material-symbols-outlined text-[18px]">chat</span>
-                  <span>Chat on WhatsApp</span>
-                </button>
+                <>
+                  {/* Primary CTA */}
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                    className="w-full py-3.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <span>I&apos;m Interested</span>
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </button>
+
+                  {/* Secondary Contact CTA */}
+                  <Link
+                    href="/contact"
+                    className="w-full py-3 bg-[#F6FAFF] hover:bg-white border border-[#DCECF2] hover:border-[#00A6E8] text-[#0A192A] font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Contact Wenture India</span>
+                  </Link>
+
+                  {/* WhatsApp CTA */}
+                  {isAuthenticated ? (
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">chat</span>
+                      <span>Chat on WhatsApp ({displayPhone})</span>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setModalOpen(true)}
+                      className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 shadow-xs"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">chat</span>
+                      <span>Chat on WhatsApp</span>
+                    </button>
+                  )}
+                </>
               )}
             </div>
 

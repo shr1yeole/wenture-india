@@ -20,19 +20,19 @@ export default function AboutPage() {
 
       <main className="flex-grow">
         {/* Hero */}
-        <section className="pt-16 md:pt-24 pb-16 bg-surface-pure border-b border-border-subtle">
+        <section className="pt-8 sm:pt-14 md:pt-24 pb-10 sm:pb-16 bg-surface-pure border-b border-border-subtle">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-border-subtle text-primary font-label-caps text-xs mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-border-subtle text-primary font-label-caps text-xs mb-3 sm:mb-4">
                 Corporate Overview
               </div>
-              <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface mb-4 tracking-tight">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface mb-3 sm:mb-4 tracking-tight">
                 About Wenture India
               </h1>
-              <p className="font-headline-md text-2xl text-secondary font-medium mb-4">
+              <p className="text-lg sm:text-2xl text-secondary font-medium mb-3 sm:mb-4">
                 {COMPANY.tagline}
               </p>
-              <p className="font-body-lg text-base md:text-lg text-on-surface-variant leading-relaxed">
+              <p className="text-xs sm:text-base md:text-lg text-on-surface-variant leading-relaxed">
                 {COMPANY.corePositioning}
               </p>
             </div>
@@ -40,18 +40,18 @@ export default function AboutPage() {
         </section>
 
         {/* Core Pillars */}
-        <section className="py-20 bg-surface">
+        <section className="py-10 sm:py-16 md:py-20 bg-surface">
           <Container>
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-on-surface mb-3">
+            <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-on-surface mb-2 sm:mb-3">
                 Our Institutional Focus
               </h2>
-              <p className="font-body-lg text-on-surface-variant">
+              <p className="text-xs sm:text-base text-on-surface-variant">
                 Built to provide a secure, transparent, and structured environment for capital deployment and enterprise expansion.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
               <BentoCard
                 icon="hub"
                 title="Connect"
@@ -74,51 +74,51 @@ export default function AboutPage() {
         </section>
 
         {/* Corporate Legal Information */}
-        <section className="py-20 bg-surface-container-low border-y border-border-subtle">
+        <section className="py-10 sm:py-16 md:py-20 bg-surface-container-low border-y border-border-subtle">
           <Container size="narrow">
-            <div className="bg-surface-pure rounded-2xl p-8 md:p-12 border border-border-subtle shadow-sm space-y-6">
+            <div className="bg-surface-pure rounded-2xl p-4 sm:p-8 md:p-12 border border-border-subtle shadow-sm space-y-4 sm:space-y-6">
               <span className="font-label-caps text-xs text-primary uppercase tracking-wider font-semibold">
                 Corporate Governance
               </span>
-              <h3 className="font-headline-md text-2xl font-bold text-on-surface">
+              <h3 className="text-xl sm:text-2xl font-bold text-on-surface">
                 Omniverse Technologies Private Limited
               </h3>
-              <p className="font-body-md text-base text-on-surface-variant leading-relaxed">
+              <p className="text-xs sm:text-base text-on-surface-variant leading-relaxed">
                 Wenture India International operates under <strong>{COMPANY.legalEntity}</strong>, headquartered in New Delhi, India. The company is committed to upholding institutional integrity, data confidentiality, and regulatory compliance across all business networking and advisory activities.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-border-subtle text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-3 sm:pt-4 border-t border-border-subtle text-xs sm:text-sm">
                 <div>
-                  <h4 className="font-label-caps text-xs text-on-surface-variant uppercase mb-1">
+                  <h4 className="font-label-caps text-[11px] sm:text-xs text-on-surface-variant uppercase mb-1">
                     Registered Office
                   </h4>
-                  <p className="font-body-md text-on-surface">
+                  <p className="text-xs sm:text-sm text-on-surface">
                     {COMPANY.contact.address}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-label-caps text-xs text-on-surface-variant uppercase mb-1">
+                  <h4 className="font-label-caps text-[11px] sm:text-xs text-on-surface-variant uppercase mb-1">
                     Official Inquiries
                   </h4>
-                  <p className="font-body-md text-on-surface">
+                  <p className="text-xs sm:text-sm text-on-surface">
                     {COMPANY.contact.businessEmail}
                   </p>
-                  <p className="font-body-md text-on-surface">
+                  <p className="text-xs sm:text-sm text-on-surface">
                     {COMPANY.contact.phone}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 flex gap-4">
+              <div className="pt-2 sm:pt-4 flex flex-wrap gap-2.5 sm:gap-4">
                 <Link
                   href="/contact"
-                  className="bg-primary-container text-white px-6 py-3 rounded-lg font-button-text text-sm hover:bg-surface-tint"
+                  className="bg-primary-container text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-button-text text-xs sm:text-sm hover:bg-surface-tint text-center flex-1 sm:flex-initial"
                 >
                   Contact Management
                 </Link>
                 <Link
                   href="/opportunities"
-                  className="border border-border-subtle text-on-surface px-6 py-3 rounded-lg font-button-text text-sm hover:bg-surface"
+                  className="border border-border-subtle text-on-surface px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-button-text text-xs sm:text-sm hover:bg-surface text-center flex-1 sm:flex-initial"
                 >
                   Explore Opportunities
                 </Link>

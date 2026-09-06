@@ -84,12 +84,24 @@ export async function submitContactMessage(data: ContactSubmission) {
  */
 export async function submitOpportunityEnquiry(data: OpportunityEnquiry) {
   try {
-    const ownerId = data.opportunityOwnerId || data.userId || "";
+    const ownerId = data.opportunityOwnerId || "";
     const ownerEmail = data.opportunityOwnerEmail || data.ownerEmail || "";
     const senderId = data.senderId || data.userUid || data.userId || "";
     const senderRole = data.senderRole || data.role || "Investor";
     const senderName = data.senderName || data.name || "";
     const senderEmail = data.senderEmail || data.email || "";
+
+    // Prevent self-enquiries where owner is sending enquiry to their own listing
+    if (ownerId && senderId && ownerId !== "platform-admin" && ownerId === senderId) {
+      return { id: null, error: "You cannot submit an enquiry on your own opportunity." };
+    }
+    if (
+      ownerEmail &&
+      senderEmail &&
+      ownerEmail.trim().toLowerCase() === senderEmail.trim().toLowerCase()
+    ) {
+      return { id: null, error: "You cannot submit an enquiry on your own opportunity." };
+    }
 
     const docRef = await addDoc(collection(db, "opportunity_enquiries"), {
       ...data,
@@ -383,7 +395,17 @@ export async function getEnquiriesForEntrepreneur(
       // ignore
     }
 
-    const enquiries = Array.from(enquiriesMap.values());
+    // Filter out self-enquiries where the sender is the same user/owner
+    const enquiries = Array.from(enquiriesMap.values()).filter((enquiry) => {
+      const senderUid = enquiry.senderId || enquiry.userUid || enquiry.userId;
+      const isSelfUid = Boolean(senderUid && ownerId && senderUid === ownerId);
+
+      const normUserEmail = userEmail ? userEmail.trim().toLowerCase() : "";
+      const senderEmail = (enquiry.senderEmail || enquiry.email || "").trim().toLowerCase();
+      const isSelfEmail = Boolean(normUserEmail && senderEmail && senderEmail === normUserEmail);
+
+      return !isSelfUid && !isSelfEmail;
+    });
 
     // Client-side fallback sort in case index-less query returned unordered
     enquiries.sort((a, b) => {

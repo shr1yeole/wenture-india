@@ -24,9 +24,7 @@ export default function ProfileInvestorPage() {
     user,
     profile,
     role,
-    isEntrepreneur,
     isInvestor,
-    hasBothRoles,
     isAdmin,
     loading: authLoading,
     isAuthenticated,
@@ -56,16 +54,11 @@ export default function ProfileInvestorPage() {
 
   const isPendingReview = existingProfile?.status === "pending";
 
-  // User is restricted if their role is Entrepreneur (and not dual-role) OR if they are not an investor and not admin
-  const isEntrepreneurOnly =
-    (role === "entrepreneur" && !hasBothRoles) ||
-    (isEntrepreneur && !isInvestor && !hasBothRoles) ||
-    (profile?.role === "entrepreneur" && !hasBothRoles);
-
+  // User is restricted if their role is not investor and not admin
   const isRestricted =
     !authLoading &&
     isAuthenticated &&
-    (isEntrepreneurOnly || (!isInvestor && role !== "investor" && !isAdmin));
+    (!isInvestor && role !== "investor" && !isAdmin);
 
   // Route protection
   useEffect(() => {

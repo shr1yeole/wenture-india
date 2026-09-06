@@ -34,7 +34,7 @@ export function OpportunityEnquiryModal({
   isOpen,
   onClose,
 }: OpportunityEnquiryModalProps) {
-  const { user, profile, role: authRole, isEntrepreneur, isInvestor, hasBothRoles, isAuthenticated } = useAuth();
+  const { user, profile, role: authRole, isEntrepreneur, isInvestor, isAuthenticated } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -42,9 +42,9 @@ export function OpportunityEnquiryModal({
 
   // Automatically determine the role for single-role accounts
   const autoRole: "Investor" | "Entrepreneur" =
-    isInvestor && !isEntrepreneur
+    isInvestor
       ? "Investor"
-      : isEntrepreneur && !isInvestor
+      : isEntrepreneur
       ? "Entrepreneur"
       : authRole === "entrepreneur"
       ? "Entrepreneur"
@@ -74,6 +74,15 @@ export function OpportunityEnquiryModal({
   const userEmail = user?.email || profile?.email || "";
   const userPhone = profile?.phone || "";
 
+  const isOwner = Boolean(
+    isAuthenticated &&
+      user &&
+      opportunity &&
+      ((opportunity.ownerId && opportunity.ownerId !== "platform-admin" && opportunity.ownerId === user.uid) ||
+        (opportunity.ownerEmail && user.email && opportunity.ownerEmail.trim().toLowerCase() === user.email.trim().toLowerCase()) ||
+        (opportunity.contactEmail && user.email && opportunity.contactEmail.trim().toLowerCase() === user.email.trim().toLowerCase()))
+  );
+
   // Synchronize authenticated user data and role into form whenever modal opens or auth state changes
   useEffect(() => {
     if (isOpen && userUid) {
@@ -92,8 +101,7 @@ export function OpportunityEnquiryModal({
     setLoading(true);
     setErrorMsg(null);
 
-    // If single-role, strictly enforce the detected autoRole; if dual-role, use the selected active role
-    const effectiveRole = hasBothRoles ? (data.role || autoRole) : autoRole;
+    const effectiveRole = autoRole;
     const userFullName = profile?.fullName || profile?.name || user?.displayName || data.name;
     const userEmail = user?.email || profile?.email || data.email;
 
@@ -161,9 +169,17 @@ export function OpportunityEnquiryModal({
       }
     }
 
-    if (!ownerId) {
-      ownerId = "platform-admin";
-      ownerName = "Platform Entrepreneur";
+    // Check if the current user is the owner
+    const isOwner = Boolean(
+      user?.uid &&
+      ((ownerId && ownerId !== "platform-admin" && ownerId === user.uid) ||
+        (ownerEmail && userEmail && ownerEmail.trim().toLowerCase() === userEmail.trim().toLowerCase()))
+    );
+
+    if (isOwner) {
+      setErrorMsg("You cannot submit an enquiry on your own business listing.");
+      setLoading(false);
+      return;
     }
 
     // Extract sender profile metadata
@@ -314,6 +330,36 @@ export function OpportunityEnquiryModal({
                   </a>
                 </div>
               </div>
+            ) : isOwner ? (
+              <div className="text-center py-6">
+                <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-200 shadow-xs">
+                  <span className="material-symbols-outlined text-[28px]">account_circle</span>
+                </div>
+                <h4 className="text-xl font-bold text-[#0A192A] mb-2 font-heading">
+                  Your Business Listing
+                </h4>
+                <p className="text-sm text-[#5F7180] max-w-sm mx-auto mb-6 leading-relaxed">
+                  You are the owner of <strong>{opportunity.title}</strong>. You cannot submit an enquiry to your own listing. Inbound interest from verified investors will be delivered to your listings dashboard.
+                </p>
+
+                <div className="flex flex-col gap-3 max-w-xs mx-auto">
+                  <Link
+                    href="/profile/listings"
+                    onClick={handleClose}
+                    className="w-full py-3 bg-[#00A6E8] hover:bg-[#0093CE] text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">list_alt</span>
+                    <span>Manage in My Listings</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="w-full py-2.5 bg-white border border-[#DCECF2] hover:bg-[#F4FAFD] text-[#0A192A] font-bold text-xs rounded-xl transition-colors text-center"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
             ) : submitted ? (
               <div className="text-center py-6">
                 <div className="w-14 h-14 bg-[#EBF6FC] text-[#00A6E8] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -407,68 +453,21 @@ export function OpportunityEnquiryModal({
                   </div>
                 </div>
 
-                {/* Role Section: Automatically determined if single role; selectable only if dual role */}
-                {hasBothRoles ? (
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-semibold text-[#0A192A]">
-                        Submit Enquiry As:
-                      </label>
-                      <span className="text-[10px] font-bold text-[#00A6E8] uppercase tracking-wider">
-                        Dual Role Account
+                {/* Submitting Role Info */}
+                <div>
+                  <span className="block text-xs font-semibold text-[#0A192A] mb-1">
+                    Submitting Role
+                  </span>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#F6FAFF] border border-[#DCECF2]">
+                    <span className="text-xs text-[#5F7180]">Enquiry will be submitted as:</span>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#EBF6FC] text-[#00658F] border border-[#DCECF2]">
+                      <span className="material-symbols-outlined text-[15px] text-[#00A6E8]">
+                        {autoRole === "Investor" ? "badge" : "rocket_launch"}
                       </span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <label
-                        className={`flex items-center gap-2 p-2.5 rounded-lg border cursor-pointer text-xs font-semibold transition-all ${
-                          watchRole === "Investor"
-                            ? "border-[#00A6E8] bg-[#EBF6FC] text-[#00658F]"
-                            : "border-[#DCECF2] bg-[#F6FAFF] text-[#0A192A] hover:bg-white"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          value="Investor"
-                          {...register("role")}
-                          className="text-[#00A6E8] focus:ring-[#00A6E8]"
-                        />
-                        <span className="material-symbols-outlined text-[16px]">badge</span>
-                        <span>Investor</span>
-                      </label>
-                      <label
-                        className={`flex items-center gap-2 p-2.5 rounded-lg border cursor-pointer text-xs font-semibold transition-all ${
-                          watchRole === "Entrepreneur"
-                            ? "border-[#00A6E8] bg-[#EBF6FC] text-[#00658F]"
-                            : "border-[#DCECF2] bg-[#F6FAFF] text-[#0A192A] hover:bg-white"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          value="Entrepreneur"
-                          {...register("role")}
-                          className="text-[#00A6E8] focus:ring-[#00A6E8]"
-                        />
-                        <span className="material-symbols-outlined text-[16px]">rocket_launch</span>
-                        <span>Entrepreneur</span>
-                      </label>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <span className="block text-xs font-semibold text-[#0A192A] mb-1">
-                      Submitting Role
+                      <span>{autoRole}</span>
                     </span>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-[#F6FAFF] border border-[#DCECF2]">
-                      <span className="text-xs text-[#5F7180]">Enquiry will be submitted as:</span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#EBF6FC] text-[#00658F] border border-[#DCECF2]">
-                        <span className="material-symbols-outlined text-[15px] text-[#00A6E8]">
-                          {autoRole === "Investor" ? "badge" : "rocket_launch"}
-                        </span>
-                        <span>{autoRole}</span>
-                      </span>
-                    </div>
                   </div>
-                )}
+                </div>
 
                 {/* Message */}
                 <div>

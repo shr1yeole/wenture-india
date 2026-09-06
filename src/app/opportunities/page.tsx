@@ -168,16 +168,16 @@ function OpportunitiesContent() {
         {/* ============================================================ */}
         {/* PAGE HEADER */}
         {/* ============================================================ */}
-        <section className="bg-white border-b border-[#DCECF2] py-12 sm:py-16">
-          <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
+        <section className="bg-white border-b border-[#DCECF2] py-8 sm:py-12 md:py-16">
+          <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-6 lg:px-12">
             <div className="max-w-3xl">
-              <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-2">
+              <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1 sm:mb-2">
                 Opportunity Catalog
               </span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0A192A] tracking-tight font-heading">
                 Explore Business &amp; Investment Opportunities
               </h1>
-              <p className="text-sm sm:text-base text-[#5F7180] mt-3 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-[#5F7180] mt-2 sm:mt-3 leading-relaxed">
                 Discover active private businesses, seed startups, commercial franchises, authorized dealerships, and cross-border trade opportunities.
               </p>
             </div>
@@ -187,20 +187,20 @@ function OpportunitiesContent() {
         {/* ============================================================ */}
         {/* CONTROLS & FILTER BAR */}
         {/* ============================================================ */}
-        <section className="sticky top-[72px] z-30 bg-white/95 backdrop-blur-md border-b border-[#DCECF2] py-4 shadow-sm">
-          <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
+        <section className="sticky top-[60px] sm:top-[72px] z-30 bg-white/95 backdrop-blur-md border-b border-[#DCECF2] py-2.5 sm:py-4 shadow-xs">
+          <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-6 lg:px-12">
             {/* Category Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 no-scrollbar">
+            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 sm:pb-3 mb-2 sm:mb-3 no-scrollbar">
               <button
                 type="button"
                 onClick={() => setSelectedCategory("All")}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                   selectedCategory.toLowerCase() === "all"
-                    ? "bg-[#00A6E8] text-white border-[#00A6E8] shadow-sm"
+                    ? "bg-[#00A6E8] text-white border-[#00A6E8] shadow-xs"
                     : "bg-[#F6FAFF] text-[#5F7180] border-[#DCECF2] hover:border-[#00A6E8] hover:text-[#0A192A]"
                 }`}
               >
-                All Opportunities ({categoryCounts["All"] ?? allOpportunities.length})
+                All ({categoryCounts["All"] ?? allOpportunities.length})
               </button>
               {OPPORTUNITY_CATEGORIES.map((cat) => {
                 const count = categoryCounts[cat] ?? 0;
@@ -336,11 +336,11 @@ function OpportunitiesContent() {
         {/* ============================================================ */}
         {/* OPPORTUNITIES GRID */}
         {/* ============================================================ */}
-        <section className="w-full py-10 sm:py-14">
-          <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
+        <section className="w-full py-6 sm:py-10 md:py-14">
+          <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-6 lg:px-12">
             {/* Active Filters Summary Header & Sorting Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-3 border-b border-[#DCECF2] gap-4">
-              <div className="text-sm text-[#5F7180]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 sm:mb-8 pb-3 border-b border-[#DCECF2] gap-3 sm:gap-4">
+              <div className="text-xs sm:text-sm text-[#5F7180]">
                 Showing <strong className="text-[#0A192A]">{filteredOpps.length}</strong> of{" "}
                 <strong className="text-[#0A192A]">
                   {selectedCategory.toLowerCase() === "all"
@@ -355,16 +355,16 @@ function OpportunitiesContent() {
                 {selectedSector !== "All Sectors" && ` • ${selectedSector}`}
               </div>
 
-              <div className="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap sm:flex-nowrap">
                 {/* Sort Dropdown */}
-                <div className="flex items-center gap-2 text-xs text-[#5F7180]">
-                  <span className="font-semibold shrink-0">Sort by:</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-[#5F7180]">
+                  <span className="font-semibold shrink-0">Sort:</span>
                   <select
                     value={sortBy}
                     onChange={(e) =>
                       setSortBy(e.target.value as "newest" | "low-high" | "high-low" | "title")
                     }
-                    className="bg-white border border-[#DCECF2] rounded-lg px-2.5 py-1.5 text-xs text-[#0A192A] font-medium focus:outline-none focus:border-[#00A6E8] cursor-pointer"
+                    className="bg-white border border-[#DCECF2] rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs text-[#0A192A] font-medium focus:outline-none focus:border-[#00A6E8] cursor-pointer"
                   >
                     <option value="newest">Newest First</option>
                     <option value="low-high">Investment: Low to High</option>
@@ -388,14 +388,14 @@ function OpportunitiesContent() {
               </div>
             </div>
 
-            {/* Grid or Clean Empty States */}
+            {/* Grid or Clean Empty States (2x2 on mobile, 3-col on desktop) */}
             {loading ? (
               <div className="py-24 text-center text-slate-400">
                 <div className="w-9 h-9 border-3 border-[#00A6E8] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                 <p className="text-sm font-semibold text-[#5F7180]">Loading published opportunities...</p>
               </div>
             ) : filteredOpps.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6 lg:gap-8">
                 {filteredOpps.map((opp) => (
                   <OpportunityCard
                     key={opp.id}

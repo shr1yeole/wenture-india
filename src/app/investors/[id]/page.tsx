@@ -88,10 +88,10 @@ export default function InvestorDetailPage() {
     <div className="flex flex-col min-h-screen bg-[#F6FAFF] selection:bg-[#00A6E8] selection:text-white">
       <Navbar />
 
-      <main className="flex-grow py-10 sm:py-14">
-        <div className="w-full max-w-[1140px] mx-auto px-5 sm:px-8">
+      <main className="flex-grow py-6 sm:py-12">
+        <div className="w-full max-w-[1140px] mx-auto px-3.5 sm:px-8">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-6 flex items-center gap-2 text-xs text-[#5F7180]">
+          <nav className="mb-4 sm:mb-6 flex items-center gap-2 text-xs text-[#5F7180]">
             <Link href="/investors" className="hover:text-[#00A6E8] transition-colors flex items-center gap-1">
               <span className="material-symbols-outlined text-[14px]">arrow_back</span>
               <span>Investors Directory</span>
@@ -100,20 +100,20 @@ export default function InvestorDetailPage() {
             <span className="text-[#0A192A] font-semibold truncate">{investor.investorName}</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Left 2 Columns: Main Profile Details */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {/* Profile Header Card */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white border border-[#DCECF2] rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm"
+                className="bg-white border border-[#DCECF2] rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 mb-6">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5 mb-4 sm:mb-6">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     {investor.profileImage ? (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative border border-[#DCECF2] shrink-0 bg-slate-100">
+                      <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative border border-[#DCECF2] shrink-0 bg-slate-100">
                         <Image
                           src={investor.profileImage}
                           alt={investor.investorName}
@@ -123,32 +123,32 @@ export default function InvestorDetailPage() {
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#EBF6FC] border border-[#DCECF2] text-[#00658F] font-extrabold text-2xl flex items-center justify-center shrink-0">
+                      <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-[#EBF6FC] border border-[#DCECF2] text-[#00658F] font-extrabold text-xl sm:text-2xl flex items-center justify-center shrink-0">
                         {initial}
                       </div>
                     )}
                     <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] font-heading">
+                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        <h1 className="text-xl sm:text-3xl font-extrabold text-[#0A192A] font-heading">
                           {investor.investorName}
                         </h1>
                         {investor.isDemo ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-[#5F7180] border border-slate-200">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-[#5F7180] border border-slate-200">
                             Sample Showcase
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span className="material-symbols-outlined text-[13px]">verified</span>
-                            Verified Directory Member
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <span className="material-symbols-outlined text-[12px] sm:text-[13px]">verified</span>
+                            Verified
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-3 text-xs text-[#5F7180] mt-1.5 flex-wrap">
+                      <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-[#5F7180] mt-1 flex-wrap">
                         <span className="font-bold text-[#00658F]">{investor.investorType}</span>
                         <span>•</span>
                         <span className="flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px] text-[#00A6E8]">
+                          <span className="material-symbols-outlined text-[13px] sm:text-[14px] text-[#00A6E8]">
                             location_on
                           </span>
                           {investor.location}
@@ -159,11 +159,11 @@ export default function InvestorDetailPage() {
                 </div>
 
                 {/* Introduction Section */}
-                <div className="pt-6 border-t border-[#DCECF2]">
-                  <h2 className="text-xs font-bold text-[#00658F] uppercase tracking-wider mb-2">
+                <div className="pt-4 sm:pt-6 border-t border-[#DCECF2]">
+                  <h2 className="text-[11px] sm:text-xs font-bold text-[#00658F] uppercase tracking-wider mb-1.5 sm:mb-2">
                     Executive Introduction
                   </h2>
-                  <p className="text-sm sm:text-base text-[#0A192A] leading-relaxed whitespace-pre-line">
+                  <p className="text-xs sm:text-base text-[#0A192A] leading-relaxed whitespace-pre-line">
                     {investor.shortIntroduction}
                   </p>
                 </div>
@@ -174,10 +174,10 @@ export default function InvestorDetailPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="bg-white border border-[#DCECF2] rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
+                className="bg-white border border-[#DCECF2] rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm space-y-4 sm:space-y-6"
               >
                 <div>
-                  <h2 className="text-lg sm:text-xl font-extrabold text-[#0A192A] font-heading mb-3">
+                  <h2 className="text-base sm:text-xl font-extrabold text-[#0A192A] font-heading mb-2 sm:mb-3">
                     Investment Experience &amp; Background
                   </h2>
                   <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed whitespace-pre-line">

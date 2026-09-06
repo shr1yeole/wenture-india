@@ -34,9 +34,6 @@ export interface UserProfile {
   companyName?: string;
   sector?: string;
   location?: string;
-  roles?: UserRole[];
-  hasJoinedInvestor?: boolean;
-  hasJoinedEntrepreneur?: boolean;
   createdAt?: unknown;
   updatedAt?: unknown;
 }
@@ -110,7 +107,6 @@ export async function getUserProfile(uid: string): Promise<{ profile: UserProfil
     if (docSnap.exists()) {
       const data = docSnap.data();
       const resolvedName = data.fullName || data.name || "";
-      const rawRoles = Array.isArray(data.roles) ? (data.roles as UserRole[]) : undefined;
       const profile: UserProfile = {
         uid,
         fullName: resolvedName,
@@ -122,9 +118,6 @@ export async function getUserProfile(uid: string): Promise<{ profile: UserProfil
         companyName: data.companyName || "",
         sector: data.sector || "",
         location: data.location || "",
-        roles: rawRoles,
-        hasJoinedInvestor: data.hasJoinedInvestor === true,
-        hasJoinedEntrepreneur: data.hasJoinedEntrepreneur === true,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };
@@ -553,30 +546,5 @@ export async function setAdminPrivilege(
   }
 }
 
-/**
- * Allow an authenticated investor to join also as an entrepreneur
- */
-export async function joinAsEntrepreneurRole(): Promise<{ error: string | null }> {
-  try {
-    const user = auth.currentUser;
-    if (!user) {
-      return { error: "You must be signed in to join as an entrepreneur." };
-    }
-    const userRef = doc(db, "users", user.uid);
-    await setDoc(
-      userRef,
-      {
-        hasJoinedEntrepreneur: true,
-        roles: ["investor", "entrepreneur"],
-        updatedAt: serverTimestamp(),
-      },
-      { merge: true }
-    );
-    return { error: null };
-  } catch (err: unknown) {
-    const error = err as { message?: string };
-    return { error: error.message || "Failed to update entrepreneur role." };
-  }
-}
 
 

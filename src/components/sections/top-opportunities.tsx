@@ -68,18 +68,18 @@ export function TopOpportunities({
   };
 
   return (
-    <section className="w-full py-16 sm:py-20 bg-white border-b border-[#DCECF2]">
-      <div className="w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12">
+    <section className="w-full py-10 sm:py-16 md:py-20 bg-white border-b border-[#DCECF2]">
+      <div className="w-full max-w-[1280px] mx-auto px-3.5 sm:px-6 lg:px-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-10 gap-3 sm:gap-4">
           <div>
             <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
               Curated Opportunities
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A192A] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0A192A] tracking-tight">
               {title}
             </h2>
-            <p className="text-sm sm:text-base text-[#5F7180] mt-2 max-w-2xl">
+            <p className="text-xs sm:text-sm md:text-base text-[#5F7180] mt-1.5 sm:mt-2 max-w-2xl">
               {subtitle}
             </p>
           </div>
@@ -87,10 +87,10 @@ export function TopOpportunities({
           {showViewAll && (
             <Link
               href="/opportunities"
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-[#00A6E8] hover:text-[#00658F] transition-colors shrink-0 group"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#00A6E8] hover:text-[#00658F] transition-colors shrink-0 group"
             >
               <span>Explore All Opportunities</span>
-              <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
+              <span className="material-symbols-outlined text-[16px] sm:text-[18px] group-hover:translate-x-1 transition-transform">
                 arrow_forward
               </span>
             </Link>
@@ -98,7 +98,7 @@ export function TopOpportunities({
         </div>
 
         {/* Category Navigation Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-3 mb-5 sm:mb-8 no-scrollbar scroll-smooth">
           {OPPORTUNITY_CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat;
             return (
@@ -106,9 +106,9 @@ export function TopOpportunities({
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 border ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 border ${
                   isActive
-                    ? "bg-[#00A6E8] text-white border-[#00A6E8] shadow-sm"
+                    ? "bg-[#00A6E8] text-white border-[#00A6E8] shadow-xs"
                     : "bg-[#F6FAFF] text-[#5F7180] border-[#DCECF2] hover:border-[#00A6E8] hover:text-[#0A192A]"
                 }`}
               >
@@ -118,9 +118,9 @@ export function TopOpportunities({
           })}
         </div>
 
-        {/* Opportunity Cards Grid */}
+        {/* Opportunity Cards Grid (2x2 on mobile, 3-col on desktop) */}
         {filteredOpportunities.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
             {filteredOpportunities.map((opp) => (
               <OpportunityCard
                 key={opp.id}
