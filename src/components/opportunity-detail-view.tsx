@@ -181,6 +181,51 @@ export function OpportunityDetailView({
                 </ul>
               </div>
             )}
+
+            {/* Pitch Deck Presentation (if uploaded) */}
+            {opp.pitchDeckUrl && (
+              <div className="pt-4 border-t border-[#DCECF2]">
+                <h2 className="text-xl font-bold text-[#0A192A] mb-3 font-heading flex items-center gap-2">
+                  <span className="material-symbols-outlined text-rose-500">picture_as_pdf</span>
+                  <span>Pitch Deck & Presentation</span>
+                </h2>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-[24px]">description</span>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-[#0A192A]">
+                        {opp.pitchDeckFileName || "Company Pitch Deck (PDF)"}
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        Official company overview presentation
+                      </p>
+                    </div>
+                  </div>
+                  {isAuthenticated ? (
+                    <a
+                      href={opp.pitchDeckUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shrink-0 shadow-xs"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">download</span>
+                      <span>View Pitch Deck</span>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setModalOpen(true)}
+                      className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shrink-0"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">lock</span>
+                      <span>Sign in to View</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

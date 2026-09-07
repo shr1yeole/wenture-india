@@ -100,10 +100,10 @@ export default function AdminListingsPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Ecosystem Catalog
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Listing Approvals &amp; Management
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Review, curate, approve, or reject business opportunities submitted by platform entrepreneurs.
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function AdminListingsPage() {
         <button
           type="button"
           onClick={loadListings}
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">refresh</span>
           <span>Refresh</span>
@@ -119,15 +119,15 @@ export default function AdminListingsPage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-3.5 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
         {/* Status Tabs */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto no-scrollbar">
           {(["all", "pending", "published", "rejected"] as const).map((st) => (
             <button
               key={st}
               type="button"
               onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
                 statusFilter === st
                   ? "bg-[#00A6E8] text-white shadow-sm"
                   : "text-[#5F7180] hover:text-[#0A192A]"
@@ -167,7 +167,7 @@ export default function AdminListingsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[700px]">
               <thead className="bg-[#F4FAFD] border-b border-[#DCECF2] text-[#5F7180] uppercase tracking-wider font-extrabold text-[10px]">
                 <tr>
                   <th className="py-3.5 px-4 sm:px-6">Opportunity Title</th>
@@ -285,12 +285,12 @@ export default function AdminListingsPage() {
       {/* ============================================================ */}
       <AnimatePresence>
         {rejectingListing && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-md bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-6"
+              className="w-full max-w-md bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-4 sm:p-6"
             >
               <h3 className="text-lg font-bold text-[#0A192A] font-heading mb-2">
                 Reject Business Listing
@@ -313,11 +313,11 @@ export default function AdminListingsPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-2 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setRejectingListing(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-[#5F7180] hover:bg-slate-50"
+                  className="px-4 py-2.5 sm:py-2 rounded-xl text-xs font-bold text-[#5F7180] hover:bg-slate-50 text-center"
                 >
                   Cancel
                 </button>
@@ -325,7 +325,7 @@ export default function AdminListingsPage() {
                   type="button"
                   disabled={!rejectReason.trim() || actionLoading === rejectingListing.id}
                   onClick={handleConfirmReject}
-                  className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-50"
+                  className="px-5 py-2.5 sm:py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-50 text-center"
                 >
                   Confirm Rejection
                 </button>
@@ -340,22 +340,22 @@ export default function AdminListingsPage() {
       {/* ============================================================ */}
       <AnimatePresence>
         {selectedListing && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-6 sm:p-8 my-8 max-h-[90vh] overflow-y-auto"
+              className="w-full max-w-2xl bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-4 sm:p-6 sm:p-8 my-4 sm:my-8 max-h-[90vh] overflow-y-auto flex flex-col"
             >
-              <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#DCECF2] mb-6">
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#DCECF2] mb-5 shrink-0">
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
                     <span className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-[#EBF6FC] text-[#00658F] border border-[#DCECF2]">
                       {selectedListing.listingType}
                     </span>
                     <span className="text-xs text-[#5F7180]">Sector: <strong>{selectedListing.sector}</strong></span>
                   </div>
-                  <h2 className="text-2xl font-bold text-[#0A192A] font-heading">{selectedListing.title}</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#0A192A] font-heading">{selectedListing.title}</h2>
                 </div>
                 <button
                   type="button"
@@ -366,7 +366,31 @@ export default function AdminListingsPage() {
                 </button>
               </div>
 
-              <div className="space-y-5 text-xs text-[#5F7180]">
+              <div className="space-y-4 sm:space-y-5 text-xs text-[#5F7180] overflow-y-auto pr-1">
+                {/* Pitch Deck Notice / Button */}
+                {selectedListing.pitchDeckUrl && (
+                  <div className="p-3.5 sm:p-4 bg-rose-50 border border-rose-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-start sm:items-center gap-3">
+                      <span className="material-symbols-outlined text-[26px] text-rose-600 shrink-0">picture_as_pdf</span>
+                      <div>
+                        <strong className="block text-xs text-rose-950 font-bold">
+                          {selectedListing.pitchDeckFileName || "Attached Company Pitch Deck (PDF)"}
+                        </strong>
+                        <span className="text-[11px] text-rose-800">Uploaded pitch deck document available for admin review</span>
+                      </div>
+                    </div>
+                    <a
+                      href={selectedListing.pitchDeckUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 shadow-xs"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">visibility</span>
+                      <span>View Deck</span>
+                    </a>
+                  </div>
+                )}
+
                 <div>
                   <strong className="text-[#0A192A] block mb-1 text-xs">Summary:</strong>
                   <p className="leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100 text-[#0A192A]">
@@ -375,37 +399,85 @@ export default function AdminListingsPage() {
                 </div>
 
                 <div>
-                  <strong className="text-[#0A192A] block mb-1 text-xs">Full Narrative:</strong>
-                  <p className="leading-relaxed whitespace-pre-line text-[#0A192A]">
+                  <strong className="text-[#0A192A] block mb-1 text-xs">Full Business Narrative:</strong>
+                  <p className="leading-relaxed whitespace-pre-line text-[#0A192A] bg-slate-50 p-3 rounded-xl border border-slate-100">
                     {selectedListing.description}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                {/* Business Model & Operations */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 sm:p-4 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Location</span>
-                    <strong className="text-[#0A192A]">{selectedListing.location}</strong>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Business Type</span>
+                    <strong className="text-[#0A192A] text-[11px] sm:text-xs">{selectedListing.businessType || "Not specified"}</strong>
                   </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Stage</span>
+                    <strong className="text-[#0A192A] text-[11px] sm:text-xs">{selectedListing.businessStage || "Not specified"}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Years in Operation</span>
+                    <strong className="text-[#0A192A] text-[11px] sm:text-xs">{selectedListing.yearsInOperation || "Not specified"}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Business Model</span>
+                    <strong className="text-[#0A192A] text-[11px] sm:text-xs">{selectedListing.businessModel || "Not specified"}</strong>
+                  </div>
+                </div>
+
+                {/* Investment Purpose & Requirements */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 sm:p-4 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase block">Investment Range</span>
-                    <strong className="text-[#0A192A]">{selectedListing.investmentRange}</strong>
+                    <strong className="text-[#00658F] text-sm">{selectedListing.investmentRange}</strong>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Status</span>
-                    <strong className="uppercase text-[#00658F]">{selectedListing.status}</strong>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Investment Purpose</span>
+                    <strong className="text-[#0A192A]">{selectedListing.investmentPurpose || "General Expansion"}</strong>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Owner Name</span>
-                    <strong className="text-[#0A192A]">{selectedListing.ownerName}</strong>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Preferred Investor</span>
+                    <strong className="text-[#0A192A]">{selectedListing.preferredInvestorType || "Any Suitable Investor"}</strong>
                   </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Owner Email</span>
-                    <strong className="text-[#0A192A]">{selectedListing.ownerEmail}</strong>
+                  {selectedListing.expectedUseOfFunds && (
+                    <div className="col-span-1 sm:col-span-3 pt-2 border-t border-[#DCECF2]">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Expected Use of Funds</span>
+                      <p className="text-[#0A192A] mt-0.5">{selectedListing.expectedUseOfFunds}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Founder Profile & Contact Details */}
+                <div className="p-3.5 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                  <strong className="text-[#0A192A] block text-xs uppercase font-bold">Founder / Management Details:</strong>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Founder Name</span>
+                      <strong className="text-[#0A192A]">{selectedListing.founderName || selectedListing.ownerName}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Experience</span>
+                      <strong className="text-[#0A192A]">{selectedListing.founderExperience || "Not provided"}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Contact Phone</span>
+                      <strong className="text-[#0A192A]">{selectedListing.contactPhone}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Contact Email</span>
+                      <strong className="text-[#0A192A]">{selectedListing.contactEmail || selectedListing.ownerEmail}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Location</span>
+                      <strong className="text-[#0A192A]">{selectedListing.location}</strong>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Contact Phone</span>
-                    <strong className="text-[#0A192A]">{selectedListing.contactPhone}</strong>
-                  </div>
+                  {selectedListing.founderBackground && (
+                    <div className="pt-2 border-t border-slate-200">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Founder Background &amp; Bio</span>
+                      <p className="text-[#0A192A] mt-0.5 whitespace-pre-line">{selectedListing.founderBackground}</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Rejection notice if exists */}
@@ -416,12 +488,12 @@ export default function AdminListingsPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-6 border-t border-[#DCECF2] mt-6">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 sm:pt-6 border-t border-[#DCECF2] mt-4 sm:mt-6 shrink-0">
                 {selectedListing.status !== "published" && (
                   <button
                     type="button"
                     onClick={() => handleApprove(selectedListing.id)}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors"
+                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors text-center shadow-sm"
                   >
                     Approve &amp; Publish
                   </button>
@@ -433,7 +505,7 @@ export default function AdminListingsPage() {
                       setRejectingListing(selectedListing);
                       setRejectReason("");
                     }}
-                    className="px-5 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 text-xs font-bold rounded-xl transition-colors"
+                    className="px-5 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 text-xs font-bold rounded-xl transition-colors text-center"
                   >
                     Reject with Feedback
                   </button>

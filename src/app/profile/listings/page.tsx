@@ -11,6 +11,7 @@ import {
   getUserListings,
   deleteListing,
   uploadListingImage,
+  uploadPitchDeck,
   BusinessListing,
   ListingType,
 } from "@/lib/firebase/listings";
@@ -29,6 +30,7 @@ import {
   formatEnquiryEmailSubject,
   formatEnquiryEmailBody,
 } from "@/components/enquiries/investor-contact-modal";
+import { FileUploadField, UploadStatus } from "@/components/ui/file-upload-field";
 
 const LISTING_TYPES: ListingType[] = [
   "Investment",
@@ -47,6 +49,60 @@ const INVESTMENT_RANGES = [
   "₹25L – ₹50L",
   "₹50L – ₹1Cr",
   "₹1Cr+",
+];
+
+const BUSINESS_TYPES = [
+  "Private Limited (Pvt Ltd)",
+  "Limited Liability Partnership (LLP)",
+  "Sole Proprietorship",
+  "Partnership Firm",
+  "Startup / Pre-Incorporation",
+  "Public Limited",
+];
+
+const BUSINESS_STAGES = [
+  "Idea / Proof of Concept",
+  "Early Traction / MVP",
+  "Revenue Generating / Operational",
+  "Profitable / Growth Stage",
+  "Established Enterprise",
+];
+
+const YEARS_IN_OPERATION = [
+  "Less than 1 Year",
+  "1 – 3 Years",
+  "3 – 5 Years",
+  "5 – 10 Years",
+  "10+ Years",
+];
+
+const BUSINESS_MODELS = [
+  "B2B (Business to Business)",
+  "B2C (Business to Consumer)",
+  "D2C (Direct to Consumer)",
+  "B2B2C",
+  "Marketplace / Platform",
+  "Manufacturing & Distribution",
+  "Franchise & Dealership",
+  "SaaS & Software",
+  "Services & Consulting",
+];
+
+const INVESTMENT_PURPOSES = [
+  "Working Capital & Operations",
+  "Marketing & Customer Acquisition",
+  "Product R&D & Engineering",
+  "Machinery, Tech & Infrastructure",
+  "Geographic & Retail Expansion",
+  "Strategic Partnership & Scale",
+];
+
+const PREFERRED_INVESTOR_TYPES = [
+  "Angel Investor",
+  "Active Mentor / Strategic Partner",
+  "Venture Capital / Institutional",
+  "Silent Financier",
+  "Any Suitable Investor",
 ];
 
 export default function EntrepreneurListingsPage() {
@@ -75,20 +131,46 @@ export default function EntrepreneurListingsPage() {
   const [updatingEnquiryId, setUpdatingEnquiryId] = useState<string | null>(null);
   const [selectedContactEnquiry, setSelectedContactEnquiry] = useState<OpportunityEnquiry | null>(null);
 
-  // Form inputs
+  // Section 1: Business Information
   const [title, setTitle] = useState("");
+  const [businessType, setBusinessType] = useState(BUSINESS_TYPES[0]);
   const [listingType, setListingType] = useState<ListingType>("Investment");
   const [category, setCategory] = useState("Direct Business Opportunity");
   const [sector, setSector] = useState(SECTORS[0]?.name || "Technology & AI");
   const [location, setLocation] = useState("");
-  const [investmentRange, setInvestmentRange] = useState(INVESTMENT_RANGES[2]);
-  const [shortDescription, setShortDescription] = useState("");
+  const [businessStage, setBusinessStage] = useState(BUSINESS_STAGES[2]);
+  const [yearsInOperation, setYearsInOperation] = useState(YEARS_IN_OPERATION[1]);
+  const [businessModel, setBusinessModel] = useState(BUSINESS_MODELS[0]);
   const [description, setDescription] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
+
+  // Section 2: Investment Information
+  const [investmentRange, setInvestmentRange] = useState(INVESTMENT_RANGES[2]);
+  const [investmentPurpose, setInvestmentPurpose] = useState(INVESTMENT_PURPOSES[0]);
+  const [expectedUseOfFunds, setExpectedUseOfFunds] = useState("");
+  const [preferredInvestorType, setPreferredInvestorType] = useState(PREFERRED_INVESTOR_TYPES[0]);
+
+  // Section 3: Founder / Owner Information
+  const [founderName, setFounderName] = useState("");
+  const [founderBackground, setFounderBackground] = useState("");
+  const [founderExperience, setFounderExperience] = useState("");
+
+  // Section 4: Business Presentation & Pitch Deck
+  const [shortDescription, setShortDescription] = useState("");
+  const [pitchDeckFile, setPitchDeckFile] = useState<File | null>(null);
+  const [pitchDeckUrl, setPitchDeckUrl] = useState("");
+  const [pitchDeckFileName, setPitchDeckFileName] = useState("");
+  const [pitchDeckStoragePath, setPitchDeckStoragePath] = useState<string | null>(null);
+  const [pitchDeckUploadStatus, setPitchDeckUploadStatus] = useState<UploadStatus>("idle");
+  const [pitchDeckError, setPitchDeckError] = useState<string | null>(null);
+
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>("idle");
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  // Section 5: Contact Details
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
 
   // Fetch listings
   const loadUserListings = useCallback(async () => {
@@ -149,6 +231,12 @@ export default function EntrepreneurListingsPage() {
         if (user?.email) {
           setContactEmail(user.email);
         }
+        if (profile?.fullName || profile?.name) {
+          setFounderName(profile.fullName || profile.name || "");
+        }
+        if (profile?.phone) {
+          setContactPhone(profile.phone);
+        }
       }
     }
   }, [
@@ -160,9 +248,49 @@ export default function EntrepreneurListingsPage() {
     isAdmin,
     router,
     user,
+    profile,
     loadUserListings,
     loadEnquiries,
   ]);
+
+  // Calculate form completeness percentage
+  const calculateCompleteness = () => {
+    const items = [
+      Boolean(title.trim()),
+      Boolean(businessType),
+      Boolean(sector),
+      Boolean(location.trim()),
+      Boolean(shortDescription.trim()),
+      Boolean(description.trim()),
+      Boolean(investmentRange),
+      Boolean(investmentPurpose),
+      Boolean(expectedUseOfFunds.trim()),
+      Boolean(founderName.trim()),
+      Boolean(founderBackground.trim()),
+      Boolean(pitchDeckFile || pitchDeckUrl),
+      Boolean(contactPhone.trim()),
+      Boolean(contactEmail.trim()),
+    ];
+    const completed = items.filter(Boolean).length;
+    return Math.round((completed / items.length) * 100);
+  };
+
+  const scrollToListingTarget = (targetId: string) => {
+    setTimeout(() => {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        if ("focus" in el && typeof (el as HTMLElement).focus === "function") {
+          (el as HTMLElement).focus();
+        }
+      } else {
+        const modalBody = document.getElementById("create-listing-modal-body");
+        if (modalBody) {
+          modalBody.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    }, 50);
+  };
 
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,36 +299,88 @@ export default function EntrepreneurListingsPage() {
 
     if (!title.trim()) {
       setFormError("Business / Opportunity Name is required.");
+      scrollToListingTarget("create-listing-title");
       return;
     }
     if (!location.trim()) {
-      setFormError("Location is required.");
+      setFormError("Business Location is required.");
+      scrollToListingTarget("create-listing-location");
       return;
     }
     if (!shortDescription.trim()) {
-      setFormError("Short summary is required.");
+      setFormError("Short business summary is required.");
+      scrollToListingTarget("create-listing-short-description");
       return;
     }
     if (!description.trim()) {
-      setFormError("Full detailed description is required.");
+      setFormError("Detailed business description is required.");
+      scrollToListingTarget("create-listing-description");
       return;
     }
     if (!contactPhone.trim() || !contactEmail.trim()) {
       setFormError("Both contact phone and contact email are required.");
+      scrollToListingTarget(!contactPhone.trim() ? "create-listing-phone" : "create-listing-email");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())) {
+      setFormError("Please enter a valid contact email address.");
+      scrollToListingTarget("create-listing-email");
       return;
     }
 
     setSubmitting(true);
 
+    const tempId = `listing_${Date.now()}`;
+    let finalPitchDeckUrl = pitchDeckUrl;
+    let finalPitchDeckFileName = pitchDeckFileName;
+    let finalPitchDeckStoragePath = pitchDeckStoragePath;
+
+    // 1. Handle pitch deck upload if a new file is pending upload
+    if (pitchDeckFile && !pitchDeckUrl) {
+      setPitchDeckUploadStatus("uploading");
+      setPitchDeckError(null);
+      const pitchRes = await uploadPitchDeck(pitchDeckFile, tempId);
+
+      if (pitchRes.error) {
+        setPitchDeckUploadStatus("error");
+        setPitchDeckError(pitchRes.error);
+        setSubmitting(false);
+        setFormError(pitchRes.error);
+        scrollToListingTarget("field-pitch-deck-container");
+        return;
+      }
+
+      setPitchDeckUploadStatus("success");
+      finalPitchDeckUrl = pitchRes.url || "";
+      finalPitchDeckFileName = pitchRes.fileName || pitchDeckFile.name;
+      finalPitchDeckStoragePath = pitchRes.storagePath;
+      setPitchDeckUrl(finalPitchDeckUrl);
+      setPitchDeckFileName(finalPitchDeckFileName);
+      setPitchDeckStoragePath(finalPitchDeckStoragePath);
+    }
+
+    // 2. Handle image upload if a new file is pending upload
     let finalImages: string[] = [];
     if (imageUrl.trim()) {
       finalImages.push(imageUrl.trim());
     }
 
     if (imageFile) {
-      setUploadingImage(true);
-      const uploadRes = await uploadListingImage(imageFile, `temp_${Date.now()}`);
-      setUploadingImage(false);
+      setImageUploadStatus("uploading");
+      setImageError(null);
+      const uploadRes = await uploadListingImage(imageFile, tempId);
+
+      if (uploadRes.error) {
+        setImageUploadStatus("error");
+        setImageError(uploadRes.error);
+        setSubmitting(false);
+        setFormError(uploadRes.error);
+        scrollToListingTarget("field-cover-image-container");
+        return;
+      }
+
+      setImageUploadStatus("success");
       if (uploadRes.url) {
         finalImages.unshift(uploadRes.url);
       }
@@ -212,13 +392,26 @@ export default function EntrepreneurListingsPage() {
 
     const res = await createListing({
       title: title.trim(),
+      businessType,
       listingType,
       category: category.trim(),
       sector: sector.trim(),
       location: location.trim(),
-      investmentRange,
+      businessStage,
+      yearsInOperation,
+      businessModel,
       shortDescription: shortDescription.trim(),
       description: description.trim(),
+      investmentRange,
+      investmentPurpose,
+      expectedUseOfFunds: expectedUseOfFunds.trim() || undefined,
+      preferredInvestorType,
+      founderName: founderName.trim() || undefined,
+      founderBackground: founderBackground.trim() || undefined,
+      founderExperience: founderExperience.trim() || undefined,
+      pitchDeckUrl: finalPitchDeckUrl || undefined,
+      pitchDeckFileName: finalPitchDeckFileName || undefined,
+      pitchDeckStoragePath: finalPitchDeckStoragePath || undefined,
       contactPhone: contactPhone.trim(),
       contactEmail: contactEmail.trim(),
       images: finalImages,
@@ -235,13 +428,58 @@ export default function EntrepreneurListingsPage() {
       setShortDescription("");
       setDescription("");
       setLocation("");
+      setExpectedUseOfFunds("");
+      setFounderBackground("");
+      setFounderExperience("");
+      setPitchDeckFile(null);
+      setPitchDeckUrl("");
+      setPitchDeckFileName("");
+      setPitchDeckStoragePath(null);
+      setPitchDeckUploadStatus("idle");
+      setPitchDeckError(null);
       setImageUrl("");
       setImageFile(null);
+      setImageUploadStatus("idle");
+      setImageError(null);
       await loadUserListings();
       setTimeout(() => {
         setShowCreateModal(false);
         setFormSuccess(null);
       }, 1800);
+    }
+  };
+
+  const handleRetryPitchDeck = async () => {
+    if (!pitchDeckFile) return;
+    setPitchDeckUploadStatus("uploading");
+    setPitchDeckError(null);
+    const tempId = `listing_${Date.now()}`;
+    const res = await uploadPitchDeck(pitchDeckFile, tempId);
+    if (res.error) {
+      setPitchDeckUploadStatus("error");
+      setPitchDeckError(res.error);
+    } else {
+      setPitchDeckUploadStatus("success");
+      setPitchDeckUrl(res.url || "");
+      setPitchDeckFileName(res.fileName || pitchDeckFile.name);
+      setPitchDeckStoragePath(res.storagePath);
+    }
+  };
+
+  const handleRetryImage = async () => {
+    if (!imageFile) return;
+    setImageUploadStatus("uploading");
+    setImageError(null);
+    const tempId = `listing_${Date.now()}`;
+    const res = await uploadListingImage(imageFile, tempId);
+    if (res.error) {
+      setImageUploadStatus("error");
+      setImageError(res.error);
+    } else {
+      setImageUploadStatus("success");
+      if (res.url) {
+        setImageUrl(res.url);
+      }
     }
   };
 
@@ -777,29 +1015,62 @@ export default function EntrepreneurListingsPage() {
       {/* ============================================================ */}
       <AnimatePresence>
         {showCreateModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="w-full max-w-2xl bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-6 sm:p-8 my-8 max-h-[90vh] overflow-y-auto"
+              className="w-full max-w-3xl bg-white border border-[#DCECF2] rounded-2xl sm:rounded-3xl shadow-2xl p-5 sm:p-8 my-6 sm:my-8 max-h-[92vh] overflow-y-auto"
             >
-              <div className="flex items-center justify-between pb-4 border-b border-[#DCECF2] mb-6">
+              <div className="flex items-start justify-between pb-4 border-b border-[#DCECF2] mb-5">
                 <div>
-                  <h3 className="text-xl font-bold text-[#0A192A] font-heading">
-                    Create Business / Opportunity Listing
+                  <span className="text-[10px] sm:text-[11px] font-bold text-[#00A6E8] uppercase tracking-wider block mb-0.5">
+                    Entrepreneur Onboarding &amp; Listing
+                  </span>
+                  <h3 className="text-lg sm:text-2xl font-bold text-[#0A192A] font-heading">
+                    List Your Business Opportunity
                   </h3>
-                  <p className="text-xs text-[#5F7180] mt-0.5">
-                    Submit your enterprise opportunity for review and public publication.
+                  <p className="text-xs text-[#5F7180] mt-1">
+                    Complete your venture profile to connect with active investors and strategic commercial partners.
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
                 >
                   <span className="material-symbols-outlined text-[24px]">close</span>
                 </button>
+              </div>
+
+              {/* Completeness Indicator */}
+              <div className="mb-6 p-3.5 sm:p-4 bg-[#F4FAFD] border border-[#DCECF2] rounded-2xl">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A192A]">
+                    <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">verified</span>
+                    <span>Listing Completeness Meter</span>
+                  </div>
+                  <span className="text-xs font-extrabold text-[#00658F]">
+                    {calculateCompleteness()}%
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 rounded-full ${
+                      calculateCompleteness() >= 80
+                        ? "bg-emerald-500"
+                        : calculateCompleteness() >= 50
+                        ? "bg-[#00A6E8]"
+                        : "bg-amber-500"
+                    }`}
+                    style={{ width: `${calculateCompleteness()}%` }}
+                  />
+                </div>
+                <p className="text-[11px] text-[#5F7180] mt-1.5">
+                  {calculateCompleteness() >= 80
+                    ? "✓ Excellent! Comprehensive listings receive higher investor engagement."
+                    : "💡 Add your pitch deck, founder background, and use of funds to strengthen your opportunity presentation."}
+                </p>
               </div>
 
               {formError && (
@@ -816,200 +1087,554 @@ export default function EntrepreneurListingsPage() {
                 </div>
               )}
 
-              <form onSubmit={handleCreateSubmit} className="space-y-5">
-                {/* 1. Name & Listing Type */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleCreateSubmit} className="space-y-6">
+                {/* ======================================================= */}
+                {/* SECTION 1: BUSINESS INFORMATION */}
+                {/* ======================================================= */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#DCECF2]">
+                    <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center font-bold text-xs">
+                      1
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#0A192A]">
+                        Business Information
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        Core parameters, stage, industry, and structure of your company.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Business Name *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Official trade name or company title.
+                      </p>
+                      <input
+                        id="create-listing-title"
+                        type="text"
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="e.g. Apex CleanTech Systems"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Business Type *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Legal registration entity or incorporation structure.
+                      </p>
+                      <select
+                        value={businessType}
+                        onChange={(e) => setBusinessType(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {BUSINESS_TYPES.map((bt) => (
+                          <option key={bt} value={bt}>
+                            {bt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Category *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Listing classification.
+                      </p>
+                      <select
+                        value={listingType}
+                        onChange={(e) => {
+                          setListingType(e.target.value as ListingType);
+                          setCategory(`${e.target.value} Opportunity`);
+                        }}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {LISTING_TYPES.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Industry Sector *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Primary domain.
+                      </p>
+                      <select
+                        value={sector}
+                        onChange={(e) => setSector(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {SECTORS.map((s) => (
+                          <option key={s.id} value={s.name}>
+                            {s.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Business Location *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        City &amp; State.
+                      </p>
+                      <input
+                        id="create-listing-location"
+                        type="text"
+                        required
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="e.g. Pune, Maharashtra"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Business Stage *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Current operational maturity.
+                      </p>
+                      <select
+                        value={businessStage}
+                        onChange={(e) => setBusinessStage(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {BUSINESS_STAGES.map((st) => (
+                          <option key={st} value={st}>
+                            {st}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Years in Operation *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Time in market.
+                      </p>
+                      <select
+                        value={yearsInOperation}
+                        onChange={(e) => setYearsInOperation(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {YEARS_IN_OPERATION.map((y) => (
+                          <option key={y} value={y}>
+                            {y}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Business Model *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Revenue generation model.
+                      </p>
+                      <select
+                        value={businessModel}
+                        onChange={(e) => setBusinessModel(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {BUSINESS_MODELS.map((bm) => (
+                          <option key={bm} value={bm}>
+                            {bm}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Business / Opportunity Name *
+                      Detailed Business Description *
                     </label>
+                    <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                      Detailed breakdown of products/services, customers, distribution channels, traction, competitive moat, and strategic vision.
+                    </p>
+                    <textarea
+                      id="create-listing-description"
+                      rows={4}
+                      required
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Explain your business value proposition, customer metrics, key assets, and operations..."
+                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                    />
+                  </div>
+                </div>
+
+                {/* ======================================================= */}
+                {/* SECTION 2: INVESTMENT INFORMATION */}
+                {/* ======================================================= */}
+                <div className="space-y-4 pt-4 border-t border-[#DCECF2]">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#DCECF2]">
+                    <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center font-bold text-xs">
+                      2
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#0A192A]">
+                        Investment &amp; Capital Requirements
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        Capital ask, purpose of funds, and preferred investor profiles.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Required Investment *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Target capital range.
+                      </p>
+                      <select
+                        value={investmentRange}
+                        onChange={(e) => setInvestmentRange(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {INVESTMENT_RANGES.map((r) => (
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Investment Purpose *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Primary use category.
+                      </p>
+                      <select
+                        value={investmentPurpose}
+                        onChange={(e) => setInvestmentPurpose(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {INVESTMENT_PURPOSES.map((ip) => (
+                          <option key={ip} value={ip}>
+                            {ip}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Preferred Investor Type *
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Target partner profile.
+                      </p>
+                      <select
+                        value={preferredInvestorType}
+                        onChange={(e) => setPreferredInvestorType(e.target.value)}
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      >
+                        {PREFERRED_INVESTOR_TYPES.map((pit) => (
+                          <option key={pit} value={pit}>
+                            {pit}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                      Expected Use of Funds Breakdown (Optional)
+                    </label>
+                    <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                      Brief allocation breakdown (e.g. 40% Product development, 35% Marketing, 25% Working capital).
+                    </p>
+                    <textarea
+                      rows={2}
+                      value={expectedUseOfFunds}
+                      onChange={(e) => setExpectedUseOfFunds(e.target.value)}
+                      placeholder="e.g. 40% New plant machinery, 35% Working capital & inventory, 25% Tier-2 retail distribution"
+                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                    />
+                  </div>
+                </div>
+
+                {/* ======================================================= */}
+                {/* SECTION 3: FOUNDER / LEADERSHIP INFORMATION */}
+                {/* ======================================================= */}
+                <div className="space-y-4 pt-4 border-t border-[#DCECF2]">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#DCECF2]">
+                    <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center font-bold text-xs">
+                      3
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#0A192A]">
+                        Founder / Owner Information
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        Leadership background, qualifications, and industry experience.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                      Founder / Owner Name
+                    </label>
+                    <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                      Lead promoter or co-founder name.
+                    </p>
                     <input
                       type="text"
-                      required
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      placeholder="e.g. Apex EV Fast-Charging Hubs"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8] focus:ring-1 focus:ring-[#00A6E8]/20"
+                      value={founderName}
+                      onChange={(e) => setFounderName(e.target.value)}
+                      placeholder="e.g. Ananya Sharma &amp; Vikram Patil"
+                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Listing Type *
-                    </label>
-                    <select
-                      value={listingType}
-                      onChange={(e) => setListingType(e.target.value as ListingType)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    >
-                      {LISTING_TYPES.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Professional / Business Background
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Education, career history, previous businesses.
+                      </p>
+                      <textarea
+                        rows={2}
+                        value={founderBackground}
+                        onChange={(e) => setFounderBackground(e.target.value)}
+                        placeholder="e.g. 12+ years in automotive manufacturing, ex-Tata Motors engineer..."
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Relevant Domain Experience
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Specific achievements or technical expertise.
+                      </p>
+                      <textarea
+                        rows={2}
+                        value={founderExperience}
+                        onChange={(e) => setFounderExperience(e.target.value)}
+                        placeholder="e.g. Scaled previous D2C brand to ₹15 Cr ARR; holds 2 industrial design patents..."
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* 2. Category & Sector */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* ======================================================= */}
+                {/* SECTION 4: PRESENTATION & PITCH DECK */}
+                {/* ======================================================= */}
+                <div className="space-y-4 pt-4 border-t border-[#DCECF2]">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#DCECF2]">
+                    <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center font-bold text-xs">
+                      4
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#0A192A]">
+                        Business Presentation &amp; Pitch Deck
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        Short pitch teaser, PDF pitch deck presentation, and cover visuals.
+                      </p>
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Business Category *
+                      Short Business Introduction / Elevator Pitch *
                     </label>
+                    <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                      A clear, high-impact 1-2 sentence overview displayed on discovery cards.
+                    </p>
                     <input
+                      id="create-listing-short-description"
                       type="text"
                       required
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      placeholder="e.g. CleanTech & Energy Storage"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      value={shortDescription}
+                      onChange={(e) => setShortDescription(e.target.value)}
+                      placeholder="e.g. Next-gen B2B EV battery swap infrastructure scaling across Tier-1 transport corridors."
+                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Sector *
-                    </label>
-                    <select
-                      value={sector}
-                      onChange={(e) => setSector(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    >
-                      {SECTORS.map((s) => (
-                        <option key={s.id} value={s.name}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </select>
+                  {/* Pitch Deck PDF Uploader */}
+                  <div id="field-pitch-deck-container">
+                    <FileUploadField
+                      id="create-listing-pitch-deck"
+                      label="Pitch Deck Presentation (PDF Document)"
+                      description="Upload your confidential venture pitch deck or executive teaser in PDF format (max 20MB). Stored securely for admin moderation."
+                      accept="application/pdf"
+                      fileTypeLabel="PDF"
+                      icon="picture_as_pdf"
+                      currentFile={pitchDeckFile}
+                      currentUrl={pitchDeckUrl}
+                      currentFileName={pitchDeckFileName}
+                      uploadStatus={pitchDeckUploadStatus}
+                      uploadProgressText="Uploading Pitch Deck..."
+                      errorMessage={pitchDeckError}
+                      onFileSelect={(file) => {
+                        setPitchDeckFile(file);
+                        setPitchDeckUrl("");
+                        setPitchDeckFileName(file.name);
+                        setPitchDeckUploadStatus("selected");
+                        setPitchDeckError(null);
+                      }}
+                      onUploadRetry={handleRetryPitchDeck}
+                      onRemove={() => {
+                        setPitchDeckFile(null);
+                        setPitchDeckUrl("");
+                        setPitchDeckFileName("");
+                        setPitchDeckStoragePath(null);
+                        setPitchDeckUploadStatus("idle");
+                        setPitchDeckError(null);
+                      }}
+                      onValidationError={(err) => {
+                        setPitchDeckUploadStatus("error");
+                        setPitchDeckError(err);
+                      }}
+                      disabled={submitting}
+                    />
+                  </div>
+
+                  {/* Image Cover */}
+                  <div id="field-cover-image-container" className="space-y-3">
+                    <FileUploadField
+                      id="create-listing-image-file"
+                      label="Business Cover Image File (Optional)"
+                      description="Upload a high-quality cover photo or logo for your opportunity (JPG, PNG, WebP up to 5MB)."
+                      accept="image/jpeg,image/png,image/webp,image/jpg"
+                      fileTypeLabel="Image"
+                      icon="image"
+                      currentFile={imageFile}
+                      currentUrl={imageUrl.startsWith("http") ? imageUrl : undefined}
+                      currentFileName={imageFile?.name}
+                      uploadStatus={imageUploadStatus}
+                      uploadProgressText="Uploading Cover Image..."
+                      errorMessage={imageError}
+                      onFileSelect={(file) => {
+                        setImageFile(file);
+                        setImageUploadStatus("selected");
+                        setImageError(null);
+                      }}
+                      onUploadRetry={handleRetryImage}
+                      onRemove={() => {
+                        setImageFile(null);
+                        setImageUploadStatus("idle");
+                        setImageError(null);
+                      }}
+                      onValidationError={(err) => {
+                        setImageUploadStatus("error");
+                        setImageError(err);
+                      }}
+                      disabled={submitting}
+                    />
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Or External Image URL (Optional)
+                      </label>
+                      <p className="text-[11px] text-[#5F7180] mb-1.5 leading-snug">
+                        Alternative direct public image URL if hosted externally.
+                      </p>
+                      <input
+                        type="url"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        placeholder="https://example.com/photo.jpg"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* 3. Location & Investment Range */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Location / Region *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="e.g. Pune & Mumbai, Maharashtra"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    />
+                {/* ======================================================= */}
+                {/* SECTION 5: CONTACT DETAILS */}
+                {/* ======================================================= */}
+                <div className="space-y-4 pt-4 border-t border-[#DCECF2]">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#DCECF2]">
+                    <div className="w-6 h-6 rounded-md bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center font-bold text-xs">
+                      5
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#0A192A]">
+                        Direct Contact Details
+                      </h4>
+                      <p className="text-[11px] text-[#5F7180]">
+                        For administration moderation &amp; verified investor enquiries.
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Investment Range *
-                    </label>
-                    <select
-                      value={investmentRange}
-                      onChange={(e) => setInvestmentRange(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    >
-                      {INVESTMENT_RANGES.map((r) => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Contact Phone *
+                      </label>
+                      <input
+                        id="create-listing-phone"
+                        type="tel"
+                        required
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        placeholder="+91 98418 81008"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
 
-                {/* 4. Short Description */}
-                <div>
-                  <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                    Executive Summary / Short Description * (1-2 sentences)
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={shortDescription}
-                    onChange={(e) => setShortDescription(e.target.value)}
-                    placeholder="Brief 1-sentence teaser of this business opportunity"
-                    className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                  />
-                </div>
-
-                {/* 5. Full Description */}
-                <div>
-                  <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                    Full Description &amp; Details *
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Detailed explanation of the business model, current traction, expansion roadmap, and investment use of funds..."
-                    className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                  />
-                </div>
-
-                {/* 6. Contact Details */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Contact Phone *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={contactPhone}
-                      onChange={(e) => setContactPhone(e.target.value)}
-                      placeholder="+91 98418 1008"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Contact Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={contactEmail}
-                      onChange={(e) => setContactEmail(e.target.value)}
-                      placeholder="business@example.com"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    />
-                  </div>
-                </div>
-
-                {/* 7. Image Upload or Image URL */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Upload Image (Optional)
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-[#DCECF2] rounded-xl text-xs text-[#5F7180] file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#00A6E8] file:text-white hover:file:bg-[#0093CE]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-[#0A192A] mb-1">
-                      Or Image URL (Optional)
-                    </label>
-                    <input
-                      type="url"
-                      value={imageUrl}
-                      onChange={(e) => setImageUrl(e.target.value)}
-                      placeholder="https://example.com/photo.jpg"
-                      className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
-                    />
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A192A] mb-1">
+                        Contact Email *
+                      </label>
+                      <input
+                        id="create-listing-email"
+                        type="email"
+                        required
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
+                        placeholder="founder@company.com"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#DCECF2] rounded-xl text-xs sm:text-sm text-[#0A192A] focus:outline-none focus:border-[#00A6E8]"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Buttons */}
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#DCECF2]">
+                <div className="flex items-center justify-end gap-3 pt-5 border-t border-[#DCECF2]">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
@@ -1019,13 +1644,19 @@ export default function EntrepreneurListingsPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={submitting || uploadingImage}
+                    disabled={submitting || pitchDeckUploadStatus === "uploading" || imageUploadStatus === "uploading"}
                     className="px-6 py-2.5 rounded-xl bg-[#00A6E8] hover:bg-[#0093CE] text-white text-xs font-bold transition-all shadow-md shadow-[#00A6E8]/20 disabled:opacity-50 flex items-center gap-2"
                   >
-                    {submitting || uploadingImage ? (
+                    {submitting || pitchDeckUploadStatus === "uploading" || imageUploadStatus === "uploading" ? (
                       <>
                         <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Submitting for Review...</span>
+                        <span>
+                          {pitchDeckUploadStatus === "uploading"
+                            ? "Uploading Pitch Deck..."
+                            : imageUploadStatus === "uploading"
+                            ? "Uploading Cover Image..."
+                            : "Submitting for Review..."}
+                        </span>
                       </>
                     ) : (
                       <>

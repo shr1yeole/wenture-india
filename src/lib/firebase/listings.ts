@@ -12,8 +12,8 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, db, storage } from "./client";
+import { auth, db } from "./client";
+import { uploadPitchDeckFile, uploadListingImageFile } from "./storage";
 import { Opportunity, InvestmentRangeCategory, OpportunityCategory } from "@/lib/constants/opportunities";
 
 export type ListingStatus = "pending" | "published" | "rejected";
@@ -81,9 +81,15 @@ export function convertListingToOpportunity(item: BusinessListing): Opportunity 
   const detailsList: string[] = [];
   if (item.category) detailsList.push(`Category: ${item.category}`);
   if (item.sector) detailsList.push(`Sector: ${item.sector}`);
+  if (item.businessType) detailsList.push(`Business Entity: ${item.businessType}`);
+  if (item.businessStage) detailsList.push(`Operational Stage: ${item.businessStage}`);
+  if (item.yearsInOperation) detailsList.push(`Years in Operation: ${item.yearsInOperation}`);
+  if (item.businessModel) detailsList.push(`Business Model: ${item.businessModel}`);
+  if (item.investmentPurpose) detailsList.push(`Capital Purpose: ${item.investmentPurpose}`);
+  if (item.preferredInvestorType) detailsList.push(`Target Partner: ${item.preferredInvestorType}`);
   if (item.location) detailsList.push(`Location: ${item.location}`);
   if (item.investmentRange) detailsList.push(`Investment Range: ${item.investmentRange}`);
-  if (item.ownerName) detailsList.push(`Contact Person: ${item.ownerName}`);
+  if (item.founderName || item.ownerName) detailsList.push(`Leadership: ${item.founderName || item.ownerName}`);
   if (item.contactPhone) detailsList.push(`Contact Phone: ${item.contactPhone}`);
   if (item.contactEmail) detailsList.push(`Contact Email: ${item.contactEmail}`);
 
@@ -91,9 +97,15 @@ export function convertListingToOpportunity(item: BusinessListing): Opportunity 
   if (item.listingType) keyInfo.push({ label: "Listing Type", value: item.listingType });
   if (item.category) keyInfo.push({ label: "Category", value: item.category });
   if (item.sector) keyInfo.push({ label: "Sector", value: item.sector });
+  if (item.businessType) keyInfo.push({ label: "Business Type", value: item.businessType });
+  if (item.businessStage) keyInfo.push({ label: "Business Stage", value: item.businessStage });
+  if (item.yearsInOperation) keyInfo.push({ label: "Years in Operation", value: item.yearsInOperation });
+  if (item.businessModel) keyInfo.push({ label: "Business Model", value: item.businessModel });
+  if (item.investmentPurpose) keyInfo.push({ label: "Investment Purpose", value: item.investmentPurpose });
+  if (item.preferredInvestorType) keyInfo.push({ label: "Preferred Investor", value: item.preferredInvestorType });
   if (item.location) keyInfo.push({ label: "Location", value: item.location });
   if (item.investmentRange) keyInfo.push({ label: "Investment Range", value: item.investmentRange });
-  if (item.ownerName) keyInfo.push({ label: "Contact Person", value: item.ownerName });
+  if (item.founderName || item.ownerName) keyInfo.push({ label: "Founder / Contact", value: item.founderName || item.ownerName });
   if (item.contactPhone) keyInfo.push({ label: "Contact Phone", value: item.contactPhone });
   if (item.contactEmail) keyInfo.push({ label: "Contact Email", value: item.contactEmail });
 
@@ -109,7 +121,7 @@ export function convertListingToOpportunity(item: BusinessListing): Opportunity 
     targetRaise: item.investmentRange || "Undisclosed",
     targetAmountNum,
     type: item.category || item.listingType || "Business Opportunity",
-    stageBadge: "Verified Business",
+    stageBadge: item.businessStage || "Verified Business",
     isFeatured: false,
     topOpportunity: false,
     isDemo: false,
@@ -123,11 +135,13 @@ export function convertListingToOpportunity(item: BusinessListing): Opportunity 
     keyInformation: keyInfo,
     imageUrl,
     ownerId: item.ownerId || "",
-    ownerName: item.ownerName || "",
+    ownerName: item.founderName || item.ownerName || "",
     ownerEmail: item.ownerEmail || "",
     contactPhone: item.contactPhone || "",
     contactEmail: item.contactEmail || "",
     whatsappNumber: item.contactPhone || "",
+    pitchDeckUrl: item.pitchDeckUrl,
+    pitchDeckFileName: item.pitchDeckFileName,
   };
 }
 
@@ -136,17 +150,41 @@ export interface BusinessListing {
   ownerId: string;
   ownerName: string;
   ownerEmail: string;
-  title: string;
+
+  // Business Information
+  title: string; // Business Name
+  businessType?: string;
   listingType: ListingType;
   category: string;
   sector: string;
   location: string;
+  businessStage?: string;
+  yearsInOperation?: string;
+  businessModel?: string;
+  description: string; // Detailed Business Description
+
+  // Investment Information
   investmentRange: string;
-  shortDescription: string;
-  description: string;
+  investmentPurpose?: string;
+  expectedUseOfFunds?: string;
+  preferredInvestorType?: string;
+
+  // Founder / Owner Information
+  founderName?: string;
+  founderBackground?: string;
+  founderExperience?: string;
+
+  // Business Presentation
+  shortDescription: string; // Short Business Introduction
+  pitchDeckUrl?: string;
+  pitchDeckFileName?: string;
+  pitchDeckStoragePath?: string;
+  images: string[];
+
+  // Contact Details
   contactPhone: string;
   contactEmail: string;
-  images: string[];
+
   status: ListingStatus;
   createdAt: unknown;
   updatedAt: unknown;
@@ -175,29 +213,35 @@ export async function createListing(
     const listingData = {
       ownerId: currentUser.uid,
       ownerEmail: currentUser.email || input.contactEmail || "",
-      ownerName: currentUser.displayName || input.contactEmail.split("@")[0] || "Entrepreneur",
-      title: input.title,
+      ownerName: currentUser.displayName || input.founderName || input.contactEmail.split("@")[0] || "Entrepreneur",
+      title: input.title.trim(),
+      businessType: input.businessType?.trim() || "Private Limited",
       listingType: input.listingType,
       category: input.category,
       sector: input.sector,
-      location: input.location,
+      location: input.location.trim(),
+      businessStage: input.businessStage?.trim() || "Revenue Generating",
+      yearsInOperation: input.yearsInOperation?.trim() || "1–3 years",
+      businessModel: input.businessModel?.trim() || "B2B",
+      shortDescription: input.shortDescription.trim(),
+      description: input.description.trim(),
       investmentRange: input.investmentRange,
-      shortDescription: input.shortDescription,
-      description: input.description,
-      contactPhone: input.contactPhone,
-      contactEmail: input.contactEmail,
+      investmentPurpose: input.investmentPurpose?.trim() || "Growth & Expansion",
+      expectedUseOfFunds: input.expectedUseOfFunds?.trim() || null,
+      preferredInvestorType: input.preferredInvestorType?.trim() || "Angel Investor",
+      founderName: input.founderName?.trim() || null,
+      founderBackground: input.founderBackground?.trim() || null,
+      founderExperience: input.founderExperience?.trim() || null,
+      pitchDeckUrl: input.pitchDeckUrl?.trim() || null,
+      pitchDeckFileName: input.pitchDeckFileName?.trim() || null,
+      pitchDeckStoragePath: input.pitchDeckStoragePath?.trim() || null,
+      contactPhone: input.contactPhone.trim(),
+      contactEmail: input.contactEmail.trim(),
       images: input.images || [],
       status: "pending" as const, // Strictly forced to pending
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
-
-    // Safe debugging log requested by user
-    console.log({
-      authenticatedUid: currentUser?.uid,
-      ownerId: listingData.ownerId,
-      status: listingData.status,
-    });
 
     const docRef = await addDoc(collection(db, "listings"), listingData);
     console.log("[createListing] Document written successfully to listings/" + docRef.id);
@@ -376,14 +420,27 @@ export function normalizeListing(docId: string, rawData: Record<string, unknown>
   return {
     id: docId,
     ownerId,
-    ownerName,
+    ownerName: (rawData.founderName as string) || ownerName,
     ownerEmail,
     title,
+    businessType: (rawData.businessType as string) || undefined,
     listingType,
     category,
     sector,
     location,
+    businessStage: (rawData.businessStage as string) || undefined,
+    yearsInOperation: (rawData.yearsInOperation as string) || undefined,
+    businessModel: (rawData.businessModel as string) || undefined,
     investmentRange,
+    investmentPurpose: (rawData.investmentPurpose as string) || undefined,
+    expectedUseOfFunds: (rawData.expectedUseOfFunds as string) || undefined,
+    preferredInvestorType: (rawData.preferredInvestorType as string) || undefined,
+    founderName: (rawData.founderName as string) || (rawData.ownerName as string) || undefined,
+    founderBackground: (rawData.founderBackground as string) || undefined,
+    founderExperience: (rawData.founderExperience as string) || undefined,
+    pitchDeckUrl: (rawData.pitchDeckUrl as string) || undefined,
+    pitchDeckFileName: (rawData.pitchDeckFileName as string) || undefined,
+    pitchDeckStoragePath: (rawData.pitchDeckStoragePath as string) || undefined,
     shortDescription,
     description,
     contactPhone,
@@ -700,28 +757,33 @@ export async function deleteListing(listingId: string): Promise<{ error: string 
 }
 
 /**
- * Upload a listing image to Firebase Storage
+ * Upload a listing image to Firebase Storage with centralized error handling and pre-validation.
  */
 export async function uploadListingImage(
   file: File,
   tempId: string
 ): Promise<{ url: string | null; error: string | null }> {
-  try {
-    const user = auth.currentUser;
-    if (!user) {
-      return { url: null, error: "Authentication required to upload image." };
-    }
+  const res = await uploadListingImageFile(file, tempId);
+  return { url: res.url, error: res.error };
+}
 
-    const timestamp = Date.now();
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const storageRef = ref(storage, `listings/${tempId}/${timestamp}_${safeName}`);
-
-    await uploadBytes(storageRef, file);
-    const downloadUrl = await getDownloadURL(storageRef);
-
-    return { url: downloadUrl, error: null };
-  } catch (err: unknown) {
-    const error = err as { message?: string };
-    return { url: null, error: error.message || "Failed to upload image." };
-  }
+/**
+ * Upload a PDF Pitch Deck to Firebase Storage (max 20MB, PDF only) with centralized error handling.
+ */
+export async function uploadPitchDeck(
+  file: File,
+  tempId: string
+): Promise<{
+  url: string | null;
+  fileName: string | null;
+  storagePath: string | null;
+  error: string | null;
+}> {
+  const res = await uploadPitchDeckFile(file, tempId);
+  return {
+    url: res.url,
+    fileName: res.fileName,
+    storagePath: res.storagePath,
+    error: res.error,
+  };
 }

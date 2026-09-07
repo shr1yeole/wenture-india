@@ -13,6 +13,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { auth, db } from "./client";
+import { uploadInvestorAvatarFile } from "./storage";
 import { DEMO_INVESTORS } from "@/lib/constants/investors";
 
 export type InvestorType =
@@ -30,12 +31,25 @@ export interface InvestorProfile {
   investorName: string;
   investorType: InvestorType;
   location: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactLinkedin?: string;
+
+  // Investment Preferences
   investmentRange: string;
+  typicalInvestmentSize?: string;
   preferredSectors: string[];
   investmentStage: string;
+  preferredLocations?: string[];
+
+  // Investment Background
+  investmentExperience?: string;
+  previousInvestments?: string;
   areasOfExpertise: string[];
+  professionalBackground?: string;
   shortIntroduction: string;
   experience: string;
+
   profileImage?: string;
   status: InvestorStatus;
   rejectionReason?: string;
@@ -104,6 +118,12 @@ export function normalizeInvestorProfile(
     ? (raw.preferredSectors as string).split(",").map((s) => s.trim()).filter(Boolean)
     : [];
 
+  const preferredLocations = Array.isArray(raw.preferredLocations)
+    ? (raw.preferredLocations as string[])
+    : typeof raw.preferredLocations === "string"
+    ? (raw.preferredLocations as string).split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
   const areasOfExpertise = Array.isArray(raw.areasOfExpertise)
     ? (raw.areasOfExpertise as string[])
     : typeof raw.areasOfExpertise === "string"
@@ -116,12 +136,20 @@ export function normalizeInvestorProfile(
     investorName: (raw.investorName as string) || (raw.name as string) || "Private Investor",
     investorType: (raw.investorType as InvestorType) || "Angel Investor",
     location: (raw.location as string) || "India",
+    contactEmail: (raw.contactEmail as string) || undefined,
+    contactPhone: (raw.contactPhone as string) || undefined,
+    contactLinkedin: (raw.contactLinkedin as string) || undefined,
     investmentRange: (raw.investmentRange as string) || "₹25L – ₹50L",
+    typicalInvestmentSize: (raw.typicalInvestmentSize as string) || undefined,
     preferredSectors: preferredSectors.length > 0 ? preferredSectors : ["Technology", "Healthcare"],
     investmentStage: (raw.investmentStage as string) || "Seed / Early Stage",
+    preferredLocations: preferredLocations.length > 0 ? preferredLocations : undefined,
     areasOfExpertise: areasOfExpertise.length > 0 ? areasOfExpertise : ["Strategy", "Scaling"],
+    investmentExperience: (raw.investmentExperience as string) || undefined,
+    previousInvestments: (raw.previousInvestments as string) || undefined,
+    professionalBackground: (raw.professionalBackground as string) || undefined,
     shortIntroduction: (raw.shortIntroduction as string) || "Experienced investor backing high-growth opportunities.",
-    experience: (raw.experience as string) || (raw.shortIntroduction as string) || "",
+    experience: (raw.experience as string) || (raw.investmentExperience as string) || (raw.shortIntroduction as string) || "",
     profileImage: (raw.profileImage as string) || undefined,
     status,
     rejectionReason: (raw.rejectionReason as string) || undefined,
@@ -186,12 +214,20 @@ export async function saveInvestorProfile(
       investorName: profileData.investorName.trim(),
       investorType: profileData.investorType,
       location: profileData.location.trim(),
+      contactEmail: profileData.contactEmail?.trim() || null,
+      contactPhone: profileData.contactPhone?.trim() || null,
+      contactLinkedin: profileData.contactLinkedin?.trim() || null,
       investmentRange: profileData.investmentRange,
-      preferredSectors: profileData.preferredSectors,
+      typicalInvestmentSize: profileData.typicalInvestmentSize?.trim() || null,
+      preferredSectors: profileData.preferredSectors || [],
       investmentStage: profileData.investmentStage,
-      areasOfExpertise: profileData.areasOfExpertise,
+      preferredLocations: profileData.preferredLocations || [],
+      areasOfExpertise: profileData.areasOfExpertise || [],
+      investmentExperience: profileData.investmentExperience?.trim() || null,
+      previousInvestments: profileData.previousInvestments?.trim() || null,
+      professionalBackground: profileData.professionalBackground?.trim() || null,
       shortIntroduction: profileData.shortIntroduction.trim(),
-      experience: profileData.experience.trim(),
+      experience: (profileData.experience || profileData.investmentExperience || profileData.shortIntroduction).trim(),
       status: "pending", // Always pending review on submission
       updatedAt: serverTimestamp(),
     };
@@ -428,3 +464,15 @@ export async function submitInvestorEnquiry(
     return { id: null, error: error.message || "Failed to submit expression of interest." };
   }
 }
+
+/**
+ * Upload an investor profile picture to Firebase Storage with friendly error handling.
+ */
+export async function uploadInvestorProfileImage(
+  file: File,
+  userId: string
+): Promise<{ url: string | null; error: string | null }> {
+  const res = await uploadInvestorAvatarFile(file, userId);
+  return { url: res.url, error: res.error };
+}
+

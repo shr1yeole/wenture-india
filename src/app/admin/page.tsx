@@ -57,80 +57,80 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div>
         <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
           Executive Overview
         </span>
-        <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
           Admin Dashboard
         </h1>
-        <p className="text-sm text-[#5F7180] mt-1">
+        <p className="text-xs sm:text-sm text-[#5F7180] mt-1 leading-relaxed">
           Real-time institutional platform telemetry, user metrics, and pending approval queues.
         </p>
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {/* Total Users */}
-        <div className="bg-white border border-[#DCECF2] rounded-2xl p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-[#5F7180] uppercase tracking-wider">Total Users</span>
-            <div className="w-8 h-8 rounded-lg bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[20px]">group</span>
+        <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-[10px] sm:text-xs font-bold text-[#5F7180] uppercase tracking-wider">Total Users</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[16px] sm:text-[20px]">group</span>
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-[#0A192A] font-heading">{stats.totalUsers}</div>
-          <div className="text-[11px] text-[#5F7180] mt-1 flex gap-2">
-            <span>Entrepreneurs: <strong className="text-[#0A192A]">{stats.totalEntrepreneurs}</strong></span>
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] font-heading">{stats.totalUsers}</div>
+          <div className="text-[10px] sm:text-[11px] text-[#5F7180] mt-1 flex flex-wrap gap-1 sm:gap-2">
+            <span>Entr: <strong className="text-[#0A192A]">{stats.totalEntrepreneurs}</strong></span>
             <span>•</span>
-            <span>Investors: <strong className="text-[#0A192A]">{stats.totalInvestors}</strong></span>
+            <span>Inv: <strong className="text-[#0A192A]">{stats.totalInvestors}</strong></span>
           </div>
         </div>
 
         {/* Pending Listings */}
-        <div className="bg-white border border-amber-200 rounded-2xl p-5 shadow-sm bg-gradient-to-br from-white to-amber-50/40">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">Pending Review</span>
-            <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[20px]">pending_actions</span>
+        <div className="bg-white border border-amber-200 rounded-2xl p-4 sm:p-5 shadow-sm bg-gradient-to-br from-white to-amber-50/40">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-[10px] sm:text-xs font-bold text-amber-800 uppercase tracking-wider">Pending</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[16px] sm:text-[20px]">pending_actions</span>
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-amber-900 font-heading">{stats.pendingListings}</div>
-          <p className="text-[11px] text-amber-700 mt-1">Requires admin approval</p>
+          <div className="text-2xl sm:text-3xl font-extrabold text-amber-900 font-heading">{stats.pendingListings}</div>
+          <p className="text-[10px] sm:text-[11px] text-amber-700 mt-1">Requires approval</p>
         </div>
 
         {/* Published Listings */}
-        <div className="bg-white border border-emerald-200 rounded-2xl p-5 shadow-sm bg-gradient-to-br from-white to-emerald-50/30">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">Live Listings</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[20px]">check_circle</span>
+        <div className="bg-white border border-emerald-200 rounded-2xl p-4 sm:p-5 shadow-sm bg-gradient-to-br from-white to-emerald-50/30">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider">Live Listings</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[16px] sm:text-[20px]">check_circle</span>
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-emerald-900 font-heading">{stats.publishedListings}</div>
-          <p className="text-[11px] text-emerald-700 mt-1">Live on public catalog</p>
+          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-900 font-heading">{stats.publishedListings}</div>
+          <p className="text-[10px] sm:text-[11px] text-emerald-700 mt-1">Live on catalog</p>
         </div>
 
         {/* Total Enquiries */}
-        <div className="bg-white border border-[#DCECF2] rounded-2xl p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-[#5F7180] uppercase tracking-wider">Total Enquiries</span>
-            <div className="w-8 h-8 rounded-lg bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[20px]">mail</span>
+        <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-[10px] sm:text-xs font-bold text-[#5F7180] uppercase tracking-wider">Enquiries</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[16px] sm:text-[20px]">mail</span>
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-[#0A192A] font-heading">{stats.totalEnquiries}</div>
-          <p className="text-[11px] text-[#5F7180] mt-1">Opportunity &amp; contact leads</p>
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] font-heading">{stats.totalEnquiries}</div>
+          <p className="text-[10px] sm:text-[11px] text-[#5F7180] mt-1 truncate">Inbound direct leads</p>
         </div>
       </div>
 
       {/* Pending Listings Review Queue */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#DCECF2]">
           <div>
-            <h2 className="text-lg font-bold text-[#0A192A] font-heading flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-[#0A192A] font-heading flex items-center gap-2">
               <span>Pending Review Queue</span>
               {pendingListings.length > 0 && (
                 <span className="px-2 py-0.5 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-200">
@@ -145,7 +145,7 @@ export default function AdminDashboardPage() {
 
           <Link
             href="/admin/listings"
-            className="text-xs font-bold text-[#00A6E8] hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#00A6E8] hover:underline flex items-center gap-1 self-start sm:self-auto"
           >
             <span>View All Listings</span>
             <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -176,10 +176,10 @@ export default function AdminDashboardPage() {
                     <span className="text-xs text-slate-300">•</span>
                     <span className="text-xs text-[#5F7180]">{item.sector}</span>
                   </div>
-                  <h3 className="text-base font-bold text-[#0A192A]">{item.title}</h3>
-                  <p className="text-xs text-[#5F7180] line-clamp-1">{item.shortDescription}</p>
-                  <div className="text-[11px] text-slate-400 flex items-center gap-3 pt-1">
-                    <span>By: <strong className="text-[#0A192A]">{item.ownerName}</strong> ({item.ownerEmail})</span>
+                  <h3 className="text-sm sm:text-base font-bold text-[#0A192A]">{item.title}</h3>
+                  <p className="text-xs text-[#5F7180] line-clamp-2 sm:line-clamp-1">{item.shortDescription}</p>
+                  <div className="text-[11px] text-slate-400 flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
+                    <span>By: <strong className="text-[#0A192A]">{item.ownerName}</strong></span>
                     <span>•</span>
                     <span>Range: <strong className="text-[#0A192A]">{item.investmentRange}</strong></span>
                     <span>•</span>
@@ -187,12 +187,12 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
                   <button
                     type="button"
                     disabled={actionLoading === item.id}
                     onClick={() => handleApprove(item.id)}
-                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1"
+                    className="flex-1 sm:flex-none px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center justify-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[16px]">check</span>
                     <span>Approve</span>
@@ -202,7 +202,7 @@ export default function AdminDashboardPage() {
                     type="button"
                     disabled={actionLoading === item.id}
                     onClick={() => handleReject(item.id)}
-                    className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition-colors disabled:opacity-50 flex items-center gap-1"
+                    className="flex-1 sm:flex-none px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[16px]">close</span>
                     <span>Reject</span>

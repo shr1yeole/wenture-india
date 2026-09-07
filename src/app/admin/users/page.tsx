@@ -50,10 +50,10 @@ export default function AdminUsersPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Directory
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             User Management
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Institutional directory of registered investors, entrepreneurs, and platform administrators.
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function AdminUsersPage() {
         <button
           type="button"
           onClick={loadUsers}
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">refresh</span>
           <span>Refresh</span>
@@ -69,14 +69,14 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Filter and Search */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-3.5 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto no-scrollbar">
           {(["all", "entrepreneur", "investor", "admin"] as const).map((r) => (
             <button
               key={r}
               type="button"
               onClick={() => setRoleFilter(r)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
                 roleFilter === r
                   ? "bg-[#00A6E8] text-white shadow-sm"
                   : "text-[#5F7180] hover:text-[#0A192A]"
@@ -115,7 +115,7 @@ export default function AdminUsersPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[650px]">
               <thead className="bg-[#F4FAFD] border-b border-[#DCECF2] text-[#5F7180] uppercase tracking-wider font-extrabold text-[10px]">
                 <tr>
                   <th className="py-3.5 px-4 sm:px-6">Name</th>

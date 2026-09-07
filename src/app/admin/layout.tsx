@@ -135,15 +135,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </header>
 
-      <div className="flex-grow flex">
+      <div className="flex-grow flex relative">
+        {/* Mobile Backdrop Overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-[#0A192A]/50 backdrop-blur-xs z-20 lg:hidden transition-opacity"
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Sidebar Navigation */}
         <aside
           className={cn(
-            "fixed lg:sticky top-[57px] z-30 w-64 bg-white border-r border-[#DCECF2] h-[calc(100vh-57px)] flex flex-col justify-between transition-transform duration-200 lg:translate-x-0",
+            "fixed lg:sticky top-[57px] z-30 w-64 bg-white border-r border-[#DCECF2] h-[calc(100vh-57px)] flex flex-col justify-between transition-transform duration-200 lg:translate-x-0 shadow-lg lg:shadow-none",
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <div className="p-4 space-y-1">
+          <div className="p-4 space-y-1 overflow-y-auto">
             <div className="px-3 py-2 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
               Management
             </div>
@@ -177,7 +186,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-grow p-4 sm:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
+        <main className="flex-grow p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto overflow-x-hidden min-w-0">
           {children}
         </main>
       </div>

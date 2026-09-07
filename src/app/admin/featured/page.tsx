@@ -75,10 +75,10 @@ export default function AdminFeaturedContentPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Curated Highlights
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Featured Content Management
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Manage featured companies, high-growth startups, franchise brands, and export ventures displayed on the homepage.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function AdminFeaturedContentPage() {
         <button
           type="button"
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-1.5 self-start sm:self-auto"
+          className="px-4 py-2.5 bg-[#00A6E8] hover:bg-[#0093CE] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 self-stretch sm:self-auto"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           <span>Add Featured Item</span>
@@ -94,13 +94,13 @@ export default function AdminFeaturedContentPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 p-1.5 bg-white border border-[#DCECF2] rounded-2xl overflow-x-auto shadow-sm">
+      <div className="flex items-center gap-2 p-1.5 bg-white border border-[#DCECF2] rounded-2xl overflow-x-auto no-scrollbar shadow-sm">
         {TAB_CONFIG.map((tab) => (
           <button
             key={tab.key}
             type="button"
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               activeTab === tab.key
                 ? "bg-[#00A6E8] text-white shadow-sm"
                 : "text-[#5F7180] hover:text-[#0A192A] hover:bg-[#F6FAFF]"
@@ -120,11 +120,11 @@ export default function AdminFeaturedContentPage() {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {currentItems.map((item) => (
           <div
             key={item.id}
-            className="bg-white border border-[#DCECF2] rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
+            className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
@@ -173,8 +173,8 @@ export default function AdminFeaturedContentPage() {
 
       {/* Add Item Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-lg bg-white border border-[#DCECF2] rounded-2xl shadow-2xl p-4 sm:p-6 my-4 sm:my-8 max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-[#0A192A] font-heading mb-4">
               Add Item to {TAB_CONFIG.find((t) => t.key === activeTab)?.label}
             </h3>
@@ -192,7 +192,7 @@ export default function AdminFeaturedContentPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-[#0A192A] mb-1">Venture Subtype *</label>
                   <input
@@ -216,7 +216,7 @@ export default function AdminFeaturedContentPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-[#0A192A] mb-1">Location *</label>
                   <input
@@ -263,17 +263,17 @@ export default function AdminFeaturedContentPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-2 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-[#5F7180] hover:bg-slate-50"
+                  className="px-4 py-2.5 sm:py-2 rounded-xl text-xs font-bold text-[#5F7180] hover:bg-slate-50 text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#00A6E8] hover:bg-[#0093CE] text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+                  className="px-5 py-2.5 sm:py-2 bg-[#00A6E8] hover:bg-[#0093CE] text-white rounded-xl text-xs font-bold transition-all shadow-sm text-center"
                 >
                   Save Item
                 </button>

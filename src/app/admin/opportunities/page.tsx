@@ -51,10 +51,10 @@ export default function AdminOpportunitiesPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Dealflow Catalog
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Opportunity Catalog
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Browse and manage both core catalog opportunities and entrepreneur-approved live listings.
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function AdminOpportunitiesPage() {
         <Link
           href="/opportunities"
           target="_blank"
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span>View Public Opportunities</span>
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">open_in_new</span>
@@ -70,7 +70,7 @@ export default function AdminOpportunitiesPage() {
       </div>
 
       {/* Filter and Search */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm flex items-center justify-between gap-4">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-3.5 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
         <div className="text-xs font-bold text-[#0A192A]">
           Total Live Deals: <span className="text-[#00A6E8]">{allOpportunities.length}</span> ({publishedListings.length} Approved Submissions + {OPPORTUNITIES.length} Curated Core Deals)
         </div>
@@ -90,7 +90,7 @@ export default function AdminOpportunitiesPage() {
       </div>
 
       {/* Opportunities Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {filtered.map((opp) => (
           <div
             key={opp.id}

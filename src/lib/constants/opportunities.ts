@@ -46,6 +46,8 @@ export interface Opportunity {
   contactPhone?: string;
   contactEmail?: string;
   whatsappNumber?: string;
+  pitchDeckUrl?: string;
+  pitchDeckFileName?: string;
 }
 
 export function formatWhatsAppNumber(phone?: string, defaultNumber: string = "919841881008"): string {

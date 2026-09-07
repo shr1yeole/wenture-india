@@ -21,21 +21,21 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-6 sm:space-y-8 max-w-4xl">
       <div>
         <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
           Configuration &amp; Security
         </span>
-        <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
           Admin Settings &amp; Architecture
         </h1>
-        <p className="text-sm text-[#5F7180] mt-1">
+        <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
           Platform telemetry, security policies, and administrator privilege provisioning guidance.
         </p>
       </div>
 
       {/* Admin Privilege Provisioning Guide */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-6 sm:p-7 shadow-sm space-y-4">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-7 shadow-sm space-y-4">
         <div className="flex items-center gap-3 pb-4 border-b border-[#DCECF2]">
           <div className="w-10 h-10 rounded-xl bg-[#EBF6FC] text-[#00A6E8] flex items-center justify-center">
             <span className="material-symbols-outlined text-[24px]">shield_person</span>

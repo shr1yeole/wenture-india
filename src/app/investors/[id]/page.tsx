@@ -185,8 +185,32 @@ export default function InvestorDetailPage() {
                   </p>
                 </div>
 
+                {/* Professional Background */}
+                {investor.professionalBackground && (
+                  <div className="pt-4 sm:pt-6 border-t border-[#DCECF2]">
+                    <h3 className="text-xs font-bold text-[#00658F] uppercase tracking-wider mb-2">
+                      Professional &amp; Leadership Background
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed whitespace-pre-line">
+                      {investor.professionalBackground}
+                    </p>
+                  </div>
+                )}
+
+                {/* Previous Investments / Portfolio */}
+                {investor.previousInvestments && (
+                  <div className="pt-4 sm:pt-6 border-t border-[#DCECF2]">
+                    <h3 className="text-xs font-bold text-[#00658F] uppercase tracking-wider mb-2">
+                      Previous Investments &amp; Portfolio
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#5F7180] leading-relaxed whitespace-pre-line">
+                      {investor.previousInvestments}
+                    </p>
+                  </div>
+                )}
+
                 {/* Areas of Expertise Tags */}
-                <div className="pt-6 border-t border-[#DCECF2]">
+                <div className="pt-4 sm:pt-6 border-t border-[#DCECF2]">
                   <h3 className="text-xs font-bold text-[#00658F] uppercase tracking-wider mb-3">
                     Areas of Expertise &amp; Value Addition
                   </h3>
@@ -203,7 +227,7 @@ export default function InvestorDetailPage() {
                 </div>
 
                 {/* Preferred Sectors Tags */}
-                <div className="pt-6 border-t border-[#DCECF2]">
+                <div className="pt-4 sm:pt-6 border-t border-[#DCECF2]">
                   <h3 className="text-xs font-bold text-[#00658F] uppercase tracking-wider mb-3">
                     Target Industry Sectors
                   </h3>
@@ -238,8 +262,8 @@ export default function InvestorDetailPage() {
                   </h2>
                 </div>
 
-                <div className="space-y-4 text-xs">
-                  <div className="p-3.5 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                <div className="space-y-3 text-xs">
+                  <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
                     <span className="text-[#5F7180] block text-[10px] uppercase font-bold mb-0.5">
                       Investment Ticket Range
                     </span>
@@ -248,7 +272,18 @@ export default function InvestorDetailPage() {
                     </span>
                   </div>
 
-                  <div className="p-3.5 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                  {investor.typicalInvestmentSize && (
+                    <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                      <span className="text-[#5F7180] block text-[10px] uppercase font-bold mb-0.5">
+                        Typical Investment Size
+                      </span>
+                      <span className="text-sm font-bold text-[#0A192A]">
+                        {investor.typicalInvestmentSize}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
                     <span className="text-[#5F7180] block text-[10px] uppercase font-bold mb-0.5">
                       Preferred Stage
                     </span>
@@ -257,7 +292,7 @@ export default function InvestorDetailPage() {
                     </span>
                   </div>
 
-                  <div className="p-3.5 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                  <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
                     <span className="text-[#5F7180] block text-[10px] uppercase font-bold mb-0.5">
                       Geographic Base
                     </span>
@@ -265,6 +300,17 @@ export default function InvestorDetailPage() {
                       {investor.location}
                     </span>
                   </div>
+
+                  {investor.preferredLocations && investor.preferredLocations.length > 0 && (
+                    <div className="p-3 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl">
+                      <span className="text-[#5F7180] block text-[10px] uppercase font-bold mb-0.5">
+                        Target Locations / Regions
+                      </span>
+                      <span className="text-sm font-bold text-[#0A192A]">
+                        {investor.preferredLocations.join(", ")}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Primary CTA: Express Interest */}

@@ -81,9 +81,17 @@ export default function AdminInvestorsPage() {
       investorType: editingInvestor.investorType,
       location: editingInvestor.location,
       investmentRange: editingInvestor.investmentRange,
+      typicalInvestmentSize: editingInvestor.typicalInvestmentSize,
       investmentStage: editingInvestor.investmentStage,
+      preferredLocations: editingInvestor.preferredLocations,
       shortIntroduction: editingInvestor.shortIntroduction,
       experience: editingInvestor.experience,
+      investmentExperience: editingInvestor.investmentExperience,
+      previousInvestments: editingInvestor.previousInvestments,
+      professionalBackground: editingInvestor.professionalBackground,
+      contactEmail: editingInvestor.contactEmail,
+      contactPhone: editingInvestor.contactPhone,
+      contactLinkedin: editingInvestor.contactLinkedin,
     });
     setActionLoading(null);
     setEditingInvestor(null);
@@ -117,10 +125,10 @@ export default function AdminInvestorsPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Directory Moderation
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Investor Profiles
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Review, verify, edit, and approve capital partner profiles submitted to the public directory.
           </p>
         </div>
@@ -128,7 +136,7 @@ export default function AdminInvestorsPage() {
         <button
           type="button"
           onClick={loadInvestors}
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">refresh</span>
           <span>Refresh</span>
@@ -136,9 +144,9 @@ export default function AdminInvestorsPage() {
       </div>
 
       {/* Filter Tabs & Search Bar */}
-      <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white border border-[#DCECF2] rounded-2xl p-3.5 sm:p-5 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
         {/* Status Tabs */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-1 bg-[#F4FAFD] border border-[#DCECF2] rounded-xl w-full sm:w-auto overflow-x-auto no-scrollbar">
           {(["all", "pending", "published", "rejected"] as const).map((tab) => {
             const active = statusFilter === tab;
             const count =
@@ -151,7 +159,7 @@ export default function AdminInvestorsPage() {
                 key={tab}
                 type="button"
                 onClick={() => setStatusFilter(tab)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex items-center gap-1.5 ${
                   active
                     ? "bg-[#00A6E8] text-white shadow-sm"
                     : "text-[#5F7180] hover:text-[#0A192A]"
@@ -200,7 +208,7 @@ export default function AdminInvestorsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[700px]">
               <thead className="bg-[#F4FAFD] border-b border-[#DCECF2] text-[#5F7180] uppercase tracking-wider font-extrabold text-[10px]">
                 <tr>
                   <th className="py-3.5 px-4 sm:px-6">Investor Name &amp; Location</th>
@@ -325,7 +333,7 @@ export default function AdminInvestorsPage() {
       {/* View Detail Modal */}
       <AnimatePresence>
         {selectedInvestor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -337,11 +345,11 @@ export default function AdminInvestorsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-2xl overflow-hidden z-10 my-8 p-6 sm:p-8"
+              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-2xl overflow-hidden z-10 my-4 sm:my-8 p-4 sm:p-6 sm:p-8 max-h-[90vh] flex flex-col"
             >
-              <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#DCECF2]">
+              <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-[#DCECF2] shrink-0">
                 <div>
-                  <h2 className="text-xl font-bold text-[#0A192A] font-heading">
+                  <h2 className="text-lg sm:text-xl font-bold text-[#0A192A] font-heading">
                     {selectedInvestor.investorName}
                   </h2>
                   <p className="text-xs text-[#5F7180] mt-0.5">
@@ -357,15 +365,46 @@ export default function AdminInvestorsPage() {
                 </button>
               </div>
 
-              <div className="space-y-4 text-xs">
-                <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#F4FAFD] rounded-xl border border-[#DCECF2]">
+              <div className="space-y-4 text-xs overflow-y-auto pr-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-[#F4FAFD] rounded-xl border border-[#DCECF2]">
                   <div>
                     <span className="text-[#5F7180] block text-[10px] uppercase font-bold">Investment Range</span>
                     <span className="font-bold text-[#00658F] text-sm">{selectedInvestor.investmentRange}</span>
                   </div>
                   <div>
+                    <span className="text-[#5F7180] block text-[10px] uppercase font-bold">Typical Ticket Size</span>
+                    <span className="font-bold text-[#0A192A] text-sm">{selectedInvestor.typicalInvestmentSize || "Standard Ticket"}</span>
+                  </div>
+                  <div>
                     <span className="text-[#5F7180] block text-[10px] uppercase font-bold">Stage</span>
                     <span className="font-bold text-[#0A192A] text-sm">{selectedInvestor.investmentStage}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#5F7180] block text-[10px] uppercase font-bold">Investment Experience</span>
+                    <span className="font-bold text-[#0A192A] text-sm">{selectedInvestor.investmentExperience || "Active Investor"}</span>
+                  </div>
+                </div>
+
+                {/* Contact & Verification Info */}
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                  <strong className="block text-[11px] uppercase font-bold text-[#0A192A] mb-1">Direct Contact Details:</strong>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700">
+                    <div>
+                      <span className="text-[#5F7180] font-semibold">Email: </span>
+                      <span className="font-medium">{selectedInvestor.contactEmail || "Not provided"}</span>
+                    </div>
+                    <div>
+                      <span className="text-[#5F7180] font-semibold">Phone: </span>
+                      <span className="font-medium">{selectedInvestor.contactPhone || "Not provided"}</span>
+                    </div>
+                    {selectedInvestor.contactLinkedin && (
+                      <div className="col-span-1 sm:col-span-2">
+                        <span className="text-[#5F7180] font-semibold">LinkedIn / Web: </span>
+                        <a href={selectedInvestor.contactLinkedin} target="_blank" rel="noreferrer" className="text-[#00A6E8] underline font-medium break-all">
+                          {selectedInvestor.contactLinkedin}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -378,6 +417,20 @@ export default function AdminInvestorsPage() {
                   </div>
                 </div>
 
+                {selectedInvestor.preferredLocations && (
+                  <div>
+                    <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Preferred Locations / Geographies:</strong>
+                    <div className="flex flex-wrap gap-1">
+                      {(Array.isArray(selectedInvestor.preferredLocations)
+                        ? selectedInvestor.preferredLocations
+                        : [selectedInvestor.preferredLocations]
+                      ).map((loc) => (
+                        <span key={loc} className="px-2 py-0.5 bg-slate-100 rounded text-[#0A192A] font-medium">{loc}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Areas of Expertise:</strong>
                   <div className="flex flex-wrap gap-1">
@@ -388,14 +441,32 @@ export default function AdminInvestorsPage() {
                 </div>
 
                 <div>
-                  <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Introduction / Thesis:</strong>
+                  <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Introduction / Investment Thesis:</strong>
                   <p className="text-[#0A192A] leading-relaxed whitespace-pre-line p-3 bg-slate-50 rounded-xl">
                     {selectedInvestor.shortIntroduction}
                   </p>
                 </div>
 
+                {selectedInvestor.professionalBackground && (
+                  <div>
+                    <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Professional Background:</strong>
+                    <p className="text-[#0A192A] leading-relaxed whitespace-pre-line p-3 bg-slate-50 rounded-xl">
+                      {selectedInvestor.professionalBackground}
+                    </p>
+                  </div>
+                )}
+
+                {selectedInvestor.previousInvestments && (
+                  <div>
+                    <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Previous Investments / Notable Portfolio:</strong>
+                    <p className="text-[#0A192A] leading-relaxed whitespace-pre-line p-3 bg-slate-50 rounded-xl">
+                      {selectedInvestor.previousInvestments}
+                    </p>
+                  </div>
+                )}
+
                 <div>
-                  <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Detailed Experience:</strong>
+                  <strong className="block text-[11px] uppercase font-bold text-[#5F7180] mb-1">Detailed Bio / Experience:</strong>
                   <p className="text-[#0A192A] leading-relaxed whitespace-pre-line p-3 bg-slate-50 rounded-xl">
                     {selectedInvestor.experience || "None provided"}
                   </p>
@@ -409,11 +480,11 @@ export default function AdminInvestorsPage() {
                 )}
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#DCECF2] flex items-center justify-end gap-2">
+              <div className="mt-6 pt-4 border-t border-[#DCECF2] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setSelectedInvestor(null)}
-                  className="px-4 py-2 border border-[#DCECF2] text-xs font-bold rounded-xl"
+                  className="px-4 py-2.5 sm:py-2 border border-[#DCECF2] text-xs font-bold rounded-xl text-center"
                 >
                   Close
                 </button>
@@ -421,7 +492,7 @@ export default function AdminInvestorsPage() {
                   <button
                     type="button"
                     onClick={() => handleApprove(selectedInvestor.id)}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl"
+                    className="px-4 py-2.5 sm:py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl text-center shadow-sm"
                   >
                     Approve &amp; Publish
                   </button>
@@ -435,7 +506,7 @@ export default function AdminInvestorsPage() {
       {/* Reject Modal */}
       <AnimatePresence>
         {rejectingInvestor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -447,7 +518,7 @@ export default function AdminInvestorsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-md p-6 z-10"
+              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-md p-4 sm:p-6 z-10"
             >
               <h3 className="text-lg font-bold text-[#0A192A] mb-2 font-heading">
                 Reject Investor Profile
@@ -464,11 +535,11 @@ export default function AdminInvestorsPage() {
                 className="w-full p-3 border border-[#DCECF2] rounded-xl text-xs focus:outline-none focus:border-[#00A6E8] resize-none mb-4"
               />
 
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setRejectingInvestor(null)}
-                  className="px-4 py-2 border border-[#DCECF2] text-xs font-bold rounded-xl"
+                  className="px-4 py-2.5 sm:py-2 border border-[#DCECF2] text-xs font-bold rounded-xl text-center"
                 >
                   Cancel
                 </button>
@@ -476,7 +547,7 @@ export default function AdminInvestorsPage() {
                   type="button"
                   disabled={!rejectReason.trim()}
                   onClick={handleConfirmReject}
-                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl disabled:opacity-50"
+                  className="px-4 py-2.5 sm:py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl disabled:opacity-50 text-center"
                 >
                   Confirm Rejection
                 </button>
@@ -489,7 +560,7 @@ export default function AdminInvestorsPage() {
       {/* Edit Modal */}
       <AnimatePresence>
         {editingInvestor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -501,15 +572,15 @@ export default function AdminInvestorsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-xl p-6 sm:p-8 z-10 my-8"
+              className="relative bg-white rounded-2xl border border-[#DCECF2] shadow-2xl w-full max-w-xl p-4 sm:p-6 sm:p-8 z-10 my-4 sm:my-8 max-h-[90vh] overflow-y-auto"
             >
-              <h3 className="text-xl font-bold text-[#0A192A] mb-4 font-heading">
+              <h3 className="text-lg sm:text-xl font-bold text-[#0A192A] mb-4 font-heading">
                 Admin Edit: {editingInvestor.investorName}
               </h3>
 
               <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-bold text-[#0A192A] mb-1">Investor Name</label>
+                  <label className="block font-bold text-[#0A192A] mb-1">Investor / Firm Name</label>
                   <input
                     type="text"
                     value={editingInvestor.investorName}
@@ -521,7 +592,7 @@ export default function AdminInvestorsPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-bold text-[#0A192A] mb-1">Investor Type</label>
                     <select
@@ -554,9 +625,9 @@ export default function AdminInvestorsPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-[#0A192A] mb-1">Range</label>
+                    <label className="block font-bold text-[#0A192A] mb-1">Investment Range</label>
                     <select
                       value={editingInvestor.investmentRange}
                       onChange={(e) =>
@@ -571,7 +642,22 @@ export default function AdminInvestorsPage() {
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#0A192A] mb-1">Stage</label>
+                    <label className="block font-bold text-[#0A192A] mb-1">Typical Ticket Size</label>
+                    <input
+                      type="text"
+                      value={editingInvestor.typicalInvestmentSize || ""}
+                      onChange={(e) =>
+                        setEditingInvestor({ ...editingInvestor, typicalInvestmentSize: e.target.value })
+                      }
+                      placeholder="e.g. ₹25L – ₹50L per deal"
+                      className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-[#0A192A] mb-1">Preferred Stage</label>
                     <select
                       value={editingInvestor.investmentStage}
                       onChange={(e) =>
@@ -584,10 +670,71 @@ export default function AdminInvestorsPage() {
                       ))}
                     </select>
                   </div>
+
+                  <div>
+                    <label className="block font-bold text-[#0A192A] mb-1">Experience Level</label>
+                    <input
+                      type="text"
+                      value={editingInvestor.investmentExperience || ""}
+                      onChange={(e) =>
+                        setEditingInvestor({ ...editingInvestor, investmentExperience: e.target.value })
+                      }
+                      placeholder="e.g. 5+ Years / Angel"
+                      className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-[#0A192A] mb-1">Contact Email</label>
+                    <input
+                      type="email"
+                      value={editingInvestor.contactEmail || ""}
+                      onChange={(e) =>
+                        setEditingInvestor({ ...editingInvestor, contactEmail: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-[#0A192A] mb-1">Contact Phone</label>
+                    <input
+                      type="text"
+                      value={editingInvestor.contactPhone || ""}
+                      onChange={(e) =>
+                        setEditingInvestor({ ...editingInvestor, contactPhone: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block font-bold text-[#0A192A] mb-1">Short Introduction</label>
+                  <label className="block font-bold text-[#0A192A] mb-1">Preferred Locations / Geographies</label>
+                  <input
+                    type="text"
+                    value={
+                      Array.isArray(editingInvestor.preferredLocations)
+                        ? editingInvestor.preferredLocations.join(", ")
+                        : editingInvestor.preferredLocations || ""
+                    }
+                    onChange={(e) =>
+                      setEditingInvestor({
+                        ...editingInvestor,
+                        preferredLocations: e.target.value
+                          ? e.target.value.split(",").map((s) => s.trim()).filter(Boolean)
+                          : [],
+                      })
+                    }
+                    placeholder="e.g. Pan India, Bengaluru, Mumbai"
+                    className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#0A192A] mb-1">Short Introduction / Thesis</label>
                   <textarea
                     rows={3}
                     value={editingInvestor.shortIntroduction}
@@ -598,17 +745,43 @@ export default function AdminInvestorsPage() {
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#DCECF2]">
+                <div>
+                  <label className="block font-bold text-[#0A192A] mb-1">Professional Background</label>
+                  <textarea
+                    rows={2}
+                    value={editingInvestor.professionalBackground || ""}
+                    onChange={(e) =>
+                      setEditingInvestor({ ...editingInvestor, professionalBackground: e.target.value })
+                    }
+                    placeholder="Executive experience, industry background..."
+                    className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#0A192A] mb-1">Previous Investments / Portfolio</label>
+                  <textarea
+                    rows={2}
+                    value={editingInvestor.previousInvestments || ""}
+                    onChange={(e) =>
+                      setEditingInvestor({ ...editingInvestor, previousInvestments: e.target.value })
+                    }
+                    placeholder="Notable past investments or ventures..."
+                    className="w-full px-3 py-2 border border-[#DCECF2] rounded-xl"
+                  />
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-3 border-t border-[#DCECF2]">
                   <button
                     type="button"
                     onClick={() => setEditingInvestor(null)}
-                    className="px-4 py-2 border border-[#DCECF2] text-xs font-bold rounded-xl"
+                    className="px-4 py-2.5 sm:py-2 border border-[#DCECF2] text-xs font-bold rounded-xl text-center"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-[#00A6E8] hover:bg-[#0093CE] text-white text-xs font-bold rounded-xl"
+                    className="px-5 py-2.5 sm:py-2 bg-[#00A6E8] hover:bg-[#0093CE] text-white text-xs font-bold rounded-xl text-center shadow-sm"
                   >
                     Save Changes
                   </button>

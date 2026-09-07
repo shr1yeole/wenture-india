@@ -15,10 +15,10 @@ export default function AdminGuidesPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Knowledge Base
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Guide Management
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Institutional educational modules providing investor and entrepreneur guidance.
           </p>
         </div>
@@ -26,18 +26,18 @@ export default function AdminGuidesPage() {
         <Link
           href="/guides"
           target="_blank"
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span>View Public Knowledge Hub</span>
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">open_in_new</span>
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {guides.map((guide) => (
           <div
             key={guide.slug}
-            className="bg-white border border-[#DCECF2] rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
+            className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">

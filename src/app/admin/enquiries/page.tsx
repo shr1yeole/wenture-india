@@ -118,10 +118,10 @@ export default function AdminEnquiriesPage() {
           <span className="text-xs font-bold text-[#00A6E8] uppercase tracking-wider block mb-1">
             Inbound Communications
           </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192A] tracking-tight font-heading">
             Enquiry Management
           </h1>
-          <p className="text-sm text-[#5F7180] mt-1">
+          <p className="text-xs sm:text-sm text-[#5F7180] mt-1">
             Monitor decentralized investor-to-entrepreneur interest routing and general platform contacts.
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function AdminEnquiriesPage() {
         <button
           type="button"
           onClick={loadEnquiries}
-          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          className="px-4 py-2 bg-white border border-[#DCECF2] hover:bg-slate-50 text-[#0A192A] text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">refresh</span>
           <span>Refresh</span>
@@ -137,11 +137,11 @@ export default function AdminEnquiriesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 p-1.5 bg-white border border-[#DCECF2] rounded-2xl overflow-x-auto shadow-sm">
+      <div className="flex items-center gap-2 p-1.5 bg-white border border-[#DCECF2] rounded-2xl overflow-x-auto no-scrollbar shadow-sm">
         <button
           type="button"
           onClick={() => setActiveTab("opportunity")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             activeTab === "opportunity"
               ? "bg-[#00A6E8] text-white shadow-sm"
               : "text-[#5F7180] hover:text-[#0A192A] hover:bg-[#F6FAFF]"
@@ -154,7 +154,7 @@ export default function AdminEnquiriesPage() {
         <button
           type="button"
           onClick={() => setActiveTab("contact")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             activeTab === "contact"
               ? "bg-[#00A6E8] text-white shadow-sm"
               : "text-[#5F7180] hover:text-[#0A192A] hover:bg-[#F6FAFF]"
@@ -167,7 +167,7 @@ export default function AdminEnquiriesPage() {
 
       {/* Multi-Criteria Filters for Opportunity Enquiries */}
       {activeTab === "opportunity" && !loading && oppEnquiries.length > 0 && (
-        <div className="bg-white border border-[#DCECF2] rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
+        <div className="bg-white border border-[#DCECF2] rounded-2xl p-3.5 sm:p-5 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#0A192A] flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-[#00A6E8]">tune</span>
@@ -293,7 +293,7 @@ export default function AdminEnquiriesPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[750px]">
                 <thead className="bg-[#F4FAFD] border-b border-[#DCECF2] text-[#5F7180] uppercase tracking-wider font-extrabold text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4 sm:px-6">Opportunity &amp; Owner</th>
@@ -386,7 +386,7 @@ export default function AdminEnquiriesPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[750px]">
                 <thead className="bg-[#F4FAFD] border-b border-[#DCECF2] text-[#5F7180] uppercase tracking-wider font-extrabold text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4 sm:px-6">Sender</th>
